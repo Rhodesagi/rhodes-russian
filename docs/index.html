@@ -1,0 +1,2541 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Russian Course | Поехали!</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --text: #1a1a2e;
+      --accent-blue: #0039A6;
+      --accent-red: #D52B1E;
+      --accent-white: #ffffff;
+      --border: #333;
+      --success: #28a745;
+      --error: #dc3545;
+      --warning: #ffc107;
+      /* Russian 6-case colors */
+      --case-nom: #0066CC;
+      --case-gen: #CC0000;
+      --case-dat: #FF8800;
+      --case-acc: #9933CC;
+      --case-ins: #009933;
+      --case-pre: #009999;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'VT323', 'Courier New', monospace;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 3px solid var(--border);
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      background: var(--accent-white);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-box {
+      border: 2px solid var(--border);
+      padding: 5px 12px;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 3px;
+    }
+
+    .russian-flag {
+      display: flex;
+      flex-direction: column;
+      height: 30px;
+      width: 45px;
+      border: 1px solid #ccc;
+    }
+
+    .russian-flag span {
+      flex: 1;
+    }
+
+    .russian-flag .white { background: #FFFFFF; }
+    .russian-flag .blue { background: var(--accent-blue); }
+    .russian-flag .red { background: var(--accent-red); }
+
+    /* Case Legend */
+    .case-legend {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin: 10px 0;
+      font-size: 11px;
+      flex-wrap: wrap;
+    }
+    .case-item { display: flex; align-items: center; gap: 3px; }
+    .case-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .case-nom-dot { background: var(--case-nom); }
+    .case-gen-dot { background: var(--case-gen); }
+    .case-dat-dot { background: var(--case-dat); }
+    .case-acc-dot { background: var(--case-acc); }
+    .case-ins-dot { background: var(--case-ins); }
+    .case-pre-dot { background: var(--case-pre); }
+
+    .subtitle {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Mode Selector */
+    .mode-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 15px;
+      border: 3px solid var(--border);
+      background: var(--accent-white);
+      font-family: inherit;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .mode-btn:hover {
+      background: #eee;
+    }
+
+    .mode-btn.active {
+      background: var(--accent-blue);
+      color: white;
+      border-color: var(--accent-blue);
+    }
+
+    .mode-btn .mode-icon {
+      font-size: 24px;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    /* Unit Grid */
+    .units-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .unit-card {
+      border: 2px solid var(--border);
+      padding: 15px;
+      background: var(--accent-white);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .unit-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 4px 4px 0 var(--border);
+    }
+
+    .unit-card.completed {
+      border-color: var(--success);
+    }
+
+    .unit-card.current {
+      border-color: var(--accent-blue);
+      border-width: 3px;
+    }
+
+    .unit-number {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .unit-title {
+      font-size: 20px;
+      margin: 5px 0;
+    }
+
+    .unit-progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background: #ddd;
+      border: 1px solid var(--border);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--success);
+      transition: width 0.3s;
+    }
+
+    .progress-text {
+      font-size: 14px;
+      min-width: 40px;
+    }
+
+    /* Drill View */
+    .drill-view {
+      display: none;
+      border: 3px solid var(--border);
+      background: var(--accent-white);
+      padding: 20px;
+    }
+
+    .drill-view.active {
+      display: block;
+    }
+
+    .drill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .drill-type {
+      font-size: 14px;
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+      background: #f0f0f0;
+    }
+
+    .drill-content {
+      margin-bottom: 20px;
+    }
+
+    .prompt {
+      font-size: 22px;
+      padding: 15px;
+      background: #f5f5f5;
+      border: 2px solid var(--border);
+      margin-bottom: 15px;
+    }
+
+    .prompt-fr {
+      color: var(--accent-blue);
+    }
+
+    .prompt-en {
+      font-size: 16px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    /* Input Area */
+    .input-area {
+      margin-bottom: 20px;
+    }
+
+    .input-area input {
+      width: 100%;
+      padding: 15px;
+      font-family: inherit;
+      font-size: 20px;
+      border: 3px solid var(--border);
+      outline: none;
+    }
+
+    .input-area input:focus {
+      border-color: var(--accent-blue);
+    }
+
+    .input-area input.correct {
+      border-color: var(--success);
+      background: #d4edda;
+    }
+
+    .input-area input.incorrect {
+      border-color: var(--error);
+      background: #f8d7da;
+    }
+
+    /* Feedback */
+    .feedback {
+      padding: 15px;
+      margin-bottom: 15px;
+      border: 2px solid var(--border);
+      display: none;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.success {
+      background: #d4edda;
+      border-color: var(--success);
+    }
+
+    .feedback.error {
+      background: #f8d7da;
+      border-color: var(--error);
+    }
+
+    .feedback-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .feedback-detail {
+      font-size: 16px;
+    }
+
+    .drill-link {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 5px 10px;
+      background: var(--accent-blue);
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      font-family: inherit;
+      font-size: 18px;
+      border: 2px solid var(--border);
+      background: var(--accent-white);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #eee;
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      color: white;
+      border-color: var(--accent-blue);
+    }
+
+    .btn-primary:hover {
+      background: #001a75;
+    }
+
+    /* Register Toggle */
+    .register-toggle {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 15px;
+    }
+
+    .register-btn {
+      padding: 8px 15px;
+      font-family: inherit;
+      font-size: 14px;
+      border: 2px solid var(--border);
+      background: var(--accent-white);
+      cursor: pointer;
+    }
+
+    .register-btn.active {
+      background: var(--accent-blue);
+      color: white;
+    }
+
+    /* Stats */
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 15px;
+      background: #f0f0f0;
+      border: 2px solid var(--border);
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* SRS Mode specific */
+    .srs-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .srs-stat-card {
+      border: 2px solid var(--border);
+      padding: 15px;
+      text-align: center;
+      background: var(--accent-white);
+    }
+
+    .srs-stat-value {
+      font-size: 32px;
+      color: var(--accent-blue);
+    }
+
+    .srs-stat-label {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Audio button */
+    .audio-btn {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--border);
+      background: var(--accent-white);
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .audio-btn:hover {
+      background: #eee;
+    }
+
+    /* Microphone button */
+    .mic-btn {
+      width: 50px;
+      height: 50px;
+      border: 3px solid var(--border);
+      background: var(--accent-white);
+      cursor: pointer;
+      font-size: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .mic-btn:hover {
+      background: #eee;
+    }
+
+    .mic-btn.recording {
+      background: var(--error);
+      border-color: var(--error);
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .mic-btn.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Hands-free mode toggle */
+    .hands-free-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      padding: 10px;
+      background: #f0f0f0;
+      border: 2px solid var(--border);
+    }
+
+    .hands-free-toggle input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+    }
+
+    .input-with-mic {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .input-with-mic input {
+      flex: 1;
+    }
+
+    .voice-status {
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+      margin-top: 5px;
+      min-height: 20px;
+    }
+
+    /* Keyboard hints */
+    .keyboard-hints {
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    kbd {
+      padding: 2px 6px;
+      border: 1px solid #ccc;
+      background: #f5f5f5;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <div class="russian-flag">
+          <span class="white"></span>
+          <span class="blue"></span>
+          <span class="red"></span>
+        </div>
+        <div class="logo-box">THE RUSSIAN COURSE</div>
+      </div>
+      <div class="subtitle">BY RHODES — Поехали!</div>
+      <div style="display: flex; gap: 8px;">
+        <button onclick="exportProgress()" style="font-family: inherit; font-size: 12px; padding: 4px 8px; cursor: pointer; background: #fff; border: 1px solid #333;">Export</button>
+        <button onclick="document.getElementById('importFile').click()" style="font-family: inherit; font-size: 12px; padding: 4px 8px; cursor: pointer; background: #fff; border: 1px solid #333;">Import</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importProgress(event)">
+      </div>
+    </header>
+
+    <!-- Case Legend (6 Russian cases) -->
+    <div class="case-legend">
+      <div class="case-item"><span class="case-dot case-nom-dot"></span>И.п.</div>
+      <div class="case-item"><span class="case-dot case-gen-dot"></span>Р.п.</div>
+      <div class="case-item"><span class="case-dot case-dat-dot"></span>Д.п.</div>
+      <div class="case-item"><span class="case-dot case-acc-dot"></span>В.п.</div>
+      <div class="case-item"><span class="case-dot case-ins-dot"></span>Т.п.</div>
+      <div class="case-item"><span class="case-dot case-pre-dot"></span>П.п.</div>
+    </div>
+
+    <!-- Mode Selector -->
+    <div class="mode-selector">
+      <button class="mode-btn active" id="linearModeBtn" onclick="setMode('linear')">
+        <span class="mode-icon">&#9654;</span>
+        LINEAR
+        <span style="font-size: 12px; display: block;">Unit by unit</span>
+      </button>
+      <button class="mode-btn" id="srsModeBtn" onclick="setMode('srs')">
+        <span class="mode-icon">&#8634;</span>
+        SRS
+        <span style="font-size: 12px; display: block;">Spaced repetition</span>
+      </button>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat"><strong>Units:</strong> <span id="unitsComplete">0</span>/30</div>
+      <div class="stat"><strong>Vocab:</strong> <span id="vocabLearned">0</span></div>
+      <div class="stat"><strong>Streak:</strong> <span id="currentStreak">0</span> days</div>
+      <div class="stat"><strong>Accuracy:</strong> <span id="accuracy">0</span>%</div>
+    </div>
+
+    <!-- Linear Mode: Unit Grid -->
+    <div id="linearView">
+      <h2 style="margin-bottom: 15px;">Уроки 0-30 | Units 0-30</h2>
+      <div class="units-grid" id="unitsGrid">
+        <!-- Units populated by JS -->
+      </div>
+    </div>
+
+    <!-- SRS Mode: Stats + Queue -->
+    <div id="srsView" style="display: none;">
+      <div class="srs-stats">
+        <div class="srs-stat-card">
+          <div class="srs-stat-value" id="dueToday">0</div>
+          <div class="srs-stat-label">DUE TODAY</div>
+        </div>
+        <div class="srs-stat-card">
+          <div class="srs-stat-value" id="newCards">0</div>
+          <div class="srs-stat-label">NEW</div>
+        </div>
+        <div class="srs-stat-card">
+          <div class="srs-stat-value" id="reviewCards">0</div>
+          <div class="srs-stat-label">REVIEW</div>
+        </div>
+        <div class="srs-stat-card">
+          <div class="srs-stat-value" id="masteredCards">0</div>
+          <div class="srs-stat-label">MASTERED</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width: 100%; font-size: 24px; padding: 20px;" onclick="startSRSSession()">
+        START REVIEW SESSION
+      </button>
+    </div>
+
+    <!-- Unit Detail View -->
+    <div id="unitDetailView" style="display: none;">
+      <button class="btn" onclick="closeUnitDetail()" style="margin-bottom: 15px;">&#8592; Back to Units</button>
+      <h2 id="unitDetailTitle" style="margin-bottom: 15px;">UNIT 1: Dans la rue</h2>
+
+      <!-- Dialogue Section -->
+      <div class="unit-section" id="dialogueSection">
+        <h3 style="margin-bottom: 10px; color: var(--accent-blue);">&#128172; DIALOGUE</h3>
+        <div id="dialogueContent" style="background: #f5f5f5; border: 2px solid var(--border); padding: 15px; margin-bottom: 15px; font-size: 16px; line-height: 1.8;">
+          <!-- Dialogue lines populated by JS -->
+        </div>
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+          <button class="btn" onclick="playDialogue()">&#128266; Play Dialogue</button>
+          <button class="btn btn-primary" onclick="startDialogueDrills()">&#9998; Practice Dialogue</button>
+        </div>
+      </div>
+
+      <!-- Grammar Introduction -->
+      <div class="unit-section" id="grammarIntroSection" style="margin-top: 20px;">
+        <h3 style="margin-bottom: 10px; color: var(--accent-blue);">&#128218; GRAMMAR POINTS</h3>
+        <div id="grammarIntroContent" style="background: #fff9e6; border: 2px solid #ffc107; padding: 15px; margin-bottom: 20px;">
+          <!-- Grammar intro populated by JS -->
+        </div>
+      </div>
+
+      <!-- Drills Section -->
+      <div class="unit-section" id="drillsSection" style="margin-top: 20px;">
+        <h3 style="margin-bottom: 10px; color: var(--accent-blue);">&#9998; DRILLS</h3>
+        <p style="color: #666; margin-bottom: 15px;"><span id="drillCount">0</span> sentences to practice</p>
+        <button class="btn btn-primary" style="width: 100%; font-size: 20px; padding: 15px;" onclick="startUnitDrills()">
+          START DRILLS &#10140;
+        </button>
+      </div>
+    </div>
+
+    <!-- Drill View (shared between modes) -->
+    <div class="drill-view" id="drillView">
+      <div class="drill-header">
+        <div>
+          <span class="drill-type" id="drillType">SUBSTITUTION</span>
+          <span id="drillProgress">1 / 10</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button class="audio-btn" onclick="playAudio('fr')" title="Play Russian">&#127467;&#127479;</button>
+          <button class="audio-btn" onclick="playAudio('en')" title="Play English">&#127468;&#127463;</button>
+          <button class="btn" onclick="closeDrill()">&#10005; Close</button>
+        </div>
+      </div>
+
+      <!-- Mode Toggles -->
+      <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+        <div class="register-toggle">
+          <button class="register-btn active" id="formalBtn" onclick="setRegister('formal')">FORMAL (vous)</button>
+          <button class="register-btn" id="informalBtn" onclick="setRegister('informal')">INFORMAL (tu)</button>
+        </div>
+        <div class="register-toggle">
+          <button class="register-btn" id="repeatBtn" onclick="setDrillMode('repeat')">REPEAT</button>
+          <button class="register-btn active" id="translateBtn" onclick="setDrillMode('translate')">TRANSLATE</button>
+        </div>
+      </div>
+
+      <!-- Grammar Hints (shown before prompt in translate mode) -->
+      <div id="grammarHints" style="background: #e8f4e8; border: 2px solid #28a745; padding: 10px 15px; margin-bottom: 15px; font-size: 14px;">
+        <strong style="color: #28a745;">&#128161; You'll need:</strong>
+        <span id="hintsContent">verb "être" conjugated, greeting phrase</span>
+      </div>
+
+      <!-- Drill Content -->
+      <div class="drill-content">
+        <div class="prompt">
+          <div class="prompt-en" id="promptEn" style="font-size: 20px; color: #333;">I'm happy to meet you.</div>
+          <div class="prompt-fr" id="promptFr" style="color: var(--accent-blue); margin-top: 8px; display: none;">Je suis heureux de faire votre connaissance.</div>
+        </div>
+      </div>
+
+      <!-- Hands-free mode toggle -->
+      <div class="hands-free-toggle">
+        <input type="checkbox" id="handsFreeMode">
+        <label for="handsFreeMode">HANDS-FREE MODE</label>
+        <span style="margin-left: 20px;">
+          <input type="checkbox" id="slowMode">
+          <label for="slowMode">SLOW (more time to respond)</label>
+        </span>
+      </div>
+
+      <!-- Input -->
+      <div class="input-area">
+        <div class="input-with-mic">
+          <input type="text" id="userInput" placeholder="Type or speak your answer in Russian..." autocomplete="off" spellcheck="false">
+          <button class="mic-btn" id="micBtn" onclick="toggleVoiceInput()" title="Click to speak">&#127908;</button>
+        </div>
+        <div class="voice-status" id="voiceStatus"></div>
+        <!-- Cyrillic Keyboard -->
+        <div class="cyrillic-keyboard" style="display: flex; flex-direction: column; gap: 3px; margin-top: 8px;">
+          <div style="display: flex; justify-content: center; gap: 2px;">
+            <button type="button" class="accent-key" onclick="insertChar('й')">й</button>
+            <button type="button" class="accent-key" onclick="insertChar('ц')">ц</button>
+            <button type="button" class="accent-key" onclick="insertChar('у')">у</button>
+            <button type="button" class="accent-key" onclick="insertChar('к')">к</button>
+            <button type="button" class="accent-key" onclick="insertChar('е')">е</button>
+            <button type="button" class="accent-key" onclick="insertChar('н')">н</button>
+            <button type="button" class="accent-key" onclick="insertChar('г')">г</button>
+            <button type="button" class="accent-key" onclick="insertChar('ш')">ш</button>
+            <button type="button" class="accent-key" onclick="insertChar('щ')">щ</button>
+            <button type="button" class="accent-key" onclick="insertChar('з')">з</button>
+            <button type="button" class="accent-key" onclick="insertChar('х')">х</button>
+            <button type="button" class="accent-key" onclick="insertChar('ъ')">ъ</button>
+          </div>
+          <div style="display: flex; justify-content: center; gap: 2px;">
+            <button type="button" class="accent-key" onclick="insertChar('ф')">ф</button>
+            <button type="button" class="accent-key" onclick="insertChar('ы')">ы</button>
+            <button type="button" class="accent-key" onclick="insertChar('в')">в</button>
+            <button type="button" class="accent-key" onclick="insertChar('а')">а</button>
+            <button type="button" class="accent-key" onclick="insertChar('п')">п</button>
+            <button type="button" class="accent-key" onclick="insertChar('р')">р</button>
+            <button type="button" class="accent-key" onclick="insertChar('о')">о</button>
+            <button type="button" class="accent-key" onclick="insertChar('л')">л</button>
+            <button type="button" class="accent-key" onclick="insertChar('д')">д</button>
+            <button type="button" class="accent-key" onclick="insertChar('ж')">ж</button>
+            <button type="button" class="accent-key" onclick="insertChar('э')">э</button>
+          </div>
+          <div style="display: flex; justify-content: center; gap: 2px;">
+            <button type="button" class="accent-key" onclick="insertChar('я')">я</button>
+            <button type="button" class="accent-key" onclick="insertChar('ч')">ч</button>
+            <button type="button" class="accent-key" onclick="insertChar('с')">с</button>
+            <button type="button" class="accent-key" onclick="insertChar('м')">м</button>
+            <button type="button" class="accent-key" onclick="insertChar('и')">и</button>
+            <button type="button" class="accent-key" onclick="insertChar('т')">т</button>
+            <button type="button" class="accent-key" onclick="insertChar('ь')">ь</button>
+            <button type="button" class="accent-key" onclick="insertChar('б')">б</button>
+            <button type="button" class="accent-key" onclick="insertChar('ю')">ю</button>
+            <button type="button" class="accent-key" onclick="insertChar('ё')">ё</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="feedback" id="feedback">
+        <div class="feedback-title" id="feedbackTitle">Oops!</div>
+        <div class="feedback-detail" id="feedbackDetail"></div>
+        <a class="drill-link" id="drillLink" style="display: none;">Review this grammar point</a>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button class="btn" onclick="showHint()">HINT</button>
+        <button class="btn" onclick="skipDrill()">SKIP</button>
+        <button class="btn btn-primary" id="checkBtn" onclick="checkAnswer()">CHECK</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextDrill()" style="display: none;">NEXT &#10140;</button>
+      </div>
+
+      <div class="keyboard-hints">
+        <kbd>Enter</kbd> to check &nbsp; | &nbsp;
+        <kbd>Tab</kbd> for hint &nbsp; | &nbsp;
+        <kbd>Esc</kbd> to close
+      </div>
+    </div>
+  </div>
+
+  <script src="js/fsi-error.js"></script>
+  <script src="js/fsi-srs.js"></script>
+  <script src="js/fsi-linear.js"></script>
+  <script>
+    // Cyrillic keyboard helper
+    function insertChar(char) {
+      const input = document.getElementById('userInput');
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      input.value = input.value.substring(0, start) + char + input.value.substring(end);
+      input.selectionStart = input.selectionEnd = start + 1;
+      input.focus();
+    }
+
+    // Course data (loaded from JSON)
+    let courseData = null;
+    let drillsData = null;
+    // Audio uses drill ID directly - no mapping needed
+    let currentMode = 'linear';
+    let currentUnit = null;
+    let currentDrillIndex = 0;
+    let currentDrills = [];
+    let register = 'formal';
+    let drillMode = 'translate';  // 'translate' or 'repeat'
+    let sessionCorrect = 0;
+    let sessionTotal = 0;
+
+    // Grammar hint patterns - Russian grammar points
+    const GRAMMAR_HINTS = {
+      'nominative': 'Nominative case (И.п.) - subject',
+      'genitive': 'Genitive case (Р.п.) - possession, negation',
+      'dative': 'Dative case (Д.п.) - indirect object, нужно/можно',
+      'accusative': 'Accusative case (В.п.) - direct object',
+      'instrumental': 'Instrumental case (Т.п.) - with, means',
+      'prepositional': 'Prepositional case (П.п.) - location, about',
+      'быть': 'verb быть (to be) - omitted in present',
+      'есть': 'У меня есть... (I have...)',
+      'хотеть': 'verb хотеть (я хочу, ты хочешь, он хочет...)',
+      'идти': 'motion verb идти/ходить (going on foot)',
+      'ехать': 'motion verb ехать/ездить (going by transport)',
+      'aspect': 'verbal aspect (imperfective/perfective)',
+      'past': 'past tense (он читал, она читала, они читали)',
+      'future': 'future tense (буду + infinitive OR perfective present)',
+      'conditional': 'conditional mood (если бы + past + бы + past)'
+    };
+
+    // Generate grammar hints based on sentence content
+    function generateGrammarHints(russian, english) {
+      const hints = [];
+      const frLower = russian.toLowerCase();
+      const enLower = english.toLowerCase();
+
+      // Detect verbs and grammar patterns
+      if (frLower.includes(' suis ') || frLower.includes(' es ') || frLower.includes(' est ') || frLower.includes(' sont ')) {
+        hints.push(GRAMMAR_HINTS['être']);
+      }
+      if (frLower.includes(' ai ') || frLower.includes(' as ') || frLower.includes(' a ') || frLower.includes(' avez ')) {
+        hints.push(GRAMMAR_HINTS['avoir']);
+      }
+      if (frLower.includes(' vais ') || frLower.includes(' vas ') || frLower.includes(' va ') || frLower.includes(' allez ')) {
+        hints.push(GRAMMAR_HINTS['aller']);
+      }
+      if (frLower.includes(' fais ') || frLower.includes(' fait ') || frLower.includes(' faites ')) {
+        hints.push(GRAMMAR_HINTS['faire']);
+      }
+      if (frLower.includes(' veux ') || frLower.includes(' veut ') || frLower.includes(' voulez ') || frLower.includes(' voudrais ')) {
+        hints.push(GRAMMAR_HINTS['vouloir']);
+      }
+      if (frLower.includes(' peux ') || frLower.includes(' peut ') || frLower.includes(' pouvez ')) {
+        hints.push(GRAMMAR_HINTS['pouvoir']);
+      }
+      if (frLower.includes('ne ') && frLower.includes(' pas')) {
+        hints.push(GRAMMAR_HINTS['negation']);
+      }
+      if (frLower.includes('est-ce que') || frLower.includes('-vous') || frLower.includes('-il') || frLower.includes('-elle')) {
+        hints.push(GRAMMAR_HINTS['question']);
+      }
+      if (frLower.includes(' mon ') || frLower.includes(' ma ') || frLower.includes(' mes ') || frLower.includes(' votre ') || frLower.includes(' vos ')) {
+        hints.push(GRAMMAR_HINTS['possessive']);
+      }
+      if (frLower.includes(' heure') || enLower.includes('time') || enLower.includes("o'clock")) {
+        hints.push(GRAMMAR_HINTS['time']);
+      }
+
+      // Default hint if none detected
+      if (hints.length === 0) {
+        hints.push('basic vocabulary and sentence structure');
+      }
+
+      return hints.slice(0, 3).join(', ');  // Max 3 hints
+    }
+
+    // Set drill mode (translate vs repeat)
+    function setDrillMode(mode) {
+      drillMode = mode;
+      document.getElementById('repeatBtn').classList.toggle('active', mode === 'repeat');
+      document.getElementById('translateBtn').classList.toggle('active', mode === 'translate');
+      updateDrillDisplay();
+    }
+
+    // Storage keys
+    const STORAGE_KEY = 'allonsy_fsi_progress';
+    const SYNC_KEY = 'fsi_russian_sync';
+
+    // ===========================================
+    // SRS STORAGE SYSTEM
+    // ===========================================
+
+    const SRS_DEFAULTS = {
+      interval: 1, ease: 2.5, reps: 0, lapses: 0,
+      due: null, lastReview: null, state: 'new'
+    };
+
+    const Storage = {
+      data: null,
+
+      async init() {
+        this.data = await this.load();
+        console.log('Storage loaded:', Object.keys(this.data.cards || {}).length, 'cards');
+        return this.data;
+      },
+
+      async load() {
+        // Try chrome.storage.sync first (cross-device)
+        if (typeof chrome !== 'undefined' && chrome.storage?.sync) {
+          try {
+            const result = await chrome.storage.sync.get(SYNC_KEY);
+            if (result[SYNC_KEY]) return result[SYNC_KEY];
+          } catch (e) {}
+        }
+        // Try main localStorage
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) try { return JSON.parse(saved); } catch (e) {}
+        // Try recovering from backups
+        const recovered = await this.recover();
+        if (recovered) {
+          console.log('Recovered from backup!');
+          return recovered;
+        }
+        return {
+          version: 2, cards: {}, unitProgress: {},
+          stats: { totalReviews: 0, streak: 0, lastStudyDate: null },
+          settings: { newCardsPerDay: 20, reviewsPerDay: 100 }
+        };
+      },
+
+      async save() {
+        if (!this.data) return;
+
+        // Save current state
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+
+        // Auto-backup: keep last 10 versions with timestamps
+        const backupKey = 'fsi_backup_' + new Date().toISOString().split('T')[0];
+        const allBackups = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key?.startsWith('fsi_backup_')) allBackups.push(key);
+        }
+        // Save today's backup (overwrites same-day)
+        localStorage.setItem(backupKey, JSON.stringify(this.data));
+        // Keep only last 10 daily backups
+        allBackups.sort().reverse();
+        allBackups.slice(10).forEach(key => localStorage.removeItem(key));
+
+        // Chrome storage sync (cross-device)
+        if (typeof chrome !== 'undefined' && chrome.storage?.sync) {
+          try { await chrome.storage.sync.set({ [SYNC_KEY]: this.data }); }
+          catch (e) { /* quota exceeded is ok, localStorage works */ }
+        }
+
+        // Chrome storage local (larger, 5MB)
+        if (typeof chrome !== 'undefined' && chrome.storage?.local) {
+          try { await chrome.storage.local.set({ fsi_local_backup: this.data }); }
+          catch (e) { /* fallback to localStorage */ }
+        }
+      },
+
+      // Recover from any available backup
+      async recover() {
+        // Try chrome.storage.local first (most recent)
+        if (typeof chrome !== 'undefined' && chrome.storage?.local) {
+          try {
+            const result = await chrome.storage.local.get('fsi_local_backup');
+            if (result.fsi_local_backup) return result.fsi_local_backup;
+          } catch (e) {}
+        }
+        // Try daily backups (newest first)
+        const backups = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key?.startsWith('fsi_backup_')) backups.push(key);
+        }
+        backups.sort().reverse();
+        for (const key of backups) {
+          try {
+            const data = JSON.parse(localStorage.getItem(key));
+            if (data?.version && data?.cards) return data;
+          } catch (e) {}
+        }
+        return null;
+      },
+
+      getCard(drillId) {
+        if (!this.data.cards[drillId]) this.data.cards[drillId] = { ...SRS_DEFAULTS };
+        return this.data.cards[drillId];
+      },
+
+      reviewCard(drillId, quality) {
+        const card = this.getCard(drillId);
+        const now = new Date();
+        card.lastReview = now.toISOString();
+        card.reps++;
+
+        if (quality < 2) {
+          card.lapses++; card.interval = 1; card.state = 'learning';
+        } else {
+          if (card.state === 'new') { card.interval = 1; card.state = 'learning'; }
+          else if (card.state === 'learning') { card.interval = 3; card.state = 'review'; }
+          else {
+            card.ease = Math.max(1.3, card.ease + (0.1 - (3 - quality) * (0.08 + (3 - quality) * 0.02)));
+            card.interval = Math.round(card.interval * card.ease);
+            if (card.interval > 180) card.state = 'mastered';
+          }
+        }
+        const dueDate = new Date(now);
+        dueDate.setDate(dueDate.getDate() + card.interval);
+        card.due = dueDate.toISOString();
+        this.data.stats.totalReviews++;
+        this.save();
+        return card;
+      },
+
+      getUnitProgress(unitId) {
+        return this.data.unitProgress[unitId] || { position: 0, seenIds: [] };
+      },
+
+      setUnitProgress(unitId, position, seenId = null) {
+        if (!this.data.unitProgress[unitId]) this.data.unitProgress[unitId] = { position: 0, seenIds: [] };
+        this.data.unitProgress[unitId].position = position;
+        if (seenId && !this.data.unitProgress[unitId].seenIds.includes(seenId)) {
+          this.data.unitProgress[unitId].seenIds.push(seenId);
+        }
+        this.save();
+      },
+
+      getDueCards(limit = 50) {
+        const now = new Date();
+        return Object.entries(this.data.cards)
+          .filter(([id, c]) => c.due && new Date(c.due) <= now)
+          .sort((a, b) => new Date(a[1].due) - new Date(b[1].due))
+          .slice(0, limit)
+          .map(([id, c]) => ({ id, ...c }));
+      },
+
+      getStats() {
+        const cards = Object.values(this.data.cards);
+        const now = new Date();
+        return {
+          total: cards.length,
+          newCount: cards.filter(c => c.state === 'new').length,
+          learning: cards.filter(c => c.state === 'learning').length,
+          review: cards.filter(c => c.state === 'review').length,
+          mastered: cards.filter(c => c.state === 'mastered').length,
+          dueToday: cards.filter(c => c.due && new Date(c.due) <= now).length,
+          streak: this.data.stats.streak,
+          totalReviews: this.data.stats.totalReviews
+        };
+      },
+
+      export() { return JSON.stringify(this.data, null, 2); },
+
+      import(jsonString) {
+        try {
+          const imported = JSON.parse(jsonString);
+          if (!imported.version || !imported.cards) throw new Error('Invalid format');
+          this.data = imported;
+          this.save();
+          return true;
+        } catch (e) { console.error('Import failed:', e); return false; }
+      },
+
+      reset() {
+        this.data = {
+          version: 2, cards: {}, unitProgress: {},
+          stats: { totalReviews: 0, streak: 0, lastStudyDate: null },
+          settings: { newCardsPerDay: 20, reviewsPerDay: 100 }
+        };
+        this.save();
+      }
+    };
+
+    // Export progress to JSON file
+    function exportProgress() {
+      const data = Storage.export();
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'fsi_russian_progress_' + new Date().toISOString().split('T')[0] + '.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Import progress from JSON file
+    function importProgress(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (Storage.import(e.target.result)) {
+          alert('Progress imported successfully! Refreshing...');
+          location.reload();
+        } else {
+          alert('Import failed - invalid file format');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';  // Reset for re-import
+    }
+
+    // Load course data
+    async function loadCourse() {
+      // Initialize storage system
+      await Storage.init();
+
+      // Always render units first (they're hardcoded)
+      renderUnits();
+
+      try {
+        // Load drills database
+        const drillsRes = await fetch('data/drills.json?v=' + Date.now());
+        drillsData = await drillsRes.json();
+        console.log('Loaded drills:', drillsData.total_drills, 'drills');
+
+        // Audio files named directly by drill ID - no mapping needed
+
+        // Initialize SRS cards for all drills
+        if (typeof FSI_SRS !== 'undefined') {
+          const sentences = drillsData.drills.map(d => ({
+            id: d.id,
+            pos_pattern: d.pos_pattern,
+            commonality: d.commonality,
+            unit: d.unit
+          }));
+          FSI_SRS.initializeCards(sentences);
+        }
+        updateSRSStats();
+        loadProgress();
+      } catch (err) {
+        console.error('Failed to load drills:', err);
+        // Show error if on file:// protocol
+        if (window.location.protocol === 'file:') {
+          document.getElementById('unitsGrid').innerHTML = `
+            <div style="grid-column: 1/-1; padding: 20px; background: #fff3cd; border: 2px solid #ffc107; margin-top: 10px;">
+              <strong>Cannot load drills from file:// URL</strong><br><br>
+              Browsers block local file access. Use:<br><br>
+              <strong>Option 1 (Recommended):</strong> Open from extension popup (FSI FRENCH COURSE button)<br>
+              <strong>Option 2:</strong> Run <code>FSI_Russian_Server.bat</code><br>
+              <strong>Option 3:</strong> <code>python -m http.server 8081</code> then open localhost:8081/fsi.html
+            </div>
+          `;
+        }
+      }
+    }
+
+    // Render unit cards
+    function renderUnits() {
+      const grid = document.getElementById('unitsGrid');
+      grid.innerHTML = '';
+
+      // Volume 1 header
+      const vol1Header = document.createElement('h3');
+      vol1Header.textContent = 'VOLUME 1: Units 1-12';
+      vol1Header.style.cssText = 'grid-column: 1/-1; margin: 10px 0;';
+      grid.appendChild(vol1Header);
+
+      const units = [
+        // Volume 1
+        { id: 1, title_fr: 'Dans la rue', title_en: 'In the Street' },
+        { id: 2, title_fr: 'Dans un petit hôtel', title_en: 'In a Small Hotel' },
+        { id: 3, title_fr: 'A la gare', title_en: 'At the Train Station' },
+        { id: 4, title_fr: 'Faisons des courses', title_en: "Let's Go Shopping" },
+        { id: 5, title_fr: 'Le climat', title_en: 'The Climate' },
+        { id: 6, title_fr: 'Révision', title_en: 'Review' },
+        { id: 7, title_fr: 'Prenons rendez-vous', title_en: "Let's Make an Appointment" },
+        { id: 8, title_fr: 'Chez le coiffeur', title_en: 'At the Hairdresser' },
+        { id: 9, title_fr: 'Au restaurant', title_en: 'At the Restaurant' },
+        { id: 10, title_fr: 'Au bureau', title_en: 'At the Office' },
+        { id: 11, title_fr: 'Maison à louer', title_en: 'House for Rent' },
+        { id: 12, title_fr: 'Vocabulaire', title_en: 'Vocabulary Reference' },
+        // Volume 2
+        { id: 13, title_fr: 'Au bureau de placement', title_en: 'At the Employment Office' },
+        { id: 14, title_fr: 'La douane', title_en: 'Customs' },
+        { id: 15, title_fr: "L'école", title_en: 'School' },
+        { id: 16, title_fr: 'Parlons du spectacle', title_en: "Let's Talk About the Show" },
+        { id: 17, title_fr: "À l'aéroport", title_en: 'At the Airport' },
+        { id: 18, title_fr: 'Révision', title_en: 'Review' },
+        { id: 19, title_fr: 'Chez le médecin', title_en: 'At the Doctor' },
+        { id: 20, title_fr: 'La banque', title_en: 'The Bank' },
+        { id: 21, title_fr: 'Les transports', title_en: 'Transportation' },
+        { id: 22, title_fr: 'La politique', title_en: 'Politics' },
+        { id: 23, title_fr: "L'économie", title_en: 'The Economy' },
+        { id: 24, title_fr: 'Révision finale', title_en: 'Final Review' }
+      ];
+
+      for (const unit of units) {
+        // Add Volume 2 header before unit 13
+        if (unit.id === 13) {
+          const vol2Header = document.createElement('h3');
+          vol2Header.textContent = 'VOLUME 2: Units 13-24';
+          vol2Header.style.cssText = 'grid-column: 1/-1; margin: 20px 0 10px 0;';
+          grid.appendChild(vol2Header);
+        }
+        const progress = getUnitProgress(unit.id);
+        const card = document.createElement('div');
+        card.className = 'unit-card' + (progress === 100 ? ' completed' : '');
+        card.innerHTML = `
+          <div class="unit-number">UNIT ${unit.id}</div>
+          <div class="unit-title">${unit.title_fr}</div>
+          <div style="font-size: 14px; color: #666;">${unit.title_en}</div>
+          <div class="unit-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${progress}%"></div>
+            </div>
+            <div class="progress-text">${progress}%</div>
+          </div>
+        `;
+        card.onclick = () => openUnit(unit.id);
+        grid.appendChild(card);
+      }
+    }
+
+    // Get unit progress from storage
+    function getUnitProgress(unitId) {
+      // TODO: Load from chrome.storage
+      return 0;
+    }
+
+    // Load progress from storage
+    function loadProgress() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const progress = JSON.parse(saved);
+          console.log('Loaded progress:', Object.keys(progress.seenDrills || {}).length, 'drills seen');
+        } catch (e) {
+          console.warn('Failed to load progress:', e);
+        }
+      }
+    }
+
+    // Set learning mode
+    function setMode(mode) {
+      currentMode = mode;
+      document.getElementById('linearModeBtn').classList.toggle('active', mode === 'linear');
+      document.getElementById('srsModeBtn').classList.toggle('active', mode === 'srs');
+      document.getElementById('linearView').style.display = mode === 'linear' ? 'block' : 'none';
+      document.getElementById('srsView').style.display = mode === 'srs' ? 'block' : 'none';
+      document.getElementById('unitDetailView').style.display = 'none';
+      document.getElementById('drillView').classList.remove('active');
+    }
+
+    // Unit data with dialogues and grammar
+    const UNIT_DATA = {
+      1: {
+        title_fr: 'Dans la rue',
+        title_en: 'In the Street',
+        dialogue: [
+          { speaker: 'M. Durand', fr: 'Bonjour, Monsieur.', en: 'Hello, Sir.' },
+          { speaker: 'M. Lelong', fr: 'Bonjour, Monsieur Durand. Comment allez-vous?', en: 'Hello, Mr. Durand. How are you?' },
+          { speaker: 'M. Durand', fr: 'Très bien, merci. Et vous?', en: 'Very well, thank you. And you?' },
+          { speaker: 'M. Lelong', fr: 'Pas mal, merci.', en: 'Not bad, thank you.' },
+          { speaker: 'M. Durand', fr: 'Et votre frère, comment va-t-il?', en: 'And your brother, how is he?' },
+          { speaker: 'M. Lelong', fr: 'Il va très bien. Il est en vacances.', en: 'He is doing very well. He is on vacation.' },
+          { speaker: 'M. Durand', fr: 'Où est-il?', en: 'Where is he?' },
+          { speaker: 'M. Lelong', fr: 'Il est à Lyon avec ma soeur.', en: 'He is in Lyon with my sister.' }
+        ],
+        grammar: [
+          { title: 'Greetings', desc: 'Bonjour (hello), Comment allez-vous? (How are you? - formal), Très bien (Very well)' },
+          { title: 'Être (to be)', desc: 'Je suis, tu es, il/elle est, nous sommes, vous êtes, ils/elles sont' },
+          { title: 'Possessive Adjectives', desc: 'mon/ma/mes (my), votre/vos (your-formal), son/sa/ses (his/her)' },
+          { title: 'Location with "à"', desc: 'Il est à Lyon (He is in Lyon), à la gare (at the station), au café (at the café)' }
+        ]
+      },
+      2: {
+        title_fr: 'Dans un petit hôtel',
+        title_en: 'In a Small Hotel',
+        dialogue: [
+          { speaker: 'Client', fr: 'Bonjour, Madame. Avez-vous une chambre?', en: 'Hello, Madam. Do you have a room?' },
+          { speaker: 'Réceptionniste', fr: 'Oui, Monsieur. Pour combien de personnes?', en: 'Yes, Sir. For how many people?' },
+          { speaker: 'Client', fr: 'Pour une personne.', en: 'For one person.' },
+          { speaker: 'Réceptionniste', fr: 'Pour combien de jours?', en: 'For how many days?' },
+          { speaker: 'Client', fr: 'Pour trois jours.', en: 'For three days.' },
+          { speaker: 'Réceptionniste', fr: 'Voulez-vous une salle de bains?', en: 'Do you want a bathroom?' },
+          { speaker: 'Client', fr: 'Oui, s\'il vous plaît.', en: 'Yes, please.' }
+        ],
+        grammar: [
+          { title: 'Avoir (to have)', desc: 'J\'ai, tu as, il/elle a, nous avons, vous avez, ils/elles ont' },
+          { title: 'Questions with Inversion', desc: 'Avez-vous...? (Do you have...?), Voulez-vous...? (Do you want...?)' },
+          { title: 'Numbers', desc: 'un/une (1), deux (2), trois (3), quatre (4), cinq (5)' },
+          { title: 'Pour + noun', desc: 'pour une personne (for one person), pour trois jours (for three days)' }
+        ]
+      },
+      3: {
+        title_fr: 'À la gare',
+        title_en: 'At the Train Station',
+        dialogue: [
+          { speaker: 'Voyageur', fr: 'Un aller-retour pour Lyon, s\'il vous plaît.', en: 'A round-trip ticket to Lyon, please.' },
+          { speaker: 'Employé', fr: 'En première ou en seconde?', en: 'First or second class?' },
+          { speaker: 'Voyageur', fr: 'En seconde. C\'est combien?', en: 'Second class. How much is it?' },
+          { speaker: 'Employé', fr: 'Quarante-deux euros.', en: 'Forty-two euros.' },
+          { speaker: 'Voyageur', fr: 'À quelle heure part le prochain train?', en: 'What time does the next train leave?' },
+          { speaker: 'Employé', fr: 'À dix heures vingt.', en: 'At 10:20.' }
+        ],
+        grammar: [
+          { title: 'Telling Time', desc: 'Quelle heure est-il? (What time is it?), Il est dix heures (It is 10 o\'clock)' },
+          { title: 'Partir (to leave)', desc: 'Je pars, tu pars, il part, nous partons, vous partez, ils partent' },
+          { title: 'Ordinal Numbers', desc: 'premier/première (first), deuxième/seconde (second)' },
+          { title: 'Prices', desc: 'C\'est combien? (How much is it?), Ça fait... (That makes...)' }
+        ]
+      }
+    };
+
+    // Units 4-12 from Volume 1
+    UNIT_DATA[4] = {
+      title_fr: 'Faisons des courses',
+      title_en: "Let's Go Shopping",
+      dialogue: [
+        { speaker: 'Client', fr: 'Je voudrais acheter des fruits, s\'il vous plaît.', en: 'I\'d like to buy some fruit, please.' },
+        { speaker: 'Vendeur', fr: 'Qu\'est-ce que vous désirez? Des pommes? Des oranges?', en: 'What would you like? Apples? Oranges?' },
+        { speaker: 'Client', fr: 'Un kilo de pommes et une livre d\'oranges.', en: 'A kilo of apples and a pound of oranges.' },
+        { speaker: 'Vendeur', fr: 'Voilà. C\'est tout?', en: 'Here you are. Is that all?' },
+        { speaker: 'Client', fr: 'Oui, c\'est tout. Ça fait combien?', en: 'Yes, that\'s all. How much is it?' },
+        { speaker: 'Vendeur', fr: 'Ça fait cinq euros cinquante.', en: 'That\'s five euros fifty.' }
+      ],
+      grammar: [
+        { title: 'Partitive articles', desc: 'du pain (some bread), de la viande (some meat), des fruits (some fruit)' },
+        { title: 'Quantities', desc: 'un kilo de, une livre de, un litre de, une douzaine de' }
+      ]
+    };
+
+    UNIT_DATA[5] = {
+      title_fr: 'Le climat',
+      title_en: 'The Climate',
+      dialogue: [
+        { speaker: 'A', fr: 'Quel temps fait-il aujourd\'hui?', en: 'What\'s the weather like today?' },
+        { speaker: 'B', fr: 'Il fait beau, mais il fait un peu froid.', en: 'It\'s nice, but it\'s a bit cold.' },
+        { speaker: 'A', fr: 'Est-ce qu\'il va pleuvoir cet après-midi?', en: 'Is it going to rain this afternoon?' },
+        { speaker: 'B', fr: 'D\'après la météo, il y aura des nuages.', en: 'According to the forecast, there will be clouds.' },
+        { speaker: 'A', fr: 'L\'hiver est toujours froid à Paris?', en: 'Is winter always cold in Paris?' },
+        { speaker: 'B', fr: 'Oui, mais moins froid qu\'à New York.', en: 'Yes, but less cold than in New York.' }
+      ],
+      grammar: [
+        { title: 'Weather expressions', desc: 'Il fait beau/chaud/froid, Il pleut, Il neige, Il y a du soleil/vent' },
+        { title: 'Comparisons', desc: 'plus...que (more...than), moins...que (less...than), aussi...que (as...as)' }
+      ]
+    };
+
+    UNIT_DATA[6] = {
+      title_fr: 'Révision',
+      title_en: 'Review',
+      dialogue: [
+        { speaker: 'Professeur', fr: 'Révisons les leçons précédentes.', en: 'Let\'s review the previous lessons.' },
+        { speaker: 'Étudiant', fr: 'D\'accord. Par où commençons-nous?', en: 'Okay. Where do we start?' },
+        { speaker: 'Professeur', fr: 'Par les articles et les prépositions.', en: 'With articles and prepositions.' },
+        { speaker: 'Étudiant', fr: 'Je confonds souvent "à" et "de".', en: 'I often confuse "à" and "de".' },
+        { speaker: 'Professeur', fr: 'C\'est normal. Pratiquons ensemble.', en: 'That\'s normal. Let\'s practice together.' },
+        { speaker: 'Étudiant', fr: 'Merci, c\'est très utile.', en: 'Thank you, it\'s very useful.' }
+      ],
+      grammar: [
+        { title: 'Review', desc: 'This unit reviews grammar from Units 1-5.' },
+        { title: 'Key points', desc: 'Articles (le/la/les, un/une/des), Prepositions (à, de, dans, sur)' }
+      ]
+    };
+
+    UNIT_DATA[7] = {
+      title_fr: 'Prenons rendez-vous',
+      title_en: "Let's Make an Appointment",
+      dialogue: [
+        { speaker: 'Client', fr: 'Je voudrais prendre rendez-vous. Je peux réserver en ligne?', en: 'I\'d like to make an appointment. Can I book online?' },
+        { speaker: 'Secrétaire', fr: 'Oui, sur notre site web ou avec l\'appli Doctolib.', en: 'Yes, on our website or with the Doctolib app.' },
+        { speaker: 'Client', fr: 'Je préfère par téléphone. Mercredi matin, c\'est possible?', en: 'I prefer by phone. Is Wednesday morning possible?' },
+        { speaker: 'Secrétaire', fr: 'Oui, à dix heures. Je vous envoie un SMS de confirmation.', en: 'Yes, at ten o\'clock. I\'ll send you a confirmation text.' },
+        { speaker: 'Client', fr: 'Parfait. Est-ce que je recevrai un rappel?', en: 'Perfect. Will I receive a reminder?' },
+        { speaker: 'Secrétaire', fr: 'Oui, par email et SMS la veille du rendez-vous.', en: 'Yes, by email and text the day before the appointment.' }
+      ],
+      grammar: [
+        { title: 'Online booking vocab', desc: 'réserver en ligne (book online), un site web (website), une appli (app)' },
+        { title: 'Communication', desc: 'envoyer un SMS/email, recevoir un rappel (receive a reminder)' }
+      ]
+    };
+
+    UNIT_DATA[8] = {
+      title_fr: 'Chez le coiffeur',
+      title_en: 'At the Hairdresser',
+      dialogue: [
+        { speaker: 'Client', fr: 'Je voudrais une coupe, s\'il vous plaît.', en: 'I\'d like a haircut, please.' },
+        { speaker: 'Coiffeur', fr: 'Comment les voulez-vous?', en: 'How would you like them?' },
+        { speaker: 'Client', fr: 'Courts sur les côtés, un peu plus longs dessus.', en: 'Short on the sides, a bit longer on top.' },
+        { speaker: 'Coiffeur', fr: 'Voulez-vous un shampooing aussi?', en: 'Would you like a shampoo too?' },
+        { speaker: 'Client', fr: 'Oui, s\'il vous plaît.', en: 'Yes, please.' },
+        { speaker: 'Coiffeur', fr: 'Installez-vous, je suis à vous dans une minute.', en: 'Have a seat, I\'ll be with you in a minute.' }
+      ],
+      grammar: [
+        { title: 'Object pronouns', desc: 'les (them), le/la (it), me/te/nous/vous (me/you/us/you)' },
+        { title: 'Imperative', desc: 'Installez-vous (Have a seat), Asseyez-vous (Sit down)' }
+      ]
+    };
+
+    UNIT_DATA[9] = {
+      title_fr: 'Au restaurant',
+      title_en: 'At the Restaurant',
+      dialogue: [
+        { speaker: 'Serveur', fr: 'Bonsoir. Une table pour deux?', en: 'Good evening. A table for two?' },
+        { speaker: 'Client', fr: 'Oui, s\'il vous plaît. Près de la fenêtre si possible.', en: 'Yes, please. Near the window if possible.' },
+        { speaker: 'Serveur', fr: 'Voici le menu. Désirez-vous un apéritif?', en: 'Here\'s the menu. Would you like an aperitif?' },
+        { speaker: 'Client', fr: 'Non merci. Qu\'est-ce que vous recommandez?', en: 'No thank you. What do you recommend?' },
+        { speaker: 'Serveur', fr: 'Le boeuf bourguignon est excellent.', en: 'The beef bourguignon is excellent.' },
+        { speaker: 'Client', fr: 'Parfait, je prends ça avec une salade.', en: 'Perfect, I\'ll have that with a salad.' }
+      ],
+      grammar: [
+        { title: 'Restaurant vocabulary', desc: 'le menu, la carte, l\'addition, le pourboire' },
+        { title: 'Ordering', desc: 'Je prends... (I\'ll have...), Je voudrais... (I\'d like...)' }
+      ]
+    };
+
+    UNIT_DATA[10] = {
+      title_fr: 'Au bureau',
+      title_en: 'At the Office',
+      dialogue: [
+        { speaker: 'Collègue', fr: 'Bonjour! Vous avez reçu mon email ce matin?', en: 'Hello! Did you get my email this morning?' },
+        { speaker: 'Employé', fr: 'Non, je n\'ai pas encore vérifié. Mon ordinateur portable était en panne.', en: 'No, I haven\'t checked yet. My laptop was broken.' },
+        { speaker: 'Collègue', fr: 'Ah, c\'est embêtant. Je vous l\'envoie sur votre téléphone.', en: 'Ah, that\'s annoying. I\'ll send it to your phone.' },
+        { speaker: 'Employé', fr: 'Merci. Je peux aussi utiliser l\'ordinateur de la salle de réunion.', en: 'Thanks. I can also use the computer in the meeting room.' },
+        { speaker: 'Collègue', fr: 'Bonne idée. On fait une visioconférence à quatorze heures.', en: 'Good idea. We have a video call at two o\'clock.' },
+        { speaker: 'Employé', fr: 'D\'accord, je serai connecté.', en: 'Okay, I\'ll be connected.' }
+      ],
+      grammar: [
+        { title: 'Technology vocabulary', desc: 'un email/courriel, un ordinateur portable (laptop), un téléphone, une visioconférence' },
+        { title: 'Passé composé with recevoir', desc: 'Vous avez reçu (Did you receive) - irregular past participle' }
+      ]
+    };
+
+    UNIT_DATA[11] = {
+      title_fr: 'Maison à louer',
+      title_en: 'House for Rent',
+      dialogue: [
+        { speaker: 'Locataire', fr: 'Je cherche un appartement à louer.', en: 'I\'m looking for an apartment to rent.' },
+        { speaker: 'Agent', fr: 'Combien de pièces vous faut-il?', en: 'How many rooms do you need?' },
+        { speaker: 'Locataire', fr: 'Trois pièces: deux chambres et un salon.', en: 'Three rooms: two bedrooms and a living room.' },
+        { speaker: 'Agent', fr: 'J\'ai quelque chose dans le septième arrondissement.', en: 'I have something in the seventh district.' },
+        { speaker: 'Locataire', fr: 'C\'est combien par mois?', en: 'How much is it per month?' },
+        { speaker: 'Agent', fr: 'Mille deux cents euros, charges comprises.', en: 'Twelve hundred euros, utilities included.' }
+      ],
+      grammar: [
+        { title: 'Housing vocabulary', desc: 'un appartement, une maison, une pièce, une chambre, un salon' },
+        { title: 'Il faut + noun', desc: 'Il me faut (I need), Combien vous faut-il? (How many do you need?)' }
+      ]
+    };
+
+    UNIT_DATA[12] = {
+      title_fr: 'Vocabulaire',
+      title_en: 'Vocabulary Reference',
+      dialogue: [
+        { speaker: 'Professeur', fr: 'Enrichissons notre vocabulaire.', en: 'Let\'s enrich our vocabulary.' },
+        { speaker: 'Étudiant', fr: 'Comment dit-on "thank you" en français?', en: 'How do you say "thank you" in Russian?' },
+        { speaker: 'Professeur', fr: 'On dit "merci" ou "merci beaucoup".', en: 'You say "merci" or "merci beaucoup".' },
+        { speaker: 'Étudiant', fr: 'Et pour demander poliment?', en: 'And to ask politely?' },
+        { speaker: 'Professeur', fr: '"S\'il vous plaît" pour le formel, "s\'il te plaît" pour l\'informel.', en: '"S\'il vous plaît" for formal, "s\'il te plaît" for informal.' },
+        { speaker: 'Étudiant', fr: 'C\'est plus clair maintenant, merci!', en: 'It\'s clearer now, thank you!' }
+      ],
+      grammar: [
+        { title: 'Vocabulary building', desc: 'Comment dit-on...? (How do you say...?), Que veut dire...? (What does...mean?)' },
+        { title: 'Politeness', desc: 's\'il vous plaît, merci, de rien, je vous en prie' }
+      ]
+    };
+
+    // Units 13-18 from Volume 2
+    UNIT_DATA[13] = {
+      title_fr: 'Au bureau de placement',
+      title_en: 'At the Employment Office',
+      dialogue: [
+        { speaker: 'Client', fr: 'Je voudrais une bonne aimant s\'occuper d\'enfants.', en: 'I\'d like a maid who likes to take care of children.' },
+        { speaker: 'Agent', fr: 'Est-ce pour Paris ou pour la banlieue?', en: 'Is it for Paris or for the suburbs?' },
+        { speaker: 'Client', fr: 'Neuilly exactement.', en: 'Neuilly exactly.' },
+        { speaker: 'Agent', fr: 'Je crois que j\'ai une personne qui fera votre affaire.', en: 'I think I have someone who will be suitable for you.' },
+        { speaker: 'Client', fr: 'Comment s\'appelle-t-elle?', en: 'What\'s her name?' },
+        { speaker: 'Agent', fr: 'Elle s\'appelle Marie Ledoux.', en: 'Her name is Marie Ledoux.' }
+      ],
+      grammar: [
+        { title: 'Relative Pronoun "qui"', desc: 'une bonne qui aime... (a maid who likes...)' },
+        { title: 'Reflexive verbs', desc: 's\'occuper de (to take care of), s\'appeler (to be called)' }
+      ]
+    };
+
+    UNIT_DATA[14] = {
+      title_fr: 'La douane',
+      title_en: 'Customs',
+      dialogue: [
+        { speaker: 'A', fr: 'Il y a à peine deux heures que nous sommes en route.', en: 'It\'s hardly two hours since we\'ve been on the way.' },
+        { speaker: 'B', fr: 'Et nous approchons de la Belgique.', en: 'And we\'re getting near Belgium.' },
+        { speaker: 'A', fr: 'Nous n\'avons vraiment pas mis longtemps.', en: 'We really haven\'t been very long.' },
+        { speaker: 'B', fr: 'En effet, tout s\'est bien passé.', en: 'Yes, everything has gone well.' },
+        { speaker: 'A', fr: 'Connaissez-vous déjà ce pays?', en: 'Do you already know this country?' },
+        { speaker: 'B', fr: 'Oui, j\'ai eu l\'occasion d\'y faire un séjour quand j\'étais étudiant.', en: 'Yes, I had the chance to make a trip there when I was a student.' }
+      ],
+      grammar: [
+        { title: 'Il y a + time + que', desc: 'Il y a deux heures que... (It\'s been two hours since...)' },
+        { title: 'Passé composé vs Imparfait', desc: 'j\'ai eu (I had - completed), j\'étais (I was - ongoing)' }
+      ]
+    };
+
+    UNIT_DATA[15] = {
+      title_fr: 'L\'école',
+      title_en: 'School',
+      dialogue: [
+        { speaker: 'A', fr: 'Où mettrez-vous vos enfants?', en: 'Where will you be sending your children?' },
+        { speaker: 'B', fr: 'Nous allons peut-être les faire inscrire au lycée.', en: 'We might enroll them in the lycée.' },
+        { speaker: 'A', fr: 'Pourquoi ne les enverriez-vous pas à l\'école américaine?', en: 'Why don\'t you send them to the American school?' },
+        { speaker: 'B', fr: 'Parce que nous préférons qu\'ils apprennent bien le français.', en: 'Because we prefer that they learn Russian well.' },
+        { speaker: 'A', fr: 'Et les vôtres?', en: 'And yours?' },
+        { speaker: 'B', fr: 'Cette année ils vont tous à l\'école.', en: 'This year they are all going to school.' }
+      ],
+      grammar: [
+        { title: 'Future tense', desc: 'mettrez-vous (will you put), enverriez-vous (would you send)' },
+        { title: 'Subjunctive with préférer que', desc: 'nous préférons qu\'ils apprennent (we prefer that they learn)' }
+      ]
+    };
+
+    UNIT_DATA[16] = {
+      title_fr: 'Parlons du spectacle',
+      title_en: 'Let\'s Talk About the Show',
+      dialogue: [
+        { speaker: 'Client', fr: 'Joue-t-on Faust mardi en matinée?', en: 'Are they doing Faust at the matinee Tuesday?' },
+        { speaker: 'Guichet', fr: 'Non, Monsieur. Vendredi en soirée seulement.', en: 'No, Sir. Friday in the evening only.' },
+        { speaker: 'Client', fr: 'Avez-vous deux fauteuils d\'orchestre pour ce jour-là?', en: 'Do you have two orchestra seats for that day?' },
+        { speaker: 'Guichet', fr: 'Dans les dix premiers rangs de préférence.', en: 'Preferably in the first ten rows.' },
+        { speaker: 'Client', fr: 'Nous n\'en avons plus.', en: 'We don\'t have anymore.' },
+        { speaker: 'Guichet', fr: 'Il ne reste que des places séparées au troisième balcon.', en: 'There are only separate seats left in the third balcony.' }
+      ],
+      grammar: [
+        { title: 'On-passif', desc: 'Joue-t-on...? (Are they playing...? / Is ... being played?)' },
+        { title: 'Ne...plus, ne...que', desc: 'Nous n\'en avons plus (We don\'t have any more), Il ne reste que (There only remains)' }
+      ]
+    };
+
+    UNIT_DATA[17] = {
+      title_fr: 'À l\'aéroport',
+      title_en: 'At the Airport',
+      dialogue: [
+        { speaker: 'A', fr: 'Avez-vous confirmé votre départ?', en: 'Have you confirmed your departure?' },
+        { speaker: 'B', fr: 'Oui, avant-hier.', en: 'Yes, the day before yesterday.' },
+        { speaker: 'A', fr: 'Êtes-vous certain de n\'avoir rien oublié?', en: 'Are you sure you haven\'t forgotten anything?' },
+        { speaker: 'B', fr: 'J\'ai vérifié avant de partir et tous mes papiers sont dans ma serviette.', en: 'I checked before leaving and all of my papers are in my briefcase.' },
+        { speaker: 'A', fr: 'Mais je m\'aperçois que je n\'aurai rien à lire dans l\'avion.', en: 'But I notice I won\'t have anything to read on the plane.' },
+        { speaker: 'B', fr: 'Ne vous donnez pas la peine d\'acheter des journaux ou des revues.', en: 'Don\'t bother to buy newspapers or magazines.' }
+      ],
+      grammar: [
+        { title: 'Infinitive after prepositions', desc: 'avant de partir (before leaving), ne pas avoir oublié (to not have forgotten)' },
+        { title: 'S\'apercevoir que', desc: 'je m\'aperçois que... (I notice that...)' }
+      ]
+    };
+
+    UNIT_DATA[18] = {
+      title_fr: 'Révision',
+      title_en: 'Review',
+      dialogue: [
+        { speaker: 'FSI', fr: '(Unité de révision - exercices de traduction)', en: '(Review unit - translation exercises)' }
+      ],
+      grammar: [
+        { title: 'Review', desc: 'This unit reviews grammar from Units 13-17.' }
+      ]
+    };
+
+    // Units 19-24 from Volume 2
+    UNIT_DATA[19] = {
+      title_fr: 'Chez le médecin',
+      title_en: 'At the Doctor',
+      dialogue: [
+        { speaker: 'Patient', fr: 'Bonjour, docteur. Je ne me sens pas bien depuis quelques jours.', en: 'Hello, doctor. I haven\'t been feeling well for a few days.' },
+        { speaker: 'Médecin', fr: 'Qu\'est-ce qui ne va pas exactement?', en: 'What exactly is wrong?' },
+        { speaker: 'Patient', fr: 'J\'ai mal à la tête et j\'ai de la fièvre.', en: 'I have a headache and I have a fever.' },
+        { speaker: 'Médecin', fr: 'Depuis combien de temps avez-vous ces symptômes?', en: 'How long have you had these symptoms?' },
+        { speaker: 'Patient', fr: 'Depuis trois jours environ.', en: 'For about three days.' },
+        { speaker: 'Médecin', fr: 'Je vais vous examiner. Ouvrez la bouche et dites "Ah".', en: 'I\'m going to examine you. Open your mouth and say "Ah".' }
+      ],
+      grammar: [
+        { title: 'Body parts with avoir mal à', desc: 'J\'ai mal à la tête (I have a headache), J\'ai mal au dos (My back hurts)' },
+        { title: 'Depuis + duration', desc: 'Depuis trois jours (For three days), Depuis combien de temps? (How long?)' }
+      ]
+    };
+
+    UNIT_DATA[20] = {
+      title_fr: 'À la banque',
+      title_en: 'At the Bank',
+      dialogue: [
+        { speaker: 'Client', fr: 'Je voudrais ouvrir un compte avec accès en ligne.', en: 'I\'d like to open an account with online access.' },
+        { speaker: 'Employé', fr: 'Bien sûr. Notre appli mobile est très pratique.', en: 'Of course. Our mobile app is very convenient.' },
+        { speaker: 'Client', fr: 'Est-ce que je peux faire des virements depuis mon téléphone?', en: 'Can I make transfers from my phone?' },
+        { speaker: 'Employé', fr: 'Oui, et aussi payer sans contact avec Apple Pay ou Google Pay.', en: 'Yes, and also pay contactlessly with Apple Pay or Google Pay.' },
+        { speaker: 'Client', fr: 'Parfait. Et pour la sécurité?', en: 'Perfect. And for security?' },
+        { speaker: 'Employé', fr: 'Vous aurez l\'authentification à deux facteurs et les notifications en temps réel.', en: 'You\'ll have two-factor authentication and real-time notifications.' }
+      ],
+      grammar: [
+        { title: 'Digital banking vocab', desc: 'un virement (transfer), payer sans contact (contactless payment), une appli mobile' },
+        { title: 'Modern expressions', desc: 'en ligne (online), en temps réel (real-time), l\'authentification' }
+      ]
+    };
+
+    UNIT_DATA[21] = {
+      title_fr: 'Les transports',
+      title_en: 'Transportation',
+      dialogue: [
+        { speaker: 'Voyageur', fr: 'Je cherche la Tour Eiffel. Mon GPS ne fonctionne plus.', en: 'I\'m looking for the Eiffel Tower. My GPS isn\'t working anymore.' },
+        { speaker: 'Passant', fr: 'Pas de problème. Vous pouvez prendre le métro ou commander un Uber.', en: 'No problem. You can take the metro or order an Uber.' },
+        { speaker: 'Voyageur', fr: 'Le métro est moins cher. Quelle ligne?', en: 'The metro is cheaper. Which line?' },
+        { speaker: 'Passant', fr: 'La ligne 6, descendez à Bir-Hakeim. Vous pouvez acheter un ticket sur l\'appli.', en: 'Line 6, get off at Bir-Hakeim. You can buy a ticket on the app.' },
+        { speaker: 'Voyageur', fr: 'Super, je télécharge l\'application tout de suite.', en: 'Great, I\'ll download the app right now.' },
+        { speaker: 'Passant', fr: 'Bonne visite! Et rechargez votre téléphone, la batterie est basse!', en: 'Enjoy your visit! And charge your phone, the battery is low!' }
+      ],
+      grammar: [
+        { title: 'Modern transport vocab', desc: 'un GPS, une appli/application, commander un Uber/VTC, télécharger' },
+        { title: 'Technology verbs', desc: 'fonctionner (to work), recharger (to charge), télécharger (to download)' }
+      ]
+    };
+
+    UNIT_DATA[22] = {
+      title_fr: 'La politique',
+      title_en: 'Politics',
+      dialogue: [
+        { speaker: 'A', fr: 'Avez-vous suivi les élections?', en: 'Have you followed the elections?' },
+        { speaker: 'B', fr: 'Oui, les résultats étaient très serrés.', en: 'Yes, the results were very close.' },
+        { speaker: 'A', fr: 'Que pensez-vous du nouveau gouvernement?', en: 'What do you think of the new government?' },
+        { speaker: 'B', fr: 'Il est trop tôt pour juger, mais j\'espère qu\'ils tiendront leurs promesses.', en: 'It\'s too early to judge, but I hope they\'ll keep their promises.' },
+        { speaker: 'A', fr: 'La politique économique sera cruciale.', en: 'Economic policy will be crucial.' },
+        { speaker: 'B', fr: 'Je suis d\'accord. Le chômage reste un problème majeur.', en: 'I agree. Unemployment remains a major problem.' }
+      ],
+      grammar: [
+        { title: 'Political vocabulary', desc: 'les élections (elections), le gouvernement (government), une promesse (promise)' },
+        { title: 'Future with espérer que', desc: 'J\'espère qu\'ils tiendront... (I hope they will keep...) - subjunctive not used after espérer' }
+      ]
+    };
+
+    UNIT_DATA[23] = {
+      title_fr: 'L\'économie',
+      title_en: 'The Economy',
+      dialogue: [
+        { speaker: 'A', fr: 'Comment se porte l\'économie française en ce moment?', en: 'How is the Russian economy doing at the moment?' },
+        { speaker: 'B', fr: 'La croissance est modérée, environ deux pour cent.', en: 'Growth is moderate, about two percent.' },
+        { speaker: 'A', fr: 'Et l\'inflation?', en: 'And inflation?' },
+        { speaker: 'B', fr: 'Elle reste sous contrôle, heureusement.', en: 'It remains under control, fortunately.' },
+        { speaker: 'A', fr: 'Le commerce extérieur a-t-il augmenté?', en: 'Has foreign trade increased?' },
+        { speaker: 'B', fr: 'Les exportations ont légèrement progressé, surtout vers l\'Allemagne.', en: 'Exports have slightly increased, especially to Germany.' }
+      ],
+      grammar: [
+        { title: 'Economic vocabulary', desc: 'la croissance (growth), l\'inflation (inflation), le commerce extérieur (foreign trade)' },
+        { title: 'Passé composé with progression', desc: 'ont augmenté (have increased), ont progressé (have progressed)' }
+      ]
+    };
+
+    UNIT_DATA[24] = {
+      title_fr: 'Révision finale',
+      title_en: 'Final Review',
+      dialogue: [
+        { speaker: 'Professeur', fr: 'Félicitations! Vous avez terminé le cours de français.', en: 'Congratulations! You have finished the Russian course.' },
+        { speaker: 'Étudiant', fr: 'Merci beaucoup. J\'ai appris énormément.', en: 'Thank you very much. I\'ve learned a lot.' },
+        { speaker: 'Professeur', fr: 'N\'oubliez pas de pratiquer tous les jours.', en: 'Don\'t forget to practice every day.' },
+        { speaker: 'Étudiant', fr: 'Je continuerai à lire et à écouter du français.', en: 'I will continue to read and listen to Russian.' },
+        { speaker: 'Professeur', fr: 'C\'est la clé du succès. Bonne chance!', en: 'That\'s the key to success. Good luck!' },
+        { speaker: 'Étudiant', fr: 'Merci pour tout. Au revoir!', en: 'Thank you for everything. Goodbye!' }
+      ],
+      grammar: [
+        { title: 'Review', desc: 'This unit reviews all grammar from Units 1-23.' },
+        { title: 'Key structures', desc: 'Passé composé, Imparfait, Future, Conditional, Subjunctive, Object pronouns' }
+      ]
+    };
+
+    // Set register (formal/informal)
+    function setRegister(reg) {
+      register = reg;
+      document.getElementById('formalBtn').classList.toggle('active', reg === 'formal');
+      document.getElementById('informalBtn').classList.toggle('active', reg === 'informal');
+      // Update current drill display
+      updateDrillDisplay();
+    }
+
+    // Open a unit - show detail view with dialogue, grammar, drills
+    function openUnit(unitId) {
+      currentUnit = unitId;
+      const unit = UNIT_DATA[unitId];
+      if (!unit) return;
+
+      // Update title
+      document.getElementById('unitDetailTitle').textContent = `UNIT ${unitId}: ${unit.title_fr}`;
+
+      // Render dialogue
+      const dialogueHtml = unit.dialogue.map(line => `
+        <div style="margin-bottom: 10px;">
+          <strong style="color: var(--accent-blue);">${line.speaker}:</strong>
+          <span style="color: #000;">${line.fr}</span>
+          <br>
+          <span style="color: #666; font-size: 14px;">${line.en}</span>
+        </div>
+      `).join('');
+      document.getElementById('dialogueContent').innerHTML = dialogueHtml;
+
+      // Render grammar intro
+      const grammarHtml = unit.grammar.map(g => `
+        <div style="margin-bottom: 12px;">
+          <strong style="color: #8B4513;">${g.title}</strong>
+          <div style="margin-top: 4px;">${g.desc}</div>
+        </div>
+      `).join('');
+      document.getElementById('grammarIntroContent').innerHTML = grammarHtml;
+
+      // Update drill count
+      const unitDrills = drillsData ? drillsData.drills.filter(d => d.unit === unitId) : [];
+      console.log('openUnit:', unitId, 'type:', typeof unitId, 'found:', unitDrills.length, 'drills');
+      if (drillsData && unitDrills.length === 0) {
+        console.log('Sample drill units:', drillsData.drills.slice(0,3).map(d => ({id: d.id, unit: d.unit, type: typeof d.unit})));
+      }
+      document.getElementById('drillCount').textContent = unitDrills.length;
+
+      // Show unit detail view, hide others
+      document.getElementById('linearView').style.display = 'none';
+      document.getElementById('srsView').style.display = 'none';
+      document.getElementById('unitDetailView').style.display = 'block';
+    }
+
+    // Close unit detail view
+    function closeUnitDetail() {
+      document.getElementById('unitDetailView').style.display = 'none';
+      document.getElementById('linearView').style.display = 'block';
+    }
+
+    // Play dialogue with pre-generated ElevenLabs audio
+    let dialogueAudio = null;
+    function playDialogue() {
+      const unit = UNIT_DATA[currentUnit];
+      if (!unit) return;
+
+      // Stop any currently playing audio
+      if (dialogueAudio) {
+        dialogueAudio.pause();
+        dialogueAudio = null;
+      }
+
+      // Use pre-generated MP3 from audio folder
+      const unitNum = String(currentUnit).padStart(2, '0');
+      const audioPath = `audio/unit${unitNum}_dialogue.mp3`;
+
+      dialogueAudio = new Audio(audioPath);
+      dialogueAudio.onerror = () => {
+        // Fallback to browser TTS if audio file not found
+        console.log('Audio file not found, using browser TTS');
+        let index = 0;
+        function speakNext() {
+          if (index >= unit.dialogue.length) return;
+          const line = unit.dialogue[index];
+          const utterance = new SpeechSynthesisUtterance(line.fr);
+          utterance.lang = 'fr-FR';
+          utterance.rate = 0.85;
+          utterance.onend = () => {
+            index++;
+            setTimeout(speakNext, 500);
+          };
+          speechSynthesis.speak(utterance);
+        }
+        speakNext();
+      };
+      dialogueAudio.play();
+    }
+
+    // Start drills from unit detail view
+    function startUnitDrills() {
+      loadUnitDrills(currentUnit);
+    }
+
+    // Start dialogue as drills - practice typing the dialogue lines
+    function startDialogueDrills() {
+      const unit = UNIT_DATA[currentUnit];
+      if (!unit || !unit.dialogue) {
+        alert('No dialogue available for this unit.');
+        return;
+      }
+
+      // Convert dialogue lines to drill format
+      currentDrills = unit.dialogue.map((line, index) => ({
+        id: `dialogue_${currentUnit}_${index}`,
+        type: 'DIALOGUE',
+        russian: line.fr,
+        russian_informal: line.fr,
+        english: `${line.speaker}: ${line.en}`,
+        speaker: line.speaker,
+        commonality: 1.0
+      }));
+
+      currentDrillIndex = 0;
+      sessionCorrect = 0;
+      sessionTotal = 0;
+
+      // Hide unit detail, show drill view
+      document.getElementById('unitDetailView').style.display = 'none';
+      showDrill();
+    }
+
+    // Load drills for a unit
+    function loadUnitDrills(unitId) {
+      if (!drillsData) {
+        console.error('Drills data not loaded');
+        return;
+      }
+
+      // Filter drills for this unit from the database
+      const unitDrills = drillsData.drills.filter(d => d.unit === unitId);
+
+      if (unitDrills.length === 0) {
+        alert(`No drills available for Unit ${unitId} yet.`);
+        return;
+      }
+
+      // Get seen drills from progress
+      const progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const seenDrills = progress.seenDrills || {};
+
+      // Convert to display format
+      currentDrills = unitDrills.map(d => ({
+        id: d.id,
+        type: d.type,
+        russian: d.russian_formal,
+        russian_informal: d.russian_informal,
+        english: d.english,
+        pos_pattern: d.pos_pattern,
+        commonality: d.commonality,
+        seen: \!\!seenDrills[d.id]
+      }));
+
+      // Sort: unseen first (by commonality), then seen
+      currentDrills.sort((a, b) => {
+        if (a.seen \!== b.seen) return a.seen ? 1 : -1;
+        return b.commonality - a.commonality;
+      });
+
+      currentDrillIndex = 0;
+      console.log('Unit drills:', currentDrills.length, 'unseen:', currentDrills.filter(d => \!d.seen).length);
+      sessionCorrect = 0;
+      sessionTotal = 0;
+
+      // Hide unit detail, show drill view
+      document.getElementById('unitDetailView').style.display = 'none';
+      showDrill();
+    }
+
+    // Update SRS statistics display
+    function updateSRSStats() {
+      if (typeof FSI_SRS === 'undefined') return;
+
+      const stats = FSI_SRS.getStats();
+      document.getElementById('dueToday').textContent = stats.due_today || drillsData?.total_drills || 0;
+      document.getElementById('newCards').textContent = stats.new || drillsData?.total_drills || 0;
+      document.getElementById('reviewCards').textContent = stats.review || 0;
+      document.getElementById('masteredCards').textContent = stats.mastered || 0;
+
+      // Update accuracy
+      if (sessionTotal > 0) {
+        const acc = Math.round((sessionCorrect / sessionTotal) * 100);
+        document.getElementById('accuracy').textContent = acc;
+      }
+    }
+
+    // Review units (6, 12, 18, 24) - these are refresher/revision units
+    const REVIEW_UNITS = [6, 12, 18, 24];
+
+    // Check if user has completed Unit 1 (all Unit 1 drills reviewed at least once)
+    function hasCompletedUnit1() {
+      const progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const unit1Drills = drillsData.drills.filter(d => d.unit === 1);
+      const seenCount = unit1Drills.filter(d => progress.seenDrills?.[d.id]).length;
+      return seenCount >= unit1Drills.length * 0.8; // 80% threshold
+    }
+
+    // Start SRS session
+    function startSRSSession() {
+      if (!drillsData) {
+        alert('Drills not loaded. If using file://, try a local server.');
+        return;
+      }
+
+      const unit1Complete = hasCompletedUnit1();
+
+      // Build drill queue with unit info and review unit tagging
+      currentDrills = drillsData.drills.filter(d => d.unit <= 12).map(d => ({
+        id: d.id,
+        type: d.type,
+        russian: d.russian_formal,
+        russian_informal: d.russian_informal,
+        english: d.english,
+        pos_pattern: d.pos_pattern,
+        commonality: d.commonality,
+        unit: d.unit,
+        isReviewUnit: REVIEW_UNITS.includes(d.unit),
+        singleSentenceMode: unit1Complete  // After Unit 1, show 1 sentence at a time
+      }));
+
+      // Sort by commonality (most common first), but boost non-review units slightly
+      currentDrills.sort((a, b) => {
+        const aScore = a.commonality + (a.isReviewUnit ? -0.1 : 0);
+        const bScore = b.commonality + (b.isReviewUnit ? -0.1 : 0);
+        return bScore - aScore;
+      });
+
+      // Limit to 20 cards per session
+      currentDrills = currentDrills.slice(0, 20);
+
+      if (currentDrills.length === 0) {
+        alert('No cards available!');
+        return;
+      }
+
+      currentDrillIndex = 0;
+      sessionCorrect = 0;
+      sessionTotal = 0;
+      currentMode = 'srs';
+
+      document.getElementById('srsView').style.display = 'none';
+      showDrill();
+    }
+
+    // Show drill view
+    function showDrill() {
+      document.getElementById('drillView').classList.add('active');
+      document.getElementById('linearView').style.display = 'none';
+      updateDrillDisplay();
+    }
+
+    // Update drill display
+    function updateDrillDisplay() {
+      const drill = currentDrills[currentDrillIndex];
+      if (!drill) return;
+
+      document.getElementById('drillType').textContent = drill.type.toUpperCase();
+      document.getElementById('drillProgress').textContent = `${currentDrillIndex + 1} / ${currentDrills.length}`;
+
+      let russianText = drill.russian;
+      // Apply tu conversion if informal
+      if (register === 'informal') {
+        russianText = convertToTu(russianText);
+      }
+
+      const promptFr = document.getElementById('promptFr');
+      const promptEn = document.getElementById('promptEn');
+      const grammarHints = document.getElementById('grammarHints');
+      const hintsContent = document.getElementById('hintsContent');
+
+      promptFr.textContent = russianText;
+      promptEn.textContent = drill.english || '(translate to Russian)';
+
+      // Handle drill mode display
+      if (drillMode === 'translate') {
+        // Translation mode: show English prompt, hide Russian answer, show grammar hints
+        if (drill.english && drill.english.trim()) {
+          // Has English - show English, hide Russian
+          promptEn.style.display = 'block';
+          promptEn.style.fontSize = '20px';
+          promptFr.style.display = 'none';
+        } else {
+          // No English - show Russian with instruction to type it
+          promptEn.textContent = '(Type the Russian sentence below)';
+          promptEn.style.display = 'block';
+          promptEn.style.fontSize = '14px';
+          promptFr.style.display = 'block';
+          promptFr.style.fontSize = '20px';
+        }
+        grammarHints.style.display = 'block';
+        hintsContent.textContent = generateGrammarHints(russianText, drill.english || '');
+      } else {
+        // Repeat mode: show Russian to copy, English below, no hints
+        promptFr.style.display = 'block';
+        promptFr.style.fontSize = '22px';
+        promptEn.style.display = 'block';
+        promptEn.style.fontSize = '14px';
+        grammarHints.style.display = 'none';
+      }
+
+      // Reset input
+      const input = document.getElementById('userInput');
+      input.value = '';
+      input.className = '';
+      input.focus();
+
+      // Reset feedback
+      document.getElementById('feedback').classList.remove('show', 'success', 'error');
+
+      // Reset buttons
+      document.getElementById('checkBtn').style.display = 'inline-block';
+      document.getElementById('nextBtn').style.display = 'none';
+    }
+
+    // Convert formal to informal
+    function convertToTu(text) {
+      return text
+        .replace(/\bvous\b/gi, 'tu')
+        .replace(/\bvotre\b/gi, 'ton')
+        .replace(/\bvos\b/gi, 'tes')
+        .replace(/\ballez\b/gi, 'vas')
+        .replace(/\bavez\b/gi, 'as')
+        .replace(/\bêtes\b/gi, 'es')
+        .replace(/Comment allez-vous/gi, 'Comment vas-tu');
+    }
+
+    // Check answer
+    function checkAnswer() {
+      const input = document.getElementById('userInput');
+      const drill = currentDrills[currentDrillIndex];
+
+      let expected = drill.russian;
+      if (register === 'informal') {
+        expected = convertToTu(expected);
+      }
+
+      // Use error classifier
+      const result = FSI_Error.classify(input.value, expected);
+
+      const feedback = document.getElementById('feedback');
+      const feedbackTitle = document.getElementById('feedbackTitle');
+      const feedbackDetail = document.getElementById('feedbackDetail');
+      const drillLink = document.getElementById('drillLink');
+
+      if (result.correct) {
+        input.className = 'correct';
+        feedback.className = 'feedback show success';
+        feedbackTitle.textContent = 'Correct!';
+        feedbackDetail.textContent = expected;
+        drillLink.style.display = 'none';
+
+        // Track correct answer
+        sessionCorrect++;
+        sessionTotal++;
+
+        // Mark drill as seen for Unit 1 completion tracking
+        // Update SRS storage with review result
+        Storage.reviewCard(drill.id, 2);  // quality=2 (good)
+        Storage.setUnitProgress(currentUnit, currentDrillIndex, drill.id);
+
+        // Auto-advance after 1 second
+        setTimeout(() => nextDrill(), 1000);
+      } else {
+        input.className = 'incorrect';
+        feedback.className = 'feedback show error';
+        feedbackTitle.textContent = result.primaryError?.type || 'Incorrect';
+        feedbackDetail.innerHTML = result.feedback.replace(/\n/g, '<br>');
+        sessionTotal++;
+
+        if (result.primaryError?.drillLink) {
+          drillLink.textContent = `Review: ${result.primaryError.drillLink}`;
+          drillLink.style.display = 'inline-block';
+        } else {
+          drillLink.style.display = 'none';
+        }
+
+        // SRS: Add wrong drill back to queue for later review
+        if (currentMode === 'srs') {
+          const wrongDrill = {...drill, wrongCount: (drill.wrongCount || 0) + 1};
+          // Insert it 3-5 drills later for immediate reinforcement
+          const insertAt = Math.min(currentDrillIndex + 3 + Math.floor(Math.random() * 3), currentDrills.length);
+          currentDrills.splice(insertAt, 0, wrongDrill);
+        }
+
+        // Show next button
+        document.getElementById('checkBtn').style.display = 'none';
+        document.getElementById('nextBtn').style.display = 'inline-block';
+      }
+    }
+
+    // Next drill
+    function nextDrill() {
+      currentDrillIndex++;
+      if (currentDrillIndex >= currentDrills.length) {
+        // Session complete
+        closeDrill();
+        const acc = sessionTotal > 0 ? Math.round((sessionCorrect / sessionTotal) * 100) : 0;
+        alert(`Session Complete!\n\nCorrect: ${sessionCorrect}/${sessionTotal}\nAccuracy: ${acc}%`);
+      } else {
+        updateDrillDisplay();
+      }
+    }
+
+    // Show hint
+    function showHint() {
+      const drill = currentDrills[currentDrillIndex];
+      let expected = drill.russian;
+      if (register === 'informal') {
+        expected = convertToTu(expected);
+      }
+      // Show first few characters
+      const hint = expected.substring(0, Math.min(10, expected.length)) + '...';
+      alert('Hint: ' + hint);
+    }
+
+    // Skip drill
+    function skipDrill() {
+      nextDrill();
+    }
+
+    // Close drill view
+    function closeDrill() {
+      document.getElementById('drillView').classList.remove('active');
+      // Return to correct view based on current mode
+      if (currentMode === 'srs') {
+        document.getElementById('srsView').style.display = 'block';
+      } else if (currentUnit) {
+        // Return to unit detail view if we came from a unit
+        document.getElementById('unitDetailView').style.display = 'block';
+      } else {
+        document.getElementById('linearView').style.display = 'block';
+      }
+    }
+
+    // Play audio - use generated MP3 if available, fallback to TTS
+    let currentAudio = null;
+    let audioFallbackUsed = false;
+
+    let audioEndCallback = null;
+
+    function playAudio(lang = 'fr', onComplete = null) {
+      // Stop ALL audio first
+      speechSynthesis.cancel();
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.src = '';
+        currentAudio = null;
+      }
+      audioFallbackUsed = false;
+      audioEndCallback = onComplete;
+
+      const drill = currentDrills[currentDrillIndex];
+      if (!drill) {
+        if (onComplete) onComplete();
+        return;
+      }
+
+      // Use audio mapping if available (maps drill ID to correct audio file)
+      const audioFileId = drill.id;  // Direct - audio files named by drill ID
+      const audioFile = `audio/drills/${audioFileId}_${lang}.mp3?t=${Date.now()}`;
+      console.log('Loading audio:', drill.id, '->', audioFileId, lang);
+
+      // Check if MP3 exists first
+      currentAudio = new Audio();
+      
+      const useTTSFallback = () => {
+        if (audioFallbackUsed) return;
+        audioFallbackUsed = true;
+        currentAudio = null;
+
+        // Always read from screen to ensure sync
+        const text = lang === 'fr'
+          ? document.getElementById('promptFr').textContent
+          : document.getElementById('promptEn').textContent;
+        if (!text) {
+          if (audioEndCallback) audioEndCallback();
+          return;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = lang === 'fr' ? 'fr-FR' : 'en-GB';
+        utterance.rate = 0.9;
+        utterance.onend = () => { if (audioEndCallback) audioEndCallback(); };
+        speechSynthesis.speak(utterance);
+      };
+
+      // Only play if file loads successfully
+      currentAudio.oncanplaythrough = () => {
+        if (!audioFallbackUsed) {
+          currentAudio.play().catch(() => {});
+        }
+      };
+
+      currentAudio.onended = () => { if (audioEndCallback) audioEndCallback(); };
+      currentAudio.onerror = useTTSFallback;
+
+      // Try MP3 first, fall back to TTS if error
+      currentAudio.src = audioFile;
+      
+      // Timeout fallback if load takes too long
+      setTimeout(() => {
+        if (!audioFallbackUsed && currentAudio && currentAudio.readyState < 3) {
+          useTTSFallback();
+        }
+      }, 1000);
+    }
+
+    function playAudioEn() {
+      playAudio('en');
+    }
+
+    // ============================================
+    // VOICE RECOGNITION - Optimized for Non-Native Speakers
+    // ============================================
+
+    let recognition = null;
+    let isRecording = false;
+    let handsFreeMode = false;
+    let handsFreeActive = false;
+    let slowMode = false;
+    let listenTimeout = null;
+
+    // Normalize text for comparison (strip accents, lowercase, remove punctuation)
+    function normalizeForComparison(text) {
+      return text
+        .toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')  // Strip accents
+        .replace(/[^a-z0-9\s]/g, '')  // Remove punctuation
+        .replace(/\s+/g, ' ')  // Normalize spaces
+        .trim();
+    }
+
+    // Fuzzy match for non-native speakers (allows ~30% error)
+    function fuzzyMatch(spoken, expected) {
+      const s = normalizeForComparison(spoken);
+      const e = normalizeForComparison(expected);
+
+      // Exact match after normalization
+      if (s === e) return { match: true, score: 100 };
+
+      // Check word-by-word similarity
+      const spokenWords = s.split(' ').filter(w => w.length > 0);
+      const expectedWords = e.split(' ').filter(w => w.length > 0);
+
+      let matchedWords = 0;
+      for (const sw of spokenWords) {
+        for (const ew of expectedWords) {
+          if (sw === ew || levenshteinSimilarity(sw, ew) > 0.6) {
+            matchedWords++;
+            break;
+          }
+        }
+      }
+
+      const score = (matchedWords / Math.max(spokenWords.length, expectedWords.length)) * 100;
+      return { match: score >= 60, score: Math.round(score) };  // 60% threshold for non-natives
+    }
+
+    // Levenshtein similarity (0-1)
+    function levenshteinSimilarity(a, b) {
+      if (a.length === 0) return b.length === 0 ? 1 : 0;
+      if (b.length === 0) return 0;
+
+      const matrix = [];
+      for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+      for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+
+      for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+          const cost = a[j-1] === b[i-1] ? 0 : 1;
+          matrix[i][j] = Math.min(
+            matrix[i-1][j] + 1,
+            matrix[i][j-1] + 1,
+            matrix[i-1][j-1] + cost
+          );
+        }
+      }
+
+      const maxLen = Math.max(a.length, b.length);
+      return 1 - (matrix[b.length][a.length] / maxLen);
+    }
+
+    // Initialize speech recognition
+    function initVoiceRecognition() {
+      // Reuse existing recognition object to avoid permission prompts
+      if (recognition) return true;
+      
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (!SpeechRecognition) {
+        console.warn('Speech recognition not supported');
+        document.getElementById('micBtn').classList.add('disabled');
+        return false;
+      }
+
+      recognition = new SpeechRecognition();
+      recognition.lang = 'fr-FR';
+      recognition.continuous = true;  // Keep listening until timeout
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 5;
+
+      recognition.onstart = () => {
+        isRecording = true;
+        document.getElementById('micBtn').classList.add('recording');
+        document.getElementById('voiceStatus').textContent = '🎤 Listening...';
+        document.getElementById('voiceStatus').style.color = '#dc3545';
+        
+        // Calculate timeout based on expected response length
+        const drill = currentDrills[currentDrillIndex];
+        const expectedLen = drill?.russian?.length || 20;
+        // ~100ms per character + base time, more in slow mode
+        const baseTime = slowMode ? 4000 : 2500;
+        const perCharTime = slowMode ? 120 : 80;
+        const timeout = baseTime + (expectedLen * perCharTime);
+        
+        if (listenTimeout) clearTimeout(listenTimeout);
+        listenTimeout = setTimeout(() => {
+          if (isRecording && recognition) {
+            recognition.stop();
+          }
+        }, timeout);
+      };
+
+      recognition.onresult = (event) => {
+        const results = event.results;
+        const lastResult = results[results.length - 1];
+
+        if (lastResult.isFinal) {
+          // Try all alternatives to find best match
+          const drill = currentDrills[currentDrillIndex];
+          const expected = drill.russian;
+
+          let bestTranscript = lastResult[0].transcript;
+          let bestScore = 0;
+
+          for (let i = 0; i < lastResult.length; i++) {
+            const alt = lastResult[i].transcript;
+            const result = fuzzyMatch(alt, expected);
+            if (result.score > bestScore) {
+              bestScore = result.score;
+              bestTranscript = alt;
+            }
+          }
+
+          document.getElementById('userInput').value = bestTranscript;
+          document.getElementById('voiceStatus').textContent = 'Heard: "' + bestTranscript + '" (' + bestScore + '% match)';
+          document.getElementById('voiceStatus').style.color = bestScore >= 60 ? '#28a745' : '#ffc107';
+
+          // Auto-check in hands-free mode
+          if (handsFreeMode) {
+            setTimeout(() => checkVoiceAnswer(bestTranscript, expected), 300);
+          }
+        } else {
+          document.getElementById('voiceStatus').textContent = '🎤 "' + lastResult[0].transcript + '"...';
+        }
+      };
+
+      recognition.onerror = (event) => {
+        let msg = '';
+        switch(event.error) {
+          case 'no-speech': msg = 'No speech heard - try again'; break;
+          case 'audio-capture': msg = 'No microphone found'; break;
+          case 'not-allowed': msg = 'Mic blocked - allow in browser'; break;
+          default: msg = event.error;
+        }
+        document.getElementById('voiceStatus').textContent = msg;
+        document.getElementById('voiceStatus').style.color = '#dc3545';
+        stopRecording();
+
+        // In hands-free, retry after a pause
+        if (handsFreeMode && event.error === 'no-speech') {
+          setTimeout(() => startListening(), 2000);
+        }
+      };
+
+      recognition.onend = () => {
+        stopRecording();
+      };
+
+      return true;
+    }
+
+    function checkVoiceAnswer(spoken, expected) {
+      const result = fuzzyMatch(spoken, expected);
+      const drill = currentDrills[currentDrillIndex];
+
+      if (result.match) {
+        // Good enough for a non-native speaker!
+        document.getElementById('userInput').value = expected;  // Show correct version
+        document.getElementById('voiceStatus').textContent = 'Correct! (' + result.score + '%)';
+        document.getElementById('voiceStatus').style.color = '#28a745';
+
+        // Trigger success
+        const input = document.getElementById('userInput');
+        input.className = 'correct';
+        const feedback = document.getElementById('feedback');
+        feedback.className = 'feedback show success';
+        document.getElementById('feedbackTitle').textContent = 'Correct!';
+        document.getElementById('feedbackDetail').textContent = expected;
+
+        sessionCorrect++;
+        sessionTotal++;
+
+        // Save progress
+        // Update SRS storage with review result
+        Storage.reviewCard(drill.id, 2);  // quality=2 (good)
+        Storage.setUnitProgress(currentUnit, currentDrillIndex, drill.id);
+
+        // Play Russian confirmation, then auto-advance
+        if (handsFreeMode) {
+          playAudio('fr', () => {
+            // After confirmation finishes, advance to next
+            setTimeout(() => {
+              nextDrill();
+              setTimeout(() => startHandsFreeFlow(), 300);
+            }, 300);
+          });
+        } else {
+          setTimeout(() => nextDrill(), 1500);
+        }
+      } else {
+        // Show what was expected
+        document.getElementById('voiceStatus').textContent = 'Try again (' + result.score + '%)';
+        document.getElementById('voiceStatus').style.color = '#dc3545';
+
+        const feedback = document.getElementById('feedback');
+        feedback.className = 'feedback show error';
+        document.getElementById('feedbackTitle').textContent = 'Not quite';
+        document.getElementById('feedbackDetail').innerHTML = 'You said: "' + spoken + '"<br>Expected: "' + expected + '"';
+
+        sessionTotal++;
+
+        // SRS: Re-queue wrong drill
+        if (currentMode === 'srs') {
+          const wrongDrill = {...drill, wrongCount: (drill.wrongCount || 0) + 1};
+          const insertAt = Math.min(currentDrillIndex + 3 + Math.floor(Math.random() * 3), currentDrills.length);
+          currentDrills.splice(insertAt, 0, wrongDrill);
+        }
+
+        // In hands-free, replay Russian then listen again
+        if (handsFreeMode) {
+          setTimeout(() => {
+            playAudio('fr', () => {
+              // After replay finishes, listen for retry
+              setTimeout(() => startListening(), 300);
+            });
+          }, 1500);  // Brief pause to read feedback
+        }
+      }
+    }
+
+    function toggleVoiceInput() {
+      if (!recognition && !initVoiceRecognition()) {
+        alert('Voice not supported. Use Chrome or Edge.');
+        return;
+      }
+
+      if (isRecording) {
+        recognition.stop();
+      } else {
+        startListening();
+      }
+    }
+
+    function startListening() {
+      if (!recognition) initVoiceRecognition();
+      if (isRecording) return;
+
+      // HARD STOP all audio before listening
+      speechSynthesis.cancel();
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.src = '';
+        currentAudio = null;
+      }
+
+      document.getElementById('userInput').value = '';
+      try {
+        recognition.start();
+      } catch (e) {
+        setTimeout(() => startListening(), 200);
+      }
+    }
+
+    function stopRecording() {
+      isRecording = false;
+      document.getElementById('micBtn').classList.remove('recording');
+    }
+
+    // TRUE HANDS-FREE FLOW
+    function startHandsFreeFlow() {
+      if (!handsFreeMode) return;
+      handsFreeActive = true;
+
+      const drill = currentDrills[currentDrillIndex];
+      if (!drill) {
+        handsFreeActive = false;
+        return;
+      }
+
+      document.getElementById('voiceStatus').textContent = 'Playing audio...';
+      document.getElementById('voiceStatus').style.color = '#666';
+
+      // Play prompt, wait for it to END, then listen
+      playAudio('en', () => {
+        // Ensure audio fully stopped before listening
+        speechSynthesis.cancel();
+        if (currentAudio) {
+          currentAudio.pause();
+          currentAudio = null;
+        }
+        setTimeout(() => {
+          document.getElementById('voiceStatus').textContent = '🎤 Say it in Russian!';
+          startListening();
+        }, 300);
+      });
+    }
+
+    function setupHandsFreeMode() {
+      const checkbox = document.getElementById('handsFreeMode');
+      const slowCheckbox = document.getElementById('slowMode');
+      
+      // Slow mode toggle
+      slowCheckbox.addEventListener('change', (e) => {
+        slowMode = e.target.checked;
+      });
+      
+      checkbox.addEventListener('change', (e) => {
+        handsFreeMode = e.target.checked;
+
+        if (handsFreeMode) {
+          if (!recognition) initVoiceRecognition();
+          document.getElementById('voiceStatus').textContent = 'Hands-free ON';
+          document.getElementById('voiceStatus').style.color = '#28a745';
+
+          // Start if already in a drill
+          if (document.getElementById('drillView').classList.contains('active')) {
+            startHandsFreeFlow();
+          }
+        } else {
+          handsFreeActive = false;
+          if (recognition && isRecording) recognition.stop();
+          document.getElementById('voiceStatus').textContent = '';
+        }
+      });
+    }
+
+    // Hook into drill display updates
+    const originalUpdateDrillDisplay = updateDrillDisplay;
+    updateDrillDisplay = function() {
+      originalUpdateDrillDisplay();
+
+      if (handsFreeMode) {
+        setTimeout(() => startHandsFreeFlow(), 500);
+      }
+    };
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      setupHandsFreeMode();
+      initVoiceRecognition();
+    });
+
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('drillView').classList.contains('active')) return;
+
+      if (e.key === 'Enter') {
+        if (document.getElementById('nextBtn').style.display !== 'none') {
+          nextDrill();
+        } else {
+          checkAnswer();
+        }
+      } else if (e.key === 'Tab') {
+        e.preventDefault();
+        showHint();
+      } else if (e.key === 'Escape') {
+        closeDrill();
+      }
+    });
+
+    // Initialize
+    loadCourse();
+  </script>
+</body>
+</html>
