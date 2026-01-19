@@ -1,0 +1,558 @@
+{
+  "version": "1.0",
+  "language": "Russian",
+  "title": "Rhodes Russian - FSI Method",
+  "generated": "2026-01-18",
+  "total_units": 31,
+  "units": [
+    {
+      "id": 0,
+      "title_ru": "Русский Алфавит",
+      "title_en": "Russian Alphabet",
+      "grammar_points": [
+        {
+          "topic": "Cyrillic Alphabet",
+          "explanation": "33 letters: А-Я, including Ъ and Ь signs"
+        },
+        {
+          "topic": "False Friends",
+          "explanation": "В=v, Н=n, Р=r, С=s - look like English, sound different"
+        },
+        {
+          "topic": "Vowel Reduction",
+          "explanation": "Unstressed О→А, Е→И: молоко́ = [малако́]"
+        },
+        {
+          "topic": "Palatalization",
+          "explanation": "Soft sign Ь softens preceding consonant"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "title_ru": "Привет!",
+      "title_en": "Hello!",
+      "grammar_points": [
+        {
+          "topic": "Basic Greetings",
+          "explanation": "Приве́т (informal), Здра́вствуйте (formal)"
+        },
+        {
+          "topic": "Self Introduction",
+          "explanation": "Меня́ зову́т... (My name is...)"
+        },
+        {
+          "topic": "Formal vs Informal",
+          "explanation": "Ты (informal) vs Вы (formal)"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title_ru": "Приве́т!",
+      "title_en": "Hello!",
+      "grammar_points": [
+        {
+          "topic": "Personal Pronouns (Nominative)",
+          "explanation": "я, ты, он, она́, оно́, мы, вы, они́"
+        },
+        {
+          "topic": "БЫТЬ Omission",
+          "explanation": "No 'to be' in present: Я — Ива́н (I am Ivan)"
+        },
+        {
+          "topic": "ЭТО Construction",
+          "explanation": "Э́то Ива́н. Э́то кни́га. (This is...)"
+        },
+        {
+          "topic": "Formal vs Informal",
+          "explanation": "Вы (formal) vs ты (informal)"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title_ru": "Кто Э́то?",
+      "title_en": "Who Is This?",
+      "grammar_points": [
+        {
+          "topic": "Nominative Case",
+          "explanation": "Subject case: Студе́нт чита́ет."
+        },
+        {
+          "topic": "Gender Recognition",
+          "explanation": "Masc: consonant/-й, Fem: -а/-я, Neut: -о/-е"
+        },
+        {
+          "topic": "Plurals (Nominative)",
+          "explanation": "-ы/-и: студе́нт→студе́нты"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title_ru": "Что Вы Де́лаете?",
+      "title_en": "What Are You Doing?",
+      "grammar_points": [
+        {
+          "topic": "1st Conjugation Verbs",
+          "explanation": "чита́ть: чита́ю, чита́ешь, чита́ет, чита́ем"
+        },
+        {
+          "topic": "Present Tense Formation",
+          "explanation": "Remove infinitive ending, add personal endings"
+        },
+        {
+          "topic": "Accusative Case (intro)",
+          "explanation": "Direct object: Я чита́ю кни́гу."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title_ru": "Моя́ Семья́",
+      "title_en": "My Family",
+      "grammar_points": [
+        {
+          "topic": "2nd Conjugation Verbs",
+          "explanation": "говори́ть: говорю́, говори́шь, говори́т"
+        },
+        {
+          "topic": "Possessive Pronouns",
+          "explanation": "мой/моя́/моё/мои́, твой, его́, её, наш, ваш, их"
+        },
+        {
+          "topic": "Numbers 1-10",
+          "explanation": "оди́н, два, три, четы́ре, пять..."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title_ru": "ПОВТОРЕ́НИЕ",
+      "title_en": "Review",
+      "grammar_points": [
+        {
+          "topic": "Review Unit",
+          "explanation": "Consolidation of Units 0-5"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title_ru": "У Меня́ Есть...",
+      "title_en": "I Have...",
+      "grammar_points": [
+        {
+          "topic": "Genitive Case (intro)",
+          "explanation": "У меня́ есть... НЕТ + genitive"
+        },
+        {
+          "topic": "Genitive Singular",
+          "explanation": "Masc/Neut: -а/-я, Fem: -ы/-и"
+        },
+        {
+          "topic": "Negation with НЕТ",
+          "explanation": "У меня́ нет кни́ги."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title_ru": "Где Э́то?",
+      "title_en": "Where Is It?",
+      "grammar_points": [
+        {
+          "topic": "Prepositional Case",
+          "explanation": "Location: в/на + prep.: в го́роде, на столе́"
+        },
+        {
+          "topic": "Prepositional Singular",
+          "explanation": "Most nouns add -е"
+        },
+        {
+          "topic": "В vs НА",
+          "explanation": "В: inside, НА: on/at events"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title_ru": "Куда́ Вы Идёте?",
+      "title_en": "Where Are You Going?",
+      "grammar_points": [
+        {
+          "topic": "Accusative Case (full)",
+          "explanation": "Direction: Иду́ в го́род."
+        },
+        {
+          "topic": "Accusative Animate",
+          "explanation": "Animate masc = genitive: Ви́жу студе́нта."
+        },
+        {
+          "topic": "Motion Verbs (intro)",
+          "explanation": "идти́ vs ходи́ть (unidirectional vs multidirectional)"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title_ru": "Ско́лько Сто́ит?",
+      "title_en": "How Much?",
+      "grammar_points": [
+        {
+          "topic": "Genitive Plural",
+          "explanation": "-ов/-ев, -ей, zero ending"
+        },
+        {
+          "topic": "Numbers and Cases",
+          "explanation": "1+nom.sg, 2-4+gen.sg, 5-20+gen.pl"
+        },
+        {
+          "topic": "Numbers 11-100",
+          "explanation": "оди́ннадцать... два́дцать... сто"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title_ru": "ПОВТОРЕ́НИЕ",
+      "title_en": "Review",
+      "grammar_points": [
+        {
+          "topic": "Review Unit",
+          "explanation": "Cases: Nom, Acc, Gen, Prep"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title_ru": "Кому́?",
+      "title_en": "To Whom?",
+      "grammar_points": [
+        {
+          "topic": "Dative Case",
+          "explanation": "Indirect object: Я даю́ кни́гу студе́нту."
+        },
+        {
+          "topic": "Dative Singular",
+          "explanation": "Masc/Neut: -у/-ю, Fem: -е"
+        },
+        {
+          "topic": "Verbs with Dative",
+          "explanation": "помога́ть, дава́ть, говори́ть (кому́)"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title_ru": "Мне Нра́вится...",
+      "title_en": "I Like...",
+      "grammar_points": [
+        {
+          "topic": "НРА́ВИТЬСЯ Construction",
+          "explanation": "Мне нра́вится кни́га. (lit: The book pleases me)"
+        },
+        {
+          "topic": "Impersonal Dative",
+          "explanation": "Мне хо́лодно. Ему́ интере́сно."
+        },
+        {
+          "topic": "МО́ЖНО/НУ́ЖНО + Dative",
+          "explanation": "Мне мо́жно. Вам ну́жно."
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title_ru": "С Кем? Чем?",
+      "title_en": "With Whom/What?",
+      "grammar_points": [
+        {
+          "topic": "Instrumental Case",
+          "explanation": "с + instrumental, писа́ть ру́чкой"
+        },
+        {
+          "topic": "Instrumental Singular",
+          "explanation": "Masc/Neut: -ом/-ем, Fem: -ой/-ей"
+        },
+        {
+          "topic": "Professions (Instrumental)",
+          "explanation": "Он рабо́тает врачо́м."
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title_ru": "Все Паде́жи",
+      "title_en": "All Cases",
+      "grammar_points": [
+        {
+          "topic": "Six-Case System",
+          "explanation": "Им.п., Род.п., Дат.п., Вин.п., Тв.п., Пр.п."
+        },
+        {
+          "topic": "Case Selection",
+          "explanation": "Prepositions and verbs govern specific cases"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title_ru": "ПОВТОРЕ́НИЕ",
+      "title_en": "Review",
+      "grammar_points": [
+        {
+          "topic": "Review Unit",
+          "explanation": "All six cases mastery"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title_ru": "В магазине",
+      "title_en": "At the Store",
+      "grammar_points": [
+        {
+          "topic": "Shopping Vocabulary",
+          "explanation": "Ско́лько сто́ит? Я хочу́ купи́ть..."
+        },
+        {
+          "topic": "Numbers in Context",
+          "explanation": "Using numbers with rubles: рубль, рубля́, рубле́й"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "title_ru": "Вчера́",
+      "title_en": "Yesterday",
+      "grammar_points": [
+        {
+          "topic": "Past Tense (Imperfective)",
+          "explanation": "чита́л/чита́ла/чита́ло/чита́ли - gender agreement"
+        },
+        {
+          "topic": "Past Time Markers",
+          "explanation": "вчера́, на про́шлой неде́ле"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "title_ru": "Я сделал!",
+      "title_en": "I did it!",
+      "grammar_points": [
+        {
+          "topic": "Perfective Aspect",
+          "explanation": "Completed actions: сде́лал (did/made), написа́л (wrote)"
+        },
+        {
+          "topic": "Aspect Pairs",
+          "explanation": "де́лать/сде́лать, писа́ть/написа́ть"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title_ru": "Что Случи́лось?",
+      "title_en": "What Happened?",
+      "grammar_points": [
+        {
+          "topic": "Past Tense (Perfective)",
+          "explanation": "прочита́л/прочита́ла - completed action"
+        },
+        {
+          "topic": "Aspect Introduction",
+          "explanation": "Imperfective (process) vs Perfective (result)"
+        },
+        {
+          "topic": "Aspect Pairs",
+          "explanation": "чита́ть/прочита́ть, писа́ть/написа́ть"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title_ru": "Идти/Ходить",
+      "title_en": "Going (on foot)",
+      "grammar_points": [
+        {
+          "topic": "Unidirectional Motion",
+          "explanation": "идти́ - going one way (right now)"
+        },
+        {
+          "topic": "Multidirectional Motion",
+          "explanation": "ходи́ть - going habitually or round-trip"
+        },
+        {
+          "topic": "Motion + Destination",
+          "explanation": "Иду́ в шко́лу. Хожу́ в шко́лу ка́ждый день."
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title_ru": "Ехать/Ездить",
+      "title_en": "Going (transport)",
+      "grammar_points": [
+        {
+          "topic": "Transport Motion",
+          "explanation": "е́хать - one direction, е́здить - round trips"
+        },
+        {
+          "topic": "Vehicle Selection",
+          "explanation": "на авто́бусе, на маши́не, на по́езде"
+        },
+        {
+          "topic": "Direction vs Location",
+          "explanation": "Е́ду в Москву́ (acc.) vs Живу́ в Москве́ (prep.)"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "title_ru": "Завтра...",
+      "title_en": "Tomorrow...",
+      "grammar_points": [
+        {
+          "topic": "Future with БЫТЬ",
+          "explanation": "Я бу́ду чита́ть - I will read (imperfective)"
+        },
+        {
+          "topic": "Perfective Future",
+          "explanation": "Я прочита́ю - I will read (and finish)"
+        },
+        {
+          "topic": "Future Time Words",
+          "explanation": "за́втра, послеза́втра, на сле́дующей неде́ле"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "title_ru": "Я сделаю!",
+      "title_en": "I will do it!",
+      "grammar_points": [
+        {
+          "topic": "Perfective Future",
+          "explanation": "Сде́лаю - will do/complete, напишу́ - will write"
+        },
+        {
+          "topic": "Future Plans",
+          "explanation": "Expressing intentions with perfective verbs"
+        },
+        {
+          "topic": "Time Adverbs",
+          "explanation": "ско́ро (soon), по́том (then), пото́м (later)"
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "title_ru": "Движе́ние",
+      "title_en": "Motion",
+      "grammar_points": [
+        {
+          "topic": "Motion Verbs (Unidirectional)",
+          "explanation": "идти́, е́хать, лете́ть - one direction"
+        },
+        {
+          "topic": "Motion Verbs (Multidirectional)",
+          "explanation": "ходи́ть, е́здить, лета́ть - round trips"
+        },
+        {
+          "topic": "Prefixed Motion Verbs",
+          "explanation": "вы́йти, войти́, уйти́, прийти́"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "title_ru": "Если бы...",
+      "title_en": "If only...",
+      "grammar_points": [
+        {
+          "topic": "Conditional Mood",
+          "explanation": "Е́сли бы я знал... (If I knew...)"
+        },
+        {
+          "topic": "БЫ Particle",
+          "explanation": "Past tense + бы = hypothetical/unreal"
+        },
+        {
+          "topic": "Wishes and Regrets",
+          "explanation": "Хоте́л бы... (I would like...)"
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "title_ru": "Чтобы...",
+      "title_en": "In order to...",
+      "grammar_points": [
+        {
+          "topic": "Purpose Clauses",
+          "explanation": "Что́бы + infinitive/past: чтобы понима́ть"
+        },
+        {
+          "topic": "Что́бы vs Чтобы́",
+          "explanation": "что́бы (purpose) vs чтобы́ (so that)"
+        },
+        {
+          "topic": "Indirect Commands",
+          "explanation": "Я хочу́, что́бы ты прочита́л."
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "title_ru": "Говорят, что...",
+      "title_en": "They say that...",
+      "grammar_points": [
+        {
+          "topic": "Indirect Speech",
+          "explanation": "Он сказа́л, что... (He said that...)"
+        },
+        {
+          "topic": "Reported Questions",
+          "explanation": "Я спроси́л, где он живёт."
+        },
+        {
+          "topic": "Impersonal Constructions",
+          "explanation": "Говоря́т, что... (They say that...)"
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "title_ru": "Разговорный русский",
+      "title_en": "Colloquial Russian",
+      "grammar_points": [
+        {
+          "topic": "Colloquial Expressions",
+          "explanation": "Ну, давай!, Ладно, Короче"
+        },
+        {
+          "topic": "Particles",
+          "explanation": "же, ведь, -то, -ка for emphasis"
+        },
+        {
+          "topic": "Informal Speech",
+          "explanation": "Shortened forms, slang, discourse markers"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "title_ru": "ФИНА́ЛЬНОЕ ПОВТОРЕ́НИЕ",
+      "title_en": "Final Review",
+      "grammar_points": [
+        {
+          "topic": "Course Completion",
+          "explanation": "Russian grammar A1-B1: all cases, aspect, motion verbs"
+        }
+      ]
+    }
+  ]
+}
