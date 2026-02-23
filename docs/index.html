@@ -3,26 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Russian Course | Поехали!</title>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Rhodes Russian | Поехали!</title>
+  <!-- Rhodes Shared Theme -->
+  <link rel="stylesheet" href="../shared/rhodes-theme.css">
+  <script src="../shared/rhodes-theme.js"></script>
   <style>
+    /* Russian flag colors - white, blue, red */
     :root {
-      --bg: #f8f9fa;
-      --text: #1a1a2e;
       --accent-blue: #0039A6;
       --accent-red: #D52B1E;
       --accent-white: #ffffff;
-      --border: #333;
-      --success: #28a745;
-      --error: #dc3545;
-      --warning: #ffc107;
-      /* Russian 6-case colors */
-      --case-nom: #0066CC;
-      --case-gen: #CC0000;
-      --case-dat: #FF8800;
-      --case-acc: #9933CC;
-      --case-ins: #009933;
-      --case-pre: #009999;
+    }
+    
+    body.dark-mode {
+      --accent-blue: #4169E1;
+      --accent-red: #FF6B6B;
+      --accent-white: #333333;
+    }
+
+    /* Language-specific accent colors */
+    .header, .logo-box {
+      border-color: var(--accent-primary) !important;
+      color: var(--accent-primary) !important;
+    }
+    .header h1, .course-title {
+      color: var(--accent-primary) !important;
+      text-shadow: 0 0 10px var(--accent-primary);
+    }
+    .btn-primary {
+      background: var(--accent-blue) !important;
+      border-color: var(--accent-blue) !important;
+      color: white !important;
+    }
+    /* LEFT button: Always shows left flag color (blue) */
+    #linearModeBtn {
+      background: var(--accent-blue) !important;
+      border-color: var(--accent-blue) !important;
+      color: white !important;
+    }
+    /* RIGHT button: Shows right flag color (red) only when active */
+    #srsModeBtn.active {
+      background: var(--accent-red) !important;
+      border-color: var(--accent-red) !important;
+      color: white !important;
+    }
+    .unit-card:hover {
+      border-color: var(--accent-primary) !important;
+    }
+    .progress-fill {
+      background: var(--accent-primary) !important;
+    }
+    h3 {
+      color: var(--accent-primary);
     }
 
     * {
@@ -54,7 +89,8 @@
       border: 3px solid var(--border);
       padding: 15px 20px;
       margin-bottom: 20px;
-      background: var(--accent-white);
+      color: var(--text);
+      background: var(--panel);
     }
 
     .logo {
@@ -83,7 +119,7 @@
       flex: 1;
     }
 
-    .russian-flag .white { background: #FFFFFF; }
+    .russian-flag .white { background: var(--bg-secondary); }
     .russian-flag .blue { background: var(--accent-blue); }
     .russian-flag .red { background: var(--accent-red); }
 
@@ -107,7 +143,7 @@
 
     .subtitle {
       font-size: 14px;
-      color: #666;
+      color: var(--text-dim);
     }
 
     /* Mode Selector */
@@ -121,7 +157,8 @@
       flex: 1;
       padding: 15px;
       border: 3px solid var(--border);
-      background: var(--accent-white);
+      color: var(--text);
+      background: var(--panel);
       font-family: inherit;
       font-size: 18px;
       cursor: pointer;
@@ -129,13 +166,7 @@
     }
 
     .mode-btn:hover {
-      background: #eee;
-    }
-
-    .mode-btn.active {
-      background: var(--accent-blue);
-      color: white;
-      border-color: var(--accent-blue);
+      background: var(--bg-tertiary);
     }
 
     .mode-btn .mode-icon {
@@ -153,9 +184,10 @@
     }
 
     .unit-card {
+      color: var(--text);
       border: 2px solid var(--border);
       padding: 15px;
-      background: var(--accent-white);
+      background: var(--panel);
       cursor: pointer;
       transition: all 0.2s;
     }
@@ -176,7 +208,7 @@
 
     .unit-number {
       font-size: 14px;
-      color: #666;
+      color: var(--text-dim);
     }
 
     .unit-title {
@@ -213,7 +245,8 @@
     .drill-view {
       display: none;
       border: 3px solid var(--border);
-      background: var(--accent-white);
+      color: var(--text);
+      background: var(--panel);
       padding: 20px;
     }
 
@@ -234,7 +267,7 @@
       font-size: 14px;
       padding: 3px 8px;
       border: 1px solid var(--border);
-      background: #f0f0f0;
+      background: var(--bg-tertiary);
     }
 
     .drill-content {
@@ -244,7 +277,7 @@
     .prompt {
       font-size: 22px;
       padding: 15px;
-      background: #f5f5f5;
+      background: var(--bg-tertiary);
       border: 2px solid var(--border);
       margin-bottom: 15px;
     }
@@ -255,7 +288,7 @@
 
     .prompt-en {
       font-size: 16px;
-      color: #666;
+      color: var(--text-dim);
       margin-top: 5px;
     }
 
@@ -269,6 +302,7 @@
       padding: 15px;
       font-family: inherit;
       font-size: 20px;
+      color: var(--text);
       border: 3px solid var(--border);
       outline: none;
     }
@@ -279,12 +313,12 @@
 
     .input-area input.correct {
       border-color: var(--success);
-      background: #d4edda;
+      background: var(--green-bg);
     }
 
     .input-area input.incorrect {
       border-color: var(--error);
-      background: #f8d7da;
+      background: var(--red-bg);
     }
 
     /* Feedback */
@@ -300,12 +334,12 @@
     }
 
     .feedback.success {
-      background: #d4edda;
+      background: var(--green-bg);
       border-color: var(--success);
     }
 
     .feedback.error {
-      background: #f8d7da;
+      background: var(--red-bg);
       border-color: var(--error);
     }
 
@@ -335,17 +369,18 @@
     }
 
     .btn {
+      color: var(--text);
       padding: 12px 25px;
       font-family: inherit;
       font-size: 18px;
       border: 2px solid var(--border);
-      background: var(--accent-white);
+      background: var(--panel);
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .btn:hover {
-      background: #eee;
+      background: var(--bg-tertiary);
     }
 
     .btn-primary {
@@ -370,7 +405,7 @@
       font-family: inherit;
       font-size: 14px;
       border: 2px solid var(--border);
-      background: var(--accent-white);
+      background: var(--panel);
       cursor: pointer;
     }
 
@@ -384,7 +419,7 @@
       display: flex;
       justify-content: space-between;
       padding: 10px 15px;
-      background: #f0f0f0;
+      background: var(--bg-tertiary);
       border: 2px solid var(--border);
       margin-bottom: 20px;
       font-size: 14px;
@@ -408,7 +443,7 @@
       border: 2px solid var(--border);
       padding: 15px;
       text-align: center;
-      background: var(--accent-white);
+      background: var(--panel);
     }
 
     .srs-stat-value {
@@ -418,7 +453,7 @@
 
     .srs-stat-label {
       font-size: 14px;
-      color: #666;
+      color: var(--text-dim);
     }
 
     /* Audio button */
@@ -426,7 +461,7 @@
       width: 40px;
       height: 40px;
       border: 2px solid var(--border);
-      background: var(--accent-white);
+      background: var(--panel);
       cursor: pointer;
       font-size: 20px;
       display: flex;
@@ -435,7 +470,7 @@
     }
 
     .audio-btn:hover {
-      background: #eee;
+      background: var(--bg-tertiary);
     }
 
     /* Microphone button */
@@ -443,7 +478,7 @@
       width: 50px;
       height: 50px;
       border: 3px solid var(--border);
-      background: var(--accent-white);
+      background: var(--panel);
       cursor: pointer;
       font-size: 24px;
       border-radius: 50%;
@@ -454,7 +489,7 @@
     }
 
     .mic-btn:hover {
-      background: #eee;
+      background: var(--bg-tertiary);
     }
 
     .mic-btn.recording {
@@ -480,7 +515,7 @@
       gap: 10px;
       margin-bottom: 15px;
       padding: 10px;
-      background: #f0f0f0;
+      background: var(--bg-tertiary);
       border: 2px solid var(--border);
     }
 
@@ -501,7 +536,7 @@
 
     .voice-status {
       font-size: 14px;
-      color: #666;
+      color: var(--text-dim);
       text-align: center;
       margin-top: 5px;
       min-height: 20px;
@@ -510,7 +545,7 @@
     /* Keyboard hints */
     .keyboard-hints {
       font-size: 12px;
-      color: #666;
+      color: var(--text-dim);
       text-align: center;
       margin-top: 20px;
     }
@@ -518,12 +553,12 @@
     kbd {
       padding: 2px 6px;
       border: 1px solid #ccc;
-      background: #f5f5f5;
+      background: var(--bg-tertiary);
       border-radius: 3px;
     }
   </style>
 </head>
-<body>
+<body data-lang="russian">
   <div class="container">
     <!-- Header -->
     <header class="header">
@@ -533,12 +568,13 @@
           <span class="blue"></span>
           <span class="red"></span>
         </div>
-        <div class="logo-box">THE RUSSIAN COURSE</div>
+        <div class="logo-box">RHODES RUSSIAN</div>
       </div>
       <div class="subtitle">BY RHODES — Поехали!</div>
-      <div style="display: flex; gap: 8px;">
-        <button onclick="exportProgress()" style="font-family: inherit; font-size: 12px; padding: 4px 8px; cursor: pointer; background: #fff; border: 1px solid #333;">Export</button>
-        <button onclick="document.getElementById('importFile').click()" style="font-family: inherit; font-size: 12px; padding: 4px 8px; cursor: pointer; background: #fff; border: 1px solid #333;">Import</button>
+      <!-- HIDDEN FOR NOW: Export/Import functionality preserved but UI hidden -->
+      <div style="display: none; gap: 8px;">
+        <button onclick="exportProgress()" style="font-family: inherit; font-size: 12px; padding: 4px 8px; cursor: pointer; background: var(--bg-secondary); border: 1px solid #333;">Export</button>
+        <button onclick="document.getElementById('importFile').click()" style="font-family: inherit; font-size: 12px; padding: 4px 8px; cursor: pointer; background: var(--bg-secondary); border: 1px solid #333;">Import</button>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importProgress(event)">
       </div>
     </header>
@@ -616,7 +652,7 @@
       <!-- Dialogue Section -->
       <div class="unit-section" id="dialogueSection">
         <h3 style="margin-bottom: 10px; color: var(--accent-blue);">&#128172; DIALOGUE</h3>
-        <div id="dialogueContent" style="background: #f5f5f5; border: 2px solid var(--border); padding: 15px; margin-bottom: 15px; font-size: 16px; line-height: 1.8;">
+        <div id="dialogueContent" style="background: var(--bg-tertiary); border: 2px solid var(--border); padding: 15px; margin-bottom: 15px; font-size: 16px; line-height: 1.8;">
           <!-- Dialogue lines populated by JS -->
         </div>
         <div style="display: flex; gap: 10px; margin-bottom: 20px;">
@@ -636,7 +672,7 @@
       <!-- Drills Section -->
       <div class="unit-section" id="drillsSection" style="margin-top: 20px;">
         <h3 style="margin-bottom: 10px; color: var(--accent-blue);">&#9998; DRILLS</h3>
-        <p style="color: #666; margin-bottom: 15px;"><span id="drillCount">0</span> sentences to practice</p>
+        <p style="color: var(--text-dim); margin-bottom: 15px;"><span id="drillCount">0</span> sentences to practice</p>
         <button class="btn btn-primary" style="width: 100%; font-size: 20px; padding: 15px;" onclick="startUnitDrills()">
           START DRILLS &#10140;
         </button>
@@ -651,7 +687,7 @@
           <span id="drillProgress">1 / 10</span>
         </div>
         <div style="display: flex; gap: 10px;">
-          <button class="audio-btn" onclick="playAudio('fr')" title="Play Russian">&#127467;&#127479;</button>
+          <button class="audio-btn" onclick="playAudio('ru')" title="Play Russian">&#127467;&#127479;</button>
           <button class="audio-btn" onclick="playAudio('en')" title="Play English">&#127468;&#127463;</button>
           <button class="btn" onclick="closeDrill()">&#10005; Close</button>
         </div>
@@ -671,14 +707,14 @@
 
       <!-- Grammar Hints (shown before prompt in translate mode) -->
       <div id="grammarHints" style="background: #e8f4e8; border: 2px solid #28a745; padding: 10px 15px; margin-bottom: 15px; font-size: 14px;">
-        <strong style="color: #28a745;">&#128161; You'll need:</strong>
+        <strong style="color: var(--green);">&#128161; You'll need:</strong>
         <span id="hintsContent">verb "être" conjugated, greeting phrase</span>
       </div>
 
       <!-- Drill Content -->
       <div class="drill-content">
         <div class="prompt">
-          <div class="prompt-en" id="promptEn" style="font-size: 20px; color: #333;">I'm happy to meet you.</div>
+          <div class="prompt-en" id="promptEn" style="font-size: 20px; color: var(--text);">I'm happy to meet you.</div>
           <div class="prompt-fr" id="promptFr" style="color: var(--accent-blue); margin-top: 8px; display: none;">Je suis heureux de faire votre connaissance.</div>
         </div>
       </div>
@@ -771,6 +807,57 @@
   <script src="js/fsi-srs.js"></script>
   <script src="js/fsi-linear.js"></script>
   <script>
+    // ===========================================
+    // AUDIO FEEDBACK - Correct/Incorrect Sounds
+    // ===========================================
+    const AudioFeedback = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        return this.ctx;
+      },
+      // Play a success sound (rising tone)
+      correct() {
+        try {
+          const ctx = this.init();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, ctx.currentTime);  // A4
+          osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);  // A5 (rising)
+          gain.gain.setValueAtTime(0.3, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+          osc.start(ctx.currentTime);
+          osc.stop(ctx.currentTime + 0.2);
+        } catch (e) {
+          console.warn('Audio feedback unavailable:', e.message);
+        }
+      },
+      // Play an error sound (descending tone)
+      incorrect() {
+        try {
+          const ctx = this.init();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(330, ctx.currentTime);  // E4
+          osc.frequency.exponentialRampToValueAtTime(220, ctx.currentTime + 0.2);  // A3 (falling)
+          gain.gain.setValueAtTime(0.3, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+          osc.start(ctx.currentTime);
+          osc.stop(ctx.currentTime + 0.25);
+        } catch (e) {
+          console.warn('Audio feedback unavailable:', e.message);
+        }
+      }
+    };
+
     // Cyrillic keyboard helper
     function insertChar(char) {
       const input = document.getElementById('userInput');
@@ -793,6 +880,8 @@
     let drillMode = 'translate';  // 'translate' or 'repeat'
     let sessionCorrect = 0;
     let sessionTotal = 0;
+    let retryMode = false;  // After wrong answer, user must retype correctly
+    let retryExpected = '';
 
     // Grammar hint patterns - Russian grammar points
     const GRAMMAR_HINTS = {
@@ -1090,11 +1179,16 @@
 
     // Load course data
     async function loadCourse() {
-      // Initialize storage system
-      await Storage.init();
-
-      // Always render units first (they're hardcoded)
+      // Always render units first (they're hardcoded) - do this BEFORE async stuff
+      console.log('loadCourse() starting...');
       renderUnits();
+
+      // Initialize storage system
+      try {
+        await Storage.init();
+      } catch (e) {
+        console.error('Storage init failed:', e);
+      }
 
       try {
         // Load drills database
@@ -1121,7 +1215,7 @@
         // Show error if on file:// protocol
         if (window.location.protocol === 'file:') {
           document.getElementById('unitsGrid').innerHTML = `
-            <div style="grid-column: 1/-1; padding: 20px; background: #fff3cd; border: 2px solid #ffc107; margin-top: 10px;">
+            <div style="grid-column: 1/-1; padding: 20px; background: var(--yellow-bg); border: 2px solid #ffc107; margin-top: 10px;">
               <strong>Cannot load drills from file:// URL</strong><br><br>
               Browsers block local file access. Use:<br><br>
               <strong>Option 1 (Recommended):</strong> Open from extension popup (FSI FRENCH COURSE button)<br>
@@ -1135,59 +1229,173 @@
 
     // Render unit cards
     function renderUnits() {
+      console.log('renderUnits() called');
       const grid = document.getElementById('unitsGrid');
+      if (!grid) { console.error('unitsGrid element not found!'); return; }
       grid.innerHTML = '';
 
-      // Volume 1 header
-      const vol1Header = document.createElement('h3');
-      vol1Header.textContent = 'VOLUME 1: Units 1-12';
-      vol1Header.style.cssText = 'grid-column: 1/-1; margin: 10px 0;';
-      grid.appendChild(vol1Header);
-
       const units = [
-        // Volume 1
-        { id: 1, title_fr: 'Dans la rue', title_en: 'In the Street' },
-        { id: 2, title_fr: 'Dans un petit hôtel', title_en: 'In a Small Hotel' },
-        { id: 3, title_fr: 'A la gare', title_en: 'At the Train Station' },
-        { id: 4, title_fr: 'Faisons des courses', title_en: "Let's Go Shopping" },
-        { id: 5, title_fr: 'Le climat', title_en: 'The Climate' },
-        { id: 6, title_fr: 'Révision', title_en: 'Review' },
-        { id: 7, title_fr: 'Prenons rendez-vous', title_en: "Let's Make an Appointment" },
-        { id: 8, title_fr: 'Chez le coiffeur', title_en: 'At the Hairdresser' },
-        { id: 9, title_fr: 'Au restaurant', title_en: 'At the Restaurant' },
-        { id: 10, title_fr: 'Au bureau', title_en: 'At the Office' },
-        { id: 11, title_fr: 'Maison à louer', title_en: 'House for Rent' },
-        { id: 12, title_fr: 'Vocabulaire', title_en: 'Vocabulary Reference' },
-        // Volume 2
-        { id: 13, title_fr: 'Au bureau de placement', title_en: 'At the Employment Office' },
-        { id: 14, title_fr: 'La douane', title_en: 'Customs' },
-        { id: 15, title_fr: "L'école", title_en: 'School' },
-        { id: 16, title_fr: 'Parlons du spectacle', title_en: "Let's Talk About the Show" },
-        { id: 17, title_fr: "À l'aéroport", title_en: 'At the Airport' },
-        { id: 18, title_fr: 'Révision', title_en: 'Review' },
-        { id: 19, title_fr: 'Chez le médecin', title_en: 'At the Doctor' },
-        { id: 20, title_fr: 'La banque', title_en: 'The Bank' },
-        { id: 21, title_fr: 'Les transports', title_en: 'Transportation' },
-        { id: 22, title_fr: 'La politique', title_en: 'Politics' },
-        { id: 23, title_fr: "L'économie", title_en: 'The Economy' },
-        { id: 24, title_fr: 'Révision finale', title_en: 'Final Review' }
+        // Phase 1: Foundations (0-5)
+        { id: 0, title_ru: 'Азбука', title_en: 'The Alphabet', grammar: [
+            { title: 'Cyrillic Alphabet', desc: '33 letters: А-Я, including Ъ and Ь signs' },
+            { title: 'False Friends', desc: 'В=v, Н=n, Р=r, С=s - look like English, sound different' },
+            { title: 'Vowel Reduction', desc: 'Unstressed О→А, Е→И: молоко́ = [малако́]' },
+            { title: 'Palatalization', desc: 'Soft sign Ь softens preceding consonant' }
+          ] },
+        { id: 1, title_ru: 'Привет!', title_en: 'Hello!', grammar: [
+            { title: 'Basic Greetings', desc: 'Приве́т (informal), Здра́вствуйте (formal)' },
+            { title: 'Self Introduction', desc: 'Меня́ зову́т... (My name is...)' },
+            { title: 'Formal vs Informal', desc: 'Ты (informal) vs Вы (formal)' }
+          ] },
+        { id: 2, title_ru: 'Кто это?', title_en: 'Who is this?', grammar: [
+            { title: 'Personal Pronouns (Nominative)', desc: 'я, ты, он, она́, оно́, мы, вы, они́' },
+            { title: 'БЫТЬ Omission', desc: 'No \'to be\' in present: Я — Ива́н (I am Ivan)' },
+            { title: 'ЭТО Construction', desc: 'Э́то Ива́н. Э́то кни́га. (This is...)' },
+            { title: 'Formal vs Informal', desc: 'Вы (formal) vs ты (informal)' }
+          ] },
+        { id: 3, title_ru: 'Что вы делаете?', title_en: 'What do you do?', grammar: [
+            { title: 'Nominative Case', desc: 'Subject case: Студе́нт чита́ет.' },
+            { title: 'Gender Recognition', desc: 'Masc: consonant/-й, Fem: -а/-я, Neut: -о/-е' },
+            { title: 'Plurals (Nominative)', desc: '-ы/-и: студе́нт→студе́нты' }
+          ] },
+        { id: 4, title_ru: 'Я говорю...', title_en: 'I speak...', grammar: [
+            { title: '1st Conjugation Verbs', desc: 'чита́ть: чита́ю, чита́ешь, чита́ет, чита́ем' },
+            { title: 'Present Tense Formation', desc: 'Remove infinitive ending, add personal endings' },
+            { title: 'Accusative Case (intro)', desc: 'Direct object: Я чита́ю кни́гу.' }
+          ] },
+        { id: 5, title_ru: 'Повторение', title_en: 'Review 1', grammar: [
+            { title: '2nd Conjugation Verbs', desc: 'говори́ть: говорю́, говори́шь, говори́т' },
+            { title: 'Possessive Pronouns', desc: 'мой/моя́/моё/мои́, твой, его́, её, наш, ваш, их' },
+            { title: 'Numbers 1-10', desc: 'оди́н, два, три, четы́ре, пять...' }
+          ] },
+        // Phase 2: Cases I (6-10)
+        { id: 6, title_ru: 'У меня есть...', title_en: 'I have...', grammar: [
+            { title: 'Review Unit', desc: 'Consolidation of Units 0-5' }
+          ] },
+        { id: 7, title_ru: 'Где?', title_en: 'Where?', grammar: [
+            { title: 'Genitive Case (intro)', desc: 'У меня́ есть... НЕТ + genitive' },
+            { title: 'Genitive Singular', desc: 'Masc/Neut: -а/-я, Fem: -ы/-и' },
+            { title: 'Negation with НЕТ', desc: 'У меня́ нет кни́ги.' }
+          ] },
+        { id: 8, title_ru: 'Нет + Genitive', title_en: 'There is no...', grammar: [
+            { title: 'Prepositional Case', desc: 'Location: в/на + prep.: в го́роде, на столе́' },
+            { title: 'Prepositional Singular', desc: 'Most nouns add -е' },
+            { title: 'В vs НА', desc: 'В: inside, НА: on/at events' }
+          ] },
+        { id: 9, title_ru: 'Сколько?', title_en: 'How much?', grammar: [
+            { title: 'Accusative Case (full)', desc: 'Direction: Иду́ в го́род.' },
+            { title: 'Accusative Animate', desc: 'Animate masc = genitive: Ви́жу студе́нта.' },
+            { title: 'Motion Verbs (intro)', desc: 'идти́ vs ходи́ть (unidirectional vs multidirectional)' }
+          ] },
+        { id: 10, title_ru: 'Повторение', title_en: 'Review 2', grammar: [
+            { title: 'Genitive Plural', desc: '-ов/-ев, -ей, zero ending' },
+            { title: 'Numbers and Cases', desc: '1+nom.sg, 2-4+gen.sg, 5-20+gen.pl' },
+            { title: 'Numbers 11-100', desc: 'оди́ннадцать... два́дцать... сто' }
+          ] },
+        // Phase 3: Cases II (11-15)
+        { id: 11, title_ru: 'Мне нужно...', title_en: 'I need...', grammar: [
+            { title: 'Review Unit', desc: 'Cases: Nom, Acc, Gen, Prep' }
+          ] },
+        { id: 12, title_ru: 'Кому?', title_en: 'To whom?', grammar: [
+            { title: 'Dative Case', desc: 'Indirect object: Я даю́ кни́гу студе́нту.' },
+            { title: 'Dative Singular', desc: 'Masc/Neut: -у/-ю, Fem: -е' },
+            { title: 'Verbs with Dative', desc: 'помога́ть, дава́ть, говори́ть (кому́)' }
+          ] },
+        { id: 13, title_ru: 'Чем? С кем?', title_en: 'With what/whom?', grammar: [
+            { title: 'НРА́ВИТЬСЯ Construction', desc: 'Мне нра́вится кни́га. (lit: The book pleases me)' },
+            { title: 'Impersonal Dative', desc: 'Мне хо́лодно. Ему́ интере́сно.' },
+            { title: 'МО́ЖНО/НУ́ЖНО + Dative', desc: 'Мне мо́жно. Вам ну́жно.' }
+          ] },
+        { id: 14, title_ru: 'Все падежи', title_en: 'All Cases', grammar: [
+            { title: 'Instrumental Case', desc: 'с + instrumental, писа́ть ру́чкой' },
+            { title: 'Instrumental Singular', desc: 'Masc/Neut: -ом/-ем, Fem: -ой/-ей' },
+            { title: 'Professions (Instrumental)', desc: 'Он рабо́тает врачо́м.' }
+          ] },
+        { id: 15, title_ru: 'Повторение', title_en: 'Review 3', grammar: [
+            { title: 'Six-Case System', desc: 'Им.п., Род.п., Дат.п., Вин.п., Тв.п., Пр.п.' },
+            { title: 'Case Selection', desc: 'Prepositions and verbs govern specific cases' }
+          ] },
+        // Phase 4: Practical Life (16-20)
+        { id: 16, title_ru: 'В ресторане', title_en: 'At the Restaurant', grammar: [
+            { title: 'Review Unit', desc: 'All six cases mastery' }
+          ] },
+        { id: 17, title_ru: 'В магазине', title_en: 'At the Store', grammar: [
+            { title: 'Shopping Vocabulary', desc: 'Ско́лько сто́ит? Я хочу́ купи́ть...' },
+            { title: 'Numbers in Context', desc: 'Using numbers with rubles: рубль, рубля́, рубле́й' }
+          ] },
+        { id: 18, title_ru: 'Вчера...', title_en: 'Yesterday...', grammar: [
+            { title: 'Past Tense (Imperfective)', desc: 'чита́л/чита́ла/чита́ло/чита́ли - gender agreement' },
+            { title: 'Past Time Markers', desc: 'вчера́, на про́шлой неде́ле' }
+          ] },
+        { id: 19, title_ru: 'Я сделал!', title_en: 'I did it!', grammar: [
+            { title: 'Perfective Aspect', desc: 'Completed actions: сде́лал (did/made), написа́л (wrote)' },
+            { title: 'Aspect Pairs', desc: 'де́лать/сде́лать, писа́ть/написа́ть' }
+          ] },
+        { id: 20, title_ru: 'Повторение', title_en: 'Review 4', grammar: [
+            { title: 'Past Tense (Perfective)', desc: 'прочита́л/прочита́ла - completed action' },
+            { title: 'Aspect Introduction', desc: 'Imperfective (process) vs Perfective (result)' },
+            { title: 'Aspect Pairs', desc: 'чита́ть/прочита́ть, писа́ть/написа́ть' }
+          ] },
+        // Phase 5: Movement & Future (21-25)
+        { id: 21, title_ru: 'Идти/Ходить', title_en: 'Going (on foot)', grammar: [
+            { title: 'Unidirectional Motion', desc: 'идти́ - going one way (right now)' },
+            { title: 'Multidirectional Motion', desc: 'ходи́ть - going habitually or round-trip' },
+            { title: 'Motion + Destination', desc: 'Иду́ в шко́лу. Хожу́ в шко́лу ка́ждый день.' }
+          ] },
+        { id: 22, title_ru: 'Ехать/Ездить', title_en: 'Going (transport)', grammar: [
+            { title: 'Transport Motion', desc: 'е́хать - one direction, е́здить - round trips' },
+            { title: 'Vehicle Selection', desc: 'на авто́бусе, на маши́не, на по́езде' },
+            { title: 'Direction vs Location', desc: 'Е́ду в Москву́ (acc.) vs Живу́ в Москве́ (prep.)' }
+          ] },
+        { id: 23, title_ru: 'Завтра...', title_en: 'Tomorrow...', grammar: [
+            { title: 'Future with БЫТЬ', desc: 'Я бу́ду чита́ть - I will read (imperfective)' },
+            { title: 'Perfective Future', desc: 'Я прочита́ю - I will read (and finish)' },
+            { title: 'Future Time Words', desc: 'за́втра, послеза́втра, на сле́дующей неде́ле' }
+          ] },
+        { id: 24, title_ru: 'Я сделаю!', title_en: 'I will do it!', grammar: [
+            { title: 'Perfective Future', desc: 'Сде́лаю - will do/complete, напишу́ - will write' },
+            { title: 'Future Plans', desc: 'Expressing intentions with perfective verbs' },
+            { title: 'Time Adverbs', desc: 'ско́ро (soon), по́том (then), пото́м (later)' }
+          ] },
+        { id: 25, title_ru: 'Повторение', title_en: 'Review 5', grammar: [
+            { title: 'Motion Verbs (Unidirectional)', desc: 'идти́, е́хать, лете́ть - one direction' },
+            { title: 'Motion Verbs (Multidirectional)', desc: 'ходи́ть, е́здить, лета́ть - round trips' },
+            { title: 'Prefixed Motion Verbs', desc: 'вы́йти, войти́, уйти́, прийти́' }
+          ] },
+        // Phase 6: Mastery (26-30)
+        { id: 26, title_ru: 'Если бы...', title_en: 'If only...', grammar: [
+            { title: 'Conditional Mood', desc: 'Е́сли бы я знал... (If I knew...)' },
+            { title: 'БЫ Particle', desc: 'Past tense + бы = hypothetical/unreal' },
+            { title: 'Wishes and Regrets', desc: 'Хоте́л бы... (I would like...)' }
+          ] },
+        { id: 27, title_ru: 'Чтобы...', title_en: 'In order to...', grammar: [
+            { title: 'Purpose Clauses', desc: 'Что́бы + infinitive/past: чтобы понима́ть' },
+            { title: 'Что́бы vs Чтобы́', desc: 'что́бы (purpose) vs чтобы́ (so that)' },
+            { title: 'Indirect Commands', desc: 'Я хочу́, что́бы ты прочита́л.' }
+          ] },
+        { id: 28, title_ru: 'Говорят, что...', title_en: 'They say that...', grammar: [
+            { title: 'Indirect Speech', desc: 'Он сказа́л, что... (He said that...)' },
+            { title: 'Reported Questions', desc: 'Я спроси́л, где он живёт.' },
+            { title: 'Impersonal Constructions', desc: 'Говоря́т, что... (They say that...)' }
+          ] },
+        { id: 29, title_ru: 'Разговорный русский', title_en: 'Colloquial Russian', grammar: [
+            { title: 'Colloquial Expressions', desc: 'Ну, давай!, Ладно, Короче' },
+            { title: 'Particles', desc: 'же, ведь, -то, -ка for emphasis' },
+            { title: 'Informal Speech', desc: 'Shortened forms, slang, discourse markers' }
+          ] },
+        { id: 30, title_ru: 'Финальный экзамен', title_en: 'Final Exam', grammar: [
+            { title: 'Course Completion', desc: 'Russian grammar A1-B1: all cases, aspect, motion verbs' }
+          ] }
       ];
 
       for (const unit of units) {
-        // Add Volume 2 header before unit 13
-        if (unit.id === 13) {
-          const vol2Header = document.createElement('h3');
-          vol2Header.textContent = 'VOLUME 2: Units 13-24';
-          vol2Header.style.cssText = 'grid-column: 1/-1; margin: 20px 0 10px 0;';
-          grid.appendChild(vol2Header);
-        }
         const progress = getUnitProgress(unit.id);
         const card = document.createElement('div');
         card.className = 'unit-card' + (progress === 100 ? ' completed' : '');
         card.innerHTML = `
           <div class="unit-number">UNIT ${unit.id}</div>
-          <div class="unit-title">${unit.title_fr}</div>
-          <div style="font-size: 14px; color: #666;">${unit.title_en}</div>
+          <div class="unit-title">${unit.title_ru}</div>
+          <div style="font-size: 14px; color: var(--text-dim);">${unit.title_en}</div>
           <div class="unit-progress">
             <div class="progress-bar">
               <div class="progress-fill" style="width: ${progress}%"></div>
@@ -1198,6 +1406,7 @@
         card.onclick = () => openUnit(unit.id);
         grid.appendChild(card);
       }
+      console.log('renderUnits() completed, created', units.length, 'unit cards');
     }
 
     // Get unit progress from storage
@@ -1232,418 +1441,1049 @@
 
     // Unit data with dialogues and grammar
     const UNIT_DATA = {
-      1: {
-        title_fr: 'Dans la rue',
-        title_en: 'In the Street',
-        dialogue: [
-          { speaker: 'M. Durand', fr: 'Bonjour, Monsieur.', en: 'Hello, Sir.' },
-          { speaker: 'M. Lelong', fr: 'Bonjour, Monsieur Durand. Comment allez-vous?', en: 'Hello, Mr. Durand. How are you?' },
-          { speaker: 'M. Durand', fr: 'Très bien, merci. Et vous?', en: 'Very well, thank you. And you?' },
-          { speaker: 'M. Lelong', fr: 'Pas mal, merci.', en: 'Not bad, thank you.' },
-          { speaker: 'M. Durand', fr: 'Et votre frère, comment va-t-il?', en: 'And your brother, how is he?' },
-          { speaker: 'M. Lelong', fr: 'Il va très bien. Il est en vacances.', en: 'He is doing very well. He is on vacation.' },
-          { speaker: 'M. Durand', fr: 'Où est-il?', en: 'Where is he?' },
-          { speaker: 'M. Lelong', fr: 'Il est à Lyon avec ma soeur.', en: 'He is in Lyon with my sister.' }
-        ],
-        grammar: [
-          { title: 'Greetings', desc: 'Bonjour (hello), Comment allez-vous? (How are you? - formal), Très bien (Very well)' },
-          { title: 'Être (to be)', desc: 'Je suis, tu es, il/elle est, nous sommes, vous êtes, ils/elles sont' },
-          { title: 'Possessive Adjectives', desc: 'mon/ma/mes (my), votre/vos (your-formal), son/sa/ses (his/her)' },
-          { title: 'Location with "à"', desc: 'Il est à Lyon (He is in Lyon), à la gare (at the station), au café (at the café)' }
-        ]
+  "1": {
+    "title_ru": "Приве́т!",
+    "title_en": "Hello!",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Здра́вствуйте!",
+        "en": "Hello!"
       },
-      2: {
-        title_fr: 'Dans un petit hôtel',
-        title_en: 'In a Small Hotel',
-        dialogue: [
-          { speaker: 'Client', fr: 'Bonjour, Madame. Avez-vous une chambre?', en: 'Hello, Madam. Do you have a room?' },
-          { speaker: 'Réceptionniste', fr: 'Oui, Monsieur. Pour combien de personnes?', en: 'Yes, Sir. For how many people?' },
-          { speaker: 'Client', fr: 'Pour une personne.', en: 'For one person.' },
-          { speaker: 'Réceptionniste', fr: 'Pour combien de jours?', en: 'For how many days?' },
-          { speaker: 'Client', fr: 'Pour trois jours.', en: 'For three days.' },
-          { speaker: 'Réceptionniste', fr: 'Voulez-vous une salle de bains?', en: 'Do you want a bathroom?' },
-          { speaker: 'Client', fr: 'Oui, s\'il vous plaît.', en: 'Yes, please.' }
-        ],
-        grammar: [
-          { title: 'Avoir (to have)', desc: 'J\'ai, tu as, il/elle a, nous avons, vous avez, ils/elles ont' },
-          { title: 'Questions with Inversion', desc: 'Avez-vous...? (Do you have...?), Voulez-vous...? (Do you want...?)' },
-          { title: 'Numbers', desc: 'un/une (1), deux (2), trois (3), quatre (4), cinq (5)' },
-          { title: 'Pour + noun', desc: 'pour une personne (for one person), pour trois jours (for three days)' }
-        ]
+      {
+        "speaker": "Б:",
+        "ru": "Здра́вствуйте!",
+        "en": "Hello!"
       },
-      3: {
-        title_fr: 'À la gare',
-        title_en: 'At the Train Station',
-        dialogue: [
-          { speaker: 'Voyageur', fr: 'Un aller-retour pour Lyon, s\'il vous plaît.', en: 'A round-trip ticket to Lyon, please.' },
-          { speaker: 'Employé', fr: 'En première ou en seconde?', en: 'First or second class?' },
-          { speaker: 'Voyageur', fr: 'En seconde. C\'est combien?', en: 'Second class. How much is it?' },
-          { speaker: 'Employé', fr: 'Quarante-deux euros.', en: 'Forty-two euros.' },
-          { speaker: 'Voyageur', fr: 'À quelle heure part le prochain train?', en: 'What time does the next train leave?' },
-          { speaker: 'Employé', fr: 'À dix heures vingt.', en: 'At 10:20.' }
-        ],
-        grammar: [
-          { title: 'Telling Time', desc: 'Quelle heure est-il? (What time is it?), Il est dix heures (It is 10 o\'clock)' },
-          { title: 'Partir (to leave)', desc: 'Je pars, tu pars, il part, nous partons, vous partez, ils partent' },
-          { title: 'Ordinal Numbers', desc: 'premier/première (first), deuxième/seconde (second)' },
-          { title: 'Prices', desc: 'C\'est combien? (How much is it?), Ça fait... (That makes...)' }
-        ]
+      {
+        "speaker": "А:",
+        "ru": "Меня́ зову́т Ива́н Петро́вич. А вас?",
+        "en": "My name is Ivan Petrovich. And yours?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Меня́ зову́т Мари́я Ива́новна.",
+        "en": "My name is Maria Ivanovna."
+      },
+      {
+        "speaker": "А:",
+        "ru": "О́чень прия́тно!",
+        "en": "Very pleased to meet you!"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Взаи́мно.",
+        "en": "Likewise."
       }
-    };
+    ],
+    "grammar": [
+      {
+        "title": "1. Personal Pronouns - Nominative Case\n\n| Russian | English | Usage |\n|---------|---------|-------|\n| я | I | Always lowercase in Russian! |\n| ты | you (informal singular) | Friends, family, children |\n| он | he | Masculine |\n| она́ | she | Feminine |\n| оно́ | it | Neuter (rare for \"it\") |\n| мы | we | |\n| вы | you (informal plural OR formal singular) | Capitalized for formal |\n| они́ | they | |\n\n**Note:** Russian \"я\" (I) is never capitalized (unlike English \"I\")!",
+        "desc": ""
+      }
+    ]
+  },
+  "2": {
+    "title_ru": "Кто э́то?",
+    "title_en": "Who is this?",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Э́то ва́ша семья́?",
+        "en": "Is this your family?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Да, э́то моя́ семья́.",
+        "en": "Yes, this is my family."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Кто э́то?",
+        "en": "Who is this?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Э́то мой муж. Его́ зову́т Михаи́л.",
+        "en": "This is my husband. His name is Mikhail."
+      },
+      {
+        "speaker": "А:",
+        "ru": "А э́то ва́ши де́ти?",
+        "en": "And these are your children?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Да, э́то мой сын Па́вел и моя́ дочь А́нна.",
+        "en": "Yes, this is my son Pavel and my daughter Anna."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "1. Gender Agreement with ЭТО\n\nЭТО doesn't change form, but related words do:\n\n| Gender | This is... | My... |\n|--------|------------|-------|\n| Masculine | Э́то студе́нт | мой студе́нт |\n| Feminine | Э́то студе́нтка | моя́ студе́нтка |\n| Neuter | Э́то письмо́ | моё письмо́ |\n| Plural | Э́то студе́нты | мои́ студе́нты |",
+        "desc": ""
+      }
+    ]
+  },
+  "3": {
+    "title_ru": "Что вы де́лаете?",
+    "title_en": "What do you do?",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "До́брый день! Что вы де́лаете?",
+        "en": "Good afternoon! What are you doing?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я рабо́таю. Чита́ю докуме́нты.",
+        "en": "I'm working. Reading documents."
+      },
+      {
+        "speaker": "А:",
+        "ru": "А где вы рабо́таете?",
+        "en": "And where do you work?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я рабо́таю в ба́нке. А вы?",
+        "en": "I work at a bank. And you?"
+      },
+      {
+        "speaker": "А:",
+        "ru": "Я рабо́таю в университе́те.",
+        "en": "I work at a university."
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Вы препода́ватель?",
+        "en": "Are you a professor?"
+      },
+      {
+        "speaker": "А:",
+        "ru": "Да, я преподаю́ исто́рию.",
+        "en": "Yes, I teach history."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "1. First Conjugation Verbs (-АТЬ/-ЯТЬ)\n\n**Pattern:** Remove -ть, add personal endings\n\n| Infinitive | я | ты | он/она́ | мы | вы | они́ |\n|------------|---|-------|--------|-------|-------|------|\n| чита́**ть** | чита́**ю** | чита́**ешь** | чита́**ет** | чита́**ем** | чита́**ете** | чита́**ют** |\n| рабо́та**ть** | рабо́та**ю** | рабо́та**ешь** | рабо́та**ет** | рабо́та**ем** | рабо́та**ете** | рабо́та**ют** |\n| де́ла**ть** | де́ла**ю** | де́ла**ешь** | де́ла**ет** | де́ла**ем** | де́ла**ете** | де́ла**ют** |\n| гуля́**ть** | гуля́**ю** | гуля́**ешь** | гуля́**ет** | гуля́**ем** | гуля́**ете** | гуля́**ют** |\n\n**Common First Conjugation Verbs:**\n- чита́ть (to read)\n- рабо́тать (to work)\n- де́лать (to do/make)\n- зна́ть (to know)\n- понима́ть (to understand)\n- слу́шать (to listen)\n- за́втракать (to have breakfast)\n- обе́дать (to have lunch)\n- у́жинать (to have dinner)\n- отдыха́ть (to rest)\n- гуля́ть (to walk/stroll)",
+        "desc": ""
+      }
+    ]
+  },
+  "4": {
+    "title_ru": "Я говорю́ по-ру́сски",
+    "title_en": "I Speak Russian",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Вы говори́те по-ру́сски?",
+        "en": "Do you speak Russian?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Да, я говорю́ по-ру́сски. А вы говори́те по-англи́йски?",
+        "en": "Yes, I speak Russian. Do you speak English?"
+      },
+      {
+        "speaker": "А:",
+        "ru": "Немно́го. Я учу́ англи́йский.",
+        "en": "A little. I'm learning English."
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Мо́жет быть, мы мо́жем практикова́ть вме́сте?",
+        "en": "Maybe we can practice together?"
+      },
+      {
+        "speaker": "А:",
+        "ru": "Отли́чная иде́я!",
+        "en": "Excellent idea!"
+      }
+    ],
+    "grammar": [
+      {
+        "title": "1. Second Conjugation Verbs (-ИТЬ)\n\n**Pattern:** Remove -ить, add personal endings\n\n| Infinitive | я | ты | он/она́ | мы | вы | они́ |\n|------------|---|-------|--------|-------|-------|------|\n| говор**и́ть** | говор**ю́** | говор**и́шь** | говор**и́т** | говор**и́м** | говор**и́те** | говор**я́т** |\n| люб**и́ть** | любл**ю́** | лю́б**ишь** | лю́б**ит** | лю́б**им** | лю́б**ите** | лю́б**ят** |\n| ви́д**еть** | ви́ж**у** | ви́д**ишь** | ви́д**ит** | ви́д**им** | ви́д**ите** | ви́д**ят** |\n| смотр**е́ть** | смотр**ю́** | смо́тр**ишь** | смо́тр**ит** | смо́тр**им** | смо́тр**ите** | смо́тр**ят** |\n\n**Common Second Conjugation Verbs:**\n- говори́ть (to speak)\n- люби́ть (to love) *б→бл*\n- ви́деть (to see) *д→ж*\n- смотре́ть (to watch)\n- слы́шать (to hear) *irregular*\n- учи́ть (to learn/teach)\n- помни́ть (to remember)\n- стои́ть (to cost/stand)",
+        "desc": ""
+      }
+    ]
+  },
+  "6": {
+    "title_ru": "У меня́ есть...",
+    "title_en": "I Have...",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Извини́те, у вас есть телефо́н?",
+        "en": "Excuse me, do you have a phone?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Да, есть. А что?",
+        "en": "Yes, I do. Why?"
+      },
+      {
+        "speaker": "А:",
+        "ru": "Мо́жно позвони́ть? Мой телефо́н не рабо́тает.",
+        "en": "May I make a call? My phone doesn't work."
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Коне́чно, пожа́луйста.",
+        "en": "Of course, please."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Спаси́бо большо́е!",
+        "en": "Thank you very much!"
+      }
+    ],
+    "grammar": [
+      {
+        "title": "1. The Possession Construction\n\n**Formula:** У + GENITIVE + есть + NOMINATIVE\n\n| Component | Function | Example |\n|-----------|----------|---------|\n| У | preposition \"at\" | У |\n| меня́ | possessor (Gen) | меня́ |\n| есть | \"there is\" | есть |\n| кни́га | thing possessed (Nom) | кни́га |\n\n**Full:** У меня́ есть кни́га. = \"At me there-is book\" = I have a book.",
+        "desc": ""
+      }
+    ]
+  },
+  "7": {
+    "title_ru": "Где?",
+    "title_en": "Where?",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Где вы живёте?",
+        "en": "Where do you live?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я живу́ в Москве́. А вы?",
+        "en": "I live in Moscow. And you?"
+      },
+      {
+        "speaker": "А:",
+        "ru": "Я живу́ в Санкт-Петербу́рге.",
+        "en": "I live in Saint Petersburg."
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Краси́вый го́род! Где и́менно?",
+        "en": "Beautiful city! Where exactly?"
+      },
+      {
+        "speaker": "А:",
+        "ru": "В це́нтре, на Не́вском проспе́кте.",
+        "en": "Downtown, on Nevsky Prospect."
+      },
+      {
+        "speaker": "Б:",
+        "ru": "О, э́то о́чень краси́вое ме́сто!",
+        "en": "Oh, that's a very beautiful place!"
+      }
+    ],
+    "grammar": [
+      {
+        "title": "1. Prepositional Case: Noun Endings\n\n| Gender | Nominative | Prepositional | Example |\n|--------|------------|---------------|---------|\n| Masculine hard | -∅ | -е | дом → в до́м**е** |\n| Masculine soft | -ь, -й | -е | музе́й → в музе́**е** |\n| Feminine hard | -а | -е | шко́ла → в шко́л**е** |\n| Feminine soft | -я, -ь | -е, -и | неде́ля → на неде́л**е**; дверь → на двер**и́** |\n| Neuter hard | -о | -е | окно́ → на окн**е́** |\n| Neuter soft | -е | -е | мо́ре → на мо́р**е** |",
+        "desc": ""
+      }
+    ]
+  },
+  "8": {
+    "title_ru": "Нет + Genitive",
+    "title_en": "Negation & Absence",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "У вас есть молоко́?",
+        "en": "Do you have milk?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "К сожале́нию, молока́ нет.",
+        "en": "Unfortunately, there's no milk."
+      },
+      {
+        "speaker": "А:",
+        "ru": "А хлеб?",
+        "en": "And bread?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Хле́ба то́же нет.",
+        "en": "There's no bread either."
+      },
+      {
+        "speaker": "А:",
+        "ru": "А что у вас есть?",
+        "en": "What do you have?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Есть ма́сло и сыр.",
+        "en": "There's butter and cheese."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Хорошо́, да́йте сыр.",
+        "en": "Okay, give me cheese."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "1. НЕТ + Genitive (Existence Negation)\n\n**Formula:** НЕТ + Genitive = \"There is no...\"\n\n| Positive | Negative |\n|----------|----------|\n| Есть кни́га. (There is a book.) | Нет кни́ги. (There is no book.) |\n| Есть вре́мя. (There is time.) | Нет вре́мени. (There is no time.) |",
+        "desc": ""
+      }
+    ]
+  },
+  "9": {
+    "title_ru": "Ско́лько?",
+    "title_en": "How Much? How Many?",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Ско́лько сто́ит э́тот журна́л?",
+        "en": "How much is this magazine?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Сто пятьдеся́т рубле́й.",
+        "en": "One hundred fifty rubles."
+      },
+      {
+        "speaker": "А:",
+        "ru": "А э́та кни́га?",
+        "en": "And this book?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Три́ста рубле́й.",
+        "en": "Three hundred rubles."
+      },
+      {
+        "speaker": "А:",
+        "ru": "До́рого! А есть ски́дка?",
+        "en": "Expensive! Is there a discount?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Да, де́сять проце́нтов.",
+        "en": "Yes, ten percent."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "1. Number + Noun Agreement\n\n| Number | Noun Case | Example |\n|--------|-----------|---------|\n| 1 (оди́н/одна́/одно́) | Nom Singular | оди́н студе́нт, одна́ кни́га |\n| 2, 3, 4 | Gen Singular | два студе́нта, три кни́ги |\n| 5-20, 25-30... | Gen Plural | пять студе́нтов, де́сять книг |\n| 21, 31, 41... | Nom Singular | два́дцать оди́н студе́нт |\n| 22-24, 32-34... | Gen Singular | два́дцать два студе́нта |",
+        "desc": ""
+      }
+    ]
+  },
+  "11": {
+    "title_ru": "Мне ну́жно...",
+    "title_en": "I Need...",
+    "dialogue": [
+      {
+        "speaker": "Врач:",
+        "ru": "Что вам ну́жно?",
+        "en": "What do you need?"
+      },
+      {
+        "speaker": "Пацие́нт:",
+        "ru": "Мне пло́хо.",
+        "en": "I feel bad."
+      },
+      {
+        "speaker": "Врач:",
+        "ru": "Что у вас боли́т?",
+        "en": "What hurts?"
+      },
+      {
+        "speaker": "Пацие́нт:",
+        "ru": "Мне боли́т голова́.",
+        "en": "I have a headache."
+      },
+      {
+        "speaker": "Врач:",
+        "ru": "Вам ну́жно отдохну́ть.",
+        "en": "You need to rest."
+      },
+      {
+        "speaker": "Пацие́нт:",
+        "ru": "Спаси́бо, до́ктор.",
+        "en": "Thank you, doctor."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "1. Dative Case: Pronoun Forms\n\n| Nominative | Dative |\n|------------|--------|\n| я | мне |\n| ты | тебе́ |\n| он | ему́ |\n| она́ | ей |\n| оно́ | ему́ |\n| мы | нам |\n| вы | вам |\n| они́ | им |\n\n**After prepositions К, ПО:** no changes (unlike genitive)",
+        "desc": ""
+      }
+    ]
+  },
+  "12": {
+    "title_ru": "Кому́?",
+    "title_en": "To Whom?",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Кому́ вы купи́ли э́тот пода́рок?",
+        "en": "For whom did you buy this gift?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я купи́л его́ подру́ге.",
+        "en": "I bought it for my girlfriend."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Что вы ей подари́те?",
+        "en": "What will you give her?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я подарю́ ей духи́.",
+        "en": "I'll give her perfume."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Прекра́сный вы́бор! Ей понра́вится.",
+        "en": "Excellent choice! She'll like it."
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Наде́юсь! За́втра её день рожде́ния.",
+        "en": "I hope so! Tomorrow is her birthday."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "1. Verbs that Take Dative Object\n\n**\"Giving\" verbs:**\n| Verb | Meaning | Example |\n|------|---------|---------|\n| дать | give | Дай **мне** кни́гу. |\n| дари́ть/подари́ть | give (gift) | Я подари́л **ей** цветы́. |\n| показа́ть | show | Покажи́ **мне**! |\n| принести́ | bring | Принеси́ **ему́** во́ду. |\n| посла́ть | send | Я посла́л **им** письмо́. |\n\n**\"Helping/Communication\" verbs:**\n| Verb | Meaning | Example |\n|------|---------|---------|\n| помо́чь | help | Помоги́ **мне**! |\n| сказа́ть | say/tell | Скажи́ **ей** пра́вду. |\n| объясни́ть | explain | Объясни́ **мне** э́то. |\n| отве́тить | answer | Отве́ть **ему́**! |\n| позвони́ть | call | Позвони́ **ма́ме**. |\n| написа́ть | write | Напиши́ **мне**! |",
+        "desc": ""
+      }
+    ]
+  },
+  "13": {
+    "title_ru": "Чем? С кем?",
+    "title_en": "With What? With Whom?",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Здра́вствуйте! С кем вы сего́дня?",
+        "en": "Hello! Who are you with today?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я с колле́гой. Мы обсужда́ем прое́кт.",
+        "en": "I'm with a colleague. We're discussing a project."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Что буде́те есть?",
+        "en": "What will you have to eat?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Мне, пожа́луйста, ко́фе с молоко́м.",
+        "en": "Coffee with milk for me, please."
+      },
+      {
+        "speaker": "А:",
+        "ru": "А ва́шему колле́ге?",
+        "en": "And for your colleague?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Ему́ чай с лимо́ном.",
+        "en": "Tea with lemon for him."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "Instrumental Case Formation",
+        "desc": ""
+      }
+    ]
+  },
+  "14": {
+    "title_ru": "Все паде́жи",
+    "title_en": "All Cases",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "У вас есть брат?",
+        "en": "Do you have a brother?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Да, у меня́ есть брат.",
+        "en": "Yes, I have a brother."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Кем он рабо́тает?",
+        "en": "What does he work as?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Он рабо́тает врачо́м.",
+        "en": "He works as a doctor."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Где он рабо́тает?",
+        "en": "Where does he work?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "В больни́це в Москве́.",
+        "en": "In a hospital in Moscow."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Вы ча́сто ви́дите его́?",
+        "en": "Do you often see him?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Да, мы встреча́емся ка́ждую неде́лю.",
+        "en": "Yes, we meet every week."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "Complete Declension Tables",
+        "desc": ""
+      }
+    ]
+  },
+  "15": {
+    "title_ru": "Повторе́ние 3",
+    "title_en": "Review 3",
+    "dialogue": [],
+    "grammar": [
+      {
+        "title": "When to Use Each Case\n\n| Situation | Case | Example |\n|-----------|------|---------|\n| Subject of sentence | **Nom** | Студе́нт чита́ет. |\n| Possession (У... есть) | **Gen** | У студе́нта есть... |\n| Negation (нет...) | **Gen** | Нет студе́нта. |\n| Quantities (мно́го, ма́ло, 5+) | **Gen** | Пять студе́нтов |\n| After без, для, из, от, до | **Gen** | Без студе́нта |\n| Indirect object (to/for whom) | **Dat** | Дал студе́нту |\n| Impersonal (ну́жно, мо́жно) | **Dat** | Студе́нту ну́жно... |\n| Age expressions | **Dat** | Студе́нту 20 лет. |\n| After К | **Dat** | К студе́нту |\n| Direct object | **Acc** | Ви́жу студе́нта |\n| Direction (в/на + Acc) | **Acc** | Иду́ в университе́т |\n| Time expressions (через) | **Acc** | Че́рез час |\n| Means/instrument | **Instr** | Пишу́ ру́чкой |\n| Accompaniment (с + Instr) | **Instr** | Со студе́нтом |\n| Profession (after быть/стать) | **Instr** | Быть студе́нтом |\n| Time (у́тром, ве́чером) | **Instr** | У́тром |\n| Location (в/на + Prep) | **Prep** | В университе́те |\n| Topic (о/об + Prep) | **Prep** | О студе́нте |\n\n---",
+        "desc": ""
+      }
+    ]
+  },
+  "16": {
+    "title_ru": "В рестора́не",
+    "title_en": "At the Restaurant",
+    "dialogue": [
+      {
+        "speaker": "Официа́нт:",
+        "ru": "До́брый ве́чер! Вот меню́.",
+        "en": "Good evening! Here's the menu."
+      },
+      {
+        "speaker": "Гость:",
+        "ru": "Спаси́бо. Что вы рекоменду́ете?",
+        "en": "Thank you. What do you recommend?"
+      },
+      {
+        "speaker": "Официа́нт:",
+        "ru": "Сего́дня о́чень вку́сный борщ.",
+        "en": "Today the borscht is very tasty."
+      },
+      {
+        "speaker": "Гость:",
+        "ru": "Хорошо́. Я возьму́ борщ и салат.",
+        "en": "Good. I'll have borscht and salad."
+      },
+      {
+        "speaker": "Официа́нт:",
+        "ru": "Что бу́дете пить?",
+        "en": "What will you drink?"
+      },
+      {
+        "speaker": "Гость:",
+        "ru": "Бока́л кра́сного вина́, пожа́луйста.",
+        "en": "A glass of red wine, please."
+      },
+      {
+        "speaker": "Официа́нт:",
+        "ru": "Отли́чный вы́бор!",
+        "en": "Excellent choice!"
+      }
+    ],
+    "grammar": [
+      {
+        "title": "Ordering with Accusative Case\n\nWhen ordering food, you use **Accusative** for what you want:\n\n| Nominative | Accusative | Example |\n|------------|------------|---------|\n| борщ (m) | борщ | Я хочу́ **борщ**. |\n| салат (m) | салат | Дайте **сала́т**. |\n| пи́цца (f) | пи́ццу | Я возьму́ **пи́ццу**. |\n| ры́ба (f) | ры́бу | Я бу́ду **ры́бу**. |\n| мя́со (n) | мя́со | Мне **мя́со**. |\n| пельме́ни (pl) | пельме́ни | Принеси́те **пельме́ни**. |",
+        "desc": ""
+      }
+    ]
+  },
+  "17": {
+    "title_ru": "В магази́не",
+    "title_en": "At the Store",
+    "dialogue": [
+      {
+        "speaker": "Покупа́тель:",
+        "ru": "Здра́вствуйте! Ско́лько сто́ит э́та ру́башка?",
+        "en": "Hello! How much is this shirt?"
+      },
+      {
+        "speaker": "Продаве́ц:",
+        "ru": "Две ты́сячи рубле́й.",
+        "en": "Two thousand rubles."
+      },
+      {
+        "speaker": "Покупа́тель:",
+        "ru": "Мо́жно приме́рить?",
+        "en": "May I try it on?"
+      },
+      {
+        "speaker": "Продаве́ц:",
+        "ru": "Коне́чно. Примеро́чная там.",
+        "en": "Of course. The fitting room is there."
+      },
+      {
+        "speaker": "Покупа́тель:",
+        "ru": "Э́то есть в друго́м цве́те?",
+        "en": "Is this available in another color?"
+      },
+      {
+        "speaker": "Продаве́ц:",
+        "ru": "Да, есть в бе́лом и в си́нем.",
+        "en": "Yes, in white and blue."
+      },
+      {
+        "speaker": "Покупа́тель:",
+        "ru": "Я возьму́ си́нюю.",
+        "en": "I'll take the blue one."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "Prices and Numbers Review\n\n| Number | + рубль (1) | + рубля́ (2-4) | + рубле́й (5+) |\n|--------|-------------|----------------|----------------|\n| 1 | оди́н рубль | — | — |\n| 2 | — | два рубля́ | — |\n| 5 | — | — | пять рубле́й |\n| 21 | два́дцать оди́н рубль | — | — |\n| 22 | — | два́дцать два рубля́ | — |\n| 100 | — | — | сто рубле́й |\n| 1000 | — | — | ты́сяча рубле́й |",
+        "desc": ""
+      }
+    ]
+  },
+  "18": {
+    "title_ru": "Вчера́...",
+    "title_en": "Yesterday...",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Что вы де́лали вчера́?",
+        "en": "What did you do yesterday?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Вчера́ я рабо́тал до́ма.",
+        "en": "Yesterday I worked at home."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Что вы де́лали ве́чером?",
+        "en": "What did you do in the evening?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Ве́чером я чита́л кни́гу и смотре́л телеви́зор.",
+        "en": "In the evening I read a book and watched TV."
+      },
+      {
+        "speaker": "А:",
+        "ru": "А ва́ша жена́?",
+        "en": "And your wife?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Она́ гото́вила у́жин и разгова́ривала по телефо́ну.",
+        "en": "She was cooking dinner and talking on the phone."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "Past Tense Formation\n\nRussian past tense is **SIMPLE** to form:\n\n**Formula:** Infinitive stem + Л + gender/number ending\n\n| | Singular | Plural |\n|---|----------|--------|\n| **Masculine** | -Л | -ЛИ |\n| **Feminine** | -ЛА | -ЛИ |\n| **Neuter** | -ЛО | -ЛИ |",
+        "desc": ""
+      }
+    ]
+  },
+  "19": {
+    "title_ru": "Я сде́лал!",
+    "title_en": "I Did It!",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Вы прочита́ли отчёт?",
+        "en": "Did you read (finish) the report?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Да, я прочита́л его́ вчера́.",
+        "en": "Yes, I read (finished) it yesterday."
+      },
+      {
+        "speaker": "А:",
+        "ru": "И что вы ду́маете?",
+        "en": "And what do you think?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я написа́л свои́ коммента́рии. Вот.",
+        "en": "I wrote my comments. Here."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Отли́чно! Вы всё сде́лали.",
+        "en": "Excellent! You did everything."
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Да, я закон́чил вчера́ ве́чером.",
+        "en": "Yes, I finished yesterday evening."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "How Perfective Verbs Are Formed\n\nThere are several patterns:",
+        "desc": ""
+      }
+    ]
+  },
+  "20": {
+    "title_ru": "Повторе́ние 4",
+    "title_en": "Review 4",
+    "dialogue": [],
+    "grammar": [
+      {
+        "title": "Past Tense Quick Reference\n\n| | Masculine | Feminine | Neuter | Plural |\n|---|-----------|----------|--------|--------|\n| Regular | -Л | -ЛА | -ЛО | -ЛИ |\n| Example | чита́л | чита́ла | чита́ло | чита́ли |\n| Stress shift | жил | жила́ | жило́ | жи́ли |\n| No -Л | мог | могла́ | могло́ | могли́ |",
+        "desc": ""
+      }
+    ]
+  },
+  "21": {
+    "title_ru": "Идти́/Ходи́ть",
+    "title_en": "Going on Foot",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Здра́вствуйте! Куда́ вы идёте?",
+        "en": "Hello! Where are you going?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я иду́ на рабо́ту.",
+        "en": "I'm going to work."
+      },
+      {
+        "speaker": "А:",
+        "ru": "А куда́ вы обы́чно хо́дите обе́дать?",
+        "en": "And where do you usually go for lunch?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я хожу́ в кафе́ о́коло о́фиса.",
+        "en": "I go to a café near the office."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Хорошо́! Прия́тного дня!",
+        "en": "Good! Have a nice day!"
+      }
+    ],
+    "grammar": [
+      {
+        "title": "ИДТИ́ - Unidirectional (One Way, Now)\n\n| Person | Present | Past |\n|--------|---------|------|\n| я | иду́ | шёл / шла |\n| ты | идёшь | шёл / шла |\n| он/она́ | идёт | шёл / шла |\n| мы | идём | шли |\n| вы | идёте | шли |\n| они́ | иду́т | шли |\n\n**Use ИДТИ́ when:**\n- Going somewhere RIGHT NOW\n- Describing a specific one-way journey\n- Narrating motion in progress",
+        "desc": ""
+      }
+    ]
+  },
+  "22": {
+    "title_ru": "Е́хать/Е́здить",
+    "title_en": "Going by Transport",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "На чём вы е́здите на рабо́ту?",
+        "en": "How do you get to work?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я е́зжу на метро́. А вы?",
+        "en": "I take the metro. And you?"
+      },
+      {
+        "speaker": "А:",
+        "ru": "Я е́зжу на маши́не.",
+        "en": "I drive."
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Про́бки не меша́ют?",
+        "en": "Don't traffic jams bother you?"
+      },
+      {
+        "speaker": "А:",
+        "ru": "Иногда́. Поэ́тому я вы́езжаю ра́но.",
+        "en": "Sometimes. That's why I leave early."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "Е́ХАТЬ - Unidirectional (One Way, Now)\n\n| Person | Present | Past |\n|--------|---------|------|\n| я | е́ду | е́хал(а) |\n| ты | е́дешь | е́хал(а) |\n| он/она́ | е́дет | е́хал(а) |\n| мы | е́дем | е́хали |\n| вы | е́дете | е́хали |\n| они́ | е́дут | е́хали |",
+        "desc": ""
+      }
+    ]
+  },
+  "23": {
+    "title_ru": "За́втра...",
+    "title_en": "Tomorrow...",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Что вы бу́дете де́лать в выходны́е?",
+        "en": "What will you do on the weekend?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "В суббо́ту я бу́ду рабо́тать.",
+        "en": "On Saturday I'll be working."
+      },
+      {
+        "speaker": "А:",
+        "ru": "А в воскресе́нье?",
+        "en": "And on Sunday?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Бу́ду отдыха́ть до́ма. Мо́жет быть, бу́ду смотре́ть фильм.",
+        "en": "I'll rest at home. Maybe I'll watch a movie."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Хоро́ших выходны́х!",
+        "en": "Have a good weekend!"
+      }
+    ],
+    "grammar": [
+      {
+        "title": "Forming Imperfective Future\n\n**Formula:** БУ́ДУ + imperfective infinitive\n\n| Person | БЫТЬ | Example |\n|--------|------|---------|\n| я | бу́ду | Я бу́ду рабо́тать. |\n| ты | бу́дешь | Ты бу́дешь чита́ть? |\n| он/она́ | бу́дет | Он бу́дет учи́ться. |\n| мы | бу́дем | Мы бу́дем жить здесь. |\n| вы | бу́дете | Вы бу́дете отдыха́ть? |\n| они́ | бу́дут | Они́ бу́дут рабо́тать. |",
+        "desc": ""
+      }
+    ]
+  },
+  "24": {
+    "title_ru": "Я сде́лаю!",
+    "title_en": "I Will Do It!",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Когда́ вы сде́лаете отчёт?",
+        "en": "When will you finish the report?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я сде́лаю его́ за́втра.",
+        "en": "I'll finish it tomorrow."
+      },
+      {
+        "speaker": "А:",
+        "ru": "То́чно? Вы успе́ете?",
+        "en": "For sure? Will you manage?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Да, обяза́тельно успе́ю. Обеща́ю.",
+        "en": "Yes, I'll definitely manage. I promise."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Хорошо́. Я позвоню́ вам за́втра ве́чером.",
+        "en": "Good. I'll call you tomorrow evening."
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Договори́лись.",
+        "en": "Agreed."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "Perfective Future = Perfective Present Forms\n\n| Person | СДЕЛАТЬ | НАПИСАТЬ | ПРОЧИТАТЬ |\n|--------|---------|----------|-----------|\n| я | сде́лаю | напишу́ | прочита́ю |\n| ты | сде́лаешь | напи́шешь | прочита́ешь |\n| он/она́ | сде́лает | напи́шет | прочита́ет |\n| мы | сде́лаем | напи́шем | прочита́ем |\n| вы | сде́лаете | напи́шете | прочита́ете |\n| они́ | сде́лают | напи́шут | прочита́ют |",
+        "desc": ""
+      }
+    ]
+  },
+  "25": {
+    "title_ru": "Повторе́ние 5",
+    "title_en": "Review 5",
+    "dialogue": [],
+    "grammar": [
+      {
+        "title": "Motion Verb System\n\n| | On Foot | By Vehicle |\n|---|---------|------------|\n| **Unidirectional (now)** | идти́ (иду́, идёшь) | е́хать (е́ду, е́дешь) |\n| **Multidirectional (regular)** | ходи́ть (хожу́, хо́дишь) | е́здить (е́зжу, е́здишь) |\n| **Past (process)** | шёл, шла, шли | е́хал, е́хала, е́хали |\n| **Past (round trip)** | ходи́л, ходи́ла | е́здил, е́здила |",
+        "desc": ""
+      }
+    ]
+  },
+  "26": {
+    "title_ru": "Е́сли бы...",
+    "title_en": "If Only...",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Что бы вы сде́лали, е́сли бы вы́играли миллио́н?",
+        "en": "What would you do if you won a million?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я бы купи́л дом у мо́ря.",
+        "en": "I would buy a house by the sea."
+      },
+      {
+        "speaker": "А:",
+        "ru": "А рабо́тать бы продолжа́ли?",
+        "en": "Would you continue working?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Наве́рное, нет. Я бы путеше́ствовал.",
+        "en": "Probably not. I would travel."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Зву́чит прекра́сно!",
+        "en": "Sounds wonderful!"
+      }
+    ],
+    "grammar": [
+      {
+        "title": "Forming the Conditional\n\n**Formula:** Past tense form + БЫ\n\n| Past Tense | + БЫ | English |\n|------------|------|---------|\n| Я сде́лал | Я бы сде́лал | I would do |\n| Она́ пошла́ | Она́ бы пошла́ | She would go |\n| Мы купи́ли | Мы бы купи́ли | We would buy |\n| Они́ сказа́ли | Они́ бы сказа́ли | They would say |",
+        "desc": ""
+      }
+    ]
+  },
+  "27": {
+    "title_ru": "Что́бы...",
+    "title_en": "In Order To...",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Заче́м вы пришли́?",
+        "en": "Why did you come?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Я пришёл, что́бы поговори́ть с дире́ктором.",
+        "en": "I came to talk with the director."
+      },
+      {
+        "speaker": "А:",
+        "ru": "А для чего́?",
+        "en": "And for what purpose?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Что́бы обсуди́ть но́вый прое́кт.",
+        "en": "To discuss a new project."
+      },
+      {
+        "speaker": "А:",
+        "ru": "Поня́тно. Подожди́те, пожа́луйста.",
+        "en": "I see. Please wait."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "ЧТО́БЫ + Infinitive (Same Subject)\n\nWhen the subject is the same in both clauses:\n\n| Russian | English |\n|---------|---------|\n| Я пришёл, **что́бы помо́чь**. | I came to help. |\n| Она́ учи́тся, **что́бы получи́ть дипло́м**. | She studies to get a diploma. |\n| Мы рабо́таем, **что́бы жить**. | We work to live. |\n| Он встал ра́но, **что́бы успе́ть на по́езд**. | He got up early to catch the train. |",
+        "desc": ""
+      }
+    ]
+  },
+  "28": {
+    "title_ru": "Говоря́т, что...",
+    "title_en": "They Say That...",
+    "dialogue": [
+      {
+        "speaker": "А:",
+        "ru": "Ты слы́шал но́вости?",
+        "en": "Did you hear the news?"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Каки́е?",
+        "en": "What news?"
+      },
+      {
+        "speaker": "А:",
+        "ru": "Говоря́т, что Ива́н жени́тся!",
+        "en": "They say Ivan is getting married!"
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Пра́вда? Кто сказа́л?",
+        "en": "Really? Who said?"
+      },
+      {
+        "speaker": "А:",
+        "ru": "Ма́ша сказа́ла, что он ей сам расска́зал.",
+        "en": "Masha said he told her himself."
+      },
+      {
+        "speaker": "Б:",
+        "ru": "Ну наде́юсь, что э́то пра́вда.",
+        "en": "Well, I hope it's true."
+      }
+    ],
+    "grammar": [
+      {
+        "title": "Direct vs Indirect Speech\n\n| Direct | Indirect |\n|--------|----------|\n| Он сказа́л: «Я приду́ за́втра.» | Он сказа́л, **что** он придёт за́втра. |\n| He said: \"I will come tomorrow.\" | He said that he would come tomorrow. |",
+        "desc": ""
+      }
+    ]
+  },
+  "29": {
+    "title_ru": "Разгово́рный ру́сский",
+    "title_en": "Colloquial Russian",
+    "dialogue": [
+      {
+        "speaker": "Ру́сский",
+        "ru": "English",
+        "en": "Notes"
+      },
+      {
+        "speaker": "— Ну что, как дела́?",
+        "ru": "So, how's it going?",
+        "en": "Ну = well/so"
+      },
+      {
+        "speaker": "— Да норма́льно. А ты как?",
+        "ru": "Fine. And you?",
+        "en": "Да = here: just"
+      },
+      {
+        "speaker": "— Да ничего́, вро́де.",
+        "ru": "Okay, I guess.",
+        "en": "Ничего́ = not bad"
+      },
+      {
+        "speaker": "— Слу́шай, а ты чё сего́дня де́лаешь?",
+        "ru": "Hey, what are you doing today?",
+        "en": "Чё = что (informal)"
+      },
+      {
+        "speaker": "— Да ниче́. Мо́жет, ку́да схо́дим?",
+        "ru": "Nothing much. Maybe go somewhere?",
+        "en": "Ниче́ = ничего́"
+      },
+      {
+        "speaker": "— Ага́, тип того́.",
+        "ru": "Yeah, something like that.",
+        "en": "Тип того́ = sort of"
+      }
+    ],
+    "grammar": [
+      {
+        "title": "Essential Particles\n\n| Particle | Meaning/Use | Example |\n|----------|-------------|---------|\n| **ну** | well, so, come on | Ну, пошли́! (Come on, let's go!) |\n| **же** | emphasis (you know!) | Ты же зна́ешь! (You know!) |\n| **ведь** | after all, you see | Я ведь говори́л! (I told you so!) |\n| **вот** | here, this, see | Вот ви́дишь! (See!) |\n| **да** | yes / just / well | Да ла́дно! (Come on! / Really?) |\n| **то́лько** | just, only | Я то́лько пришёл. (I just arrived.) |\n| **уже́** | already | Уже́ пора́! (It's time already!) |\n| **ещё** | still, more | Ещё чего́! (No way!) |",
+        "desc": ""
+      }
+    ]
+  }
+};
 
-    // Units 4-12 from Volume 1
-    UNIT_DATA[4] = {
-      title_fr: 'Faisons des courses',
-      title_en: "Let's Go Shopping",
-      dialogue: [
-        { speaker: 'Client', fr: 'Je voudrais acheter des fruits, s\'il vous plaît.', en: 'I\'d like to buy some fruit, please.' },
-        { speaker: 'Vendeur', fr: 'Qu\'est-ce que vous désirez? Des pommes? Des oranges?', en: 'What would you like? Apples? Oranges?' },
-        { speaker: 'Client', fr: 'Un kilo de pommes et une livre d\'oranges.', en: 'A kilo of apples and a pound of oranges.' },
-        { speaker: 'Vendeur', fr: 'Voilà. C\'est tout?', en: 'Here you are. Is that all?' },
-        { speaker: 'Client', fr: 'Oui, c\'est tout. Ça fait combien?', en: 'Yes, that\'s all. How much is it?' },
-        { speaker: 'Vendeur', fr: 'Ça fait cinq euros cinquante.', en: 'That\'s five euros fifty.' }
-      ],
-      grammar: [
-        { title: 'Partitive articles', desc: 'du pain (some bread), de la viande (some meat), des fruits (some fruit)' },
-        { title: 'Quantities', desc: 'un kilo de, une livre de, un litre de, une douzaine de' }
-      ]
-    };
-
-    UNIT_DATA[5] = {
-      title_fr: 'Le climat',
-      title_en: 'The Climate',
-      dialogue: [
-        { speaker: 'A', fr: 'Quel temps fait-il aujourd\'hui?', en: 'What\'s the weather like today?' },
-        { speaker: 'B', fr: 'Il fait beau, mais il fait un peu froid.', en: 'It\'s nice, but it\'s a bit cold.' },
-        { speaker: 'A', fr: 'Est-ce qu\'il va pleuvoir cet après-midi?', en: 'Is it going to rain this afternoon?' },
-        { speaker: 'B', fr: 'D\'après la météo, il y aura des nuages.', en: 'According to the forecast, there will be clouds.' },
-        { speaker: 'A', fr: 'L\'hiver est toujours froid à Paris?', en: 'Is winter always cold in Paris?' },
-        { speaker: 'B', fr: 'Oui, mais moins froid qu\'à New York.', en: 'Yes, but less cold than in New York.' }
-      ],
-      grammar: [
-        { title: 'Weather expressions', desc: 'Il fait beau/chaud/froid, Il pleut, Il neige, Il y a du soleil/vent' },
-        { title: 'Comparisons', desc: 'plus...que (more...than), moins...que (less...than), aussi...que (as...as)' }
-      ]
-    };
-
-    UNIT_DATA[6] = {
-      title_fr: 'Révision',
-      title_en: 'Review',
-      dialogue: [
-        { speaker: 'Professeur', fr: 'Révisons les leçons précédentes.', en: 'Let\'s review the previous lessons.' },
-        { speaker: 'Étudiant', fr: 'D\'accord. Par où commençons-nous?', en: 'Okay. Where do we start?' },
-        { speaker: 'Professeur', fr: 'Par les articles et les prépositions.', en: 'With articles and prepositions.' },
-        { speaker: 'Étudiant', fr: 'Je confonds souvent "à" et "de".', en: 'I often confuse "à" and "de".' },
-        { speaker: 'Professeur', fr: 'C\'est normal. Pratiquons ensemble.', en: 'That\'s normal. Let\'s practice together.' },
-        { speaker: 'Étudiant', fr: 'Merci, c\'est très utile.', en: 'Thank you, it\'s very useful.' }
-      ],
-      grammar: [
-        { title: 'Review', desc: 'This unit reviews grammar from Units 1-5.' },
-        { title: 'Key points', desc: 'Articles (le/la/les, un/une/des), Prepositions (à, de, dans, sur)' }
-      ]
-    };
-
-    UNIT_DATA[7] = {
-      title_fr: 'Prenons rendez-vous',
-      title_en: "Let's Make an Appointment",
-      dialogue: [
-        { speaker: 'Client', fr: 'Je voudrais prendre rendez-vous. Je peux réserver en ligne?', en: 'I\'d like to make an appointment. Can I book online?' },
-        { speaker: 'Secrétaire', fr: 'Oui, sur notre site web ou avec l\'appli Doctolib.', en: 'Yes, on our website or with the Doctolib app.' },
-        { speaker: 'Client', fr: 'Je préfère par téléphone. Mercredi matin, c\'est possible?', en: 'I prefer by phone. Is Wednesday morning possible?' },
-        { speaker: 'Secrétaire', fr: 'Oui, à dix heures. Je vous envoie un SMS de confirmation.', en: 'Yes, at ten o\'clock. I\'ll send you a confirmation text.' },
-        { speaker: 'Client', fr: 'Parfait. Est-ce que je recevrai un rappel?', en: 'Perfect. Will I receive a reminder?' },
-        { speaker: 'Secrétaire', fr: 'Oui, par email et SMS la veille du rendez-vous.', en: 'Yes, by email and text the day before the appointment.' }
-      ],
-      grammar: [
-        { title: 'Online booking vocab', desc: 'réserver en ligne (book online), un site web (website), une appli (app)' },
-        { title: 'Communication', desc: 'envoyer un SMS/email, recevoir un rappel (receive a reminder)' }
-      ]
-    };
-
-    UNIT_DATA[8] = {
-      title_fr: 'Chez le coiffeur',
-      title_en: 'At the Hairdresser',
-      dialogue: [
-        { speaker: 'Client', fr: 'Je voudrais une coupe, s\'il vous plaît.', en: 'I\'d like a haircut, please.' },
-        { speaker: 'Coiffeur', fr: 'Comment les voulez-vous?', en: 'How would you like them?' },
-        { speaker: 'Client', fr: 'Courts sur les côtés, un peu plus longs dessus.', en: 'Short on the sides, a bit longer on top.' },
-        { speaker: 'Coiffeur', fr: 'Voulez-vous un shampooing aussi?', en: 'Would you like a shampoo too?' },
-        { speaker: 'Client', fr: 'Oui, s\'il vous plaît.', en: 'Yes, please.' },
-        { speaker: 'Coiffeur', fr: 'Installez-vous, je suis à vous dans une minute.', en: 'Have a seat, I\'ll be with you in a minute.' }
-      ],
-      grammar: [
-        { title: 'Object pronouns', desc: 'les (them), le/la (it), me/te/nous/vous (me/you/us/you)' },
-        { title: 'Imperative', desc: 'Installez-vous (Have a seat), Asseyez-vous (Sit down)' }
-      ]
-    };
-
-    UNIT_DATA[9] = {
-      title_fr: 'Au restaurant',
-      title_en: 'At the Restaurant',
-      dialogue: [
-        { speaker: 'Serveur', fr: 'Bonsoir. Une table pour deux?', en: 'Good evening. A table for two?' },
-        { speaker: 'Client', fr: 'Oui, s\'il vous plaît. Près de la fenêtre si possible.', en: 'Yes, please. Near the window if possible.' },
-        { speaker: 'Serveur', fr: 'Voici le menu. Désirez-vous un apéritif?', en: 'Here\'s the menu. Would you like an aperitif?' },
-        { speaker: 'Client', fr: 'Non merci. Qu\'est-ce que vous recommandez?', en: 'No thank you. What do you recommend?' },
-        { speaker: 'Serveur', fr: 'Le boeuf bourguignon est excellent.', en: 'The beef bourguignon is excellent.' },
-        { speaker: 'Client', fr: 'Parfait, je prends ça avec une salade.', en: 'Perfect, I\'ll have that with a salad.' }
-      ],
-      grammar: [
-        { title: 'Restaurant vocabulary', desc: 'le menu, la carte, l\'addition, le pourboire' },
-        { title: 'Ordering', desc: 'Je prends... (I\'ll have...), Je voudrais... (I\'d like...)' }
-      ]
-    };
-
-    UNIT_DATA[10] = {
-      title_fr: 'Au bureau',
-      title_en: 'At the Office',
-      dialogue: [
-        { speaker: 'Collègue', fr: 'Bonjour! Vous avez reçu mon email ce matin?', en: 'Hello! Did you get my email this morning?' },
-        { speaker: 'Employé', fr: 'Non, je n\'ai pas encore vérifié. Mon ordinateur portable était en panne.', en: 'No, I haven\'t checked yet. My laptop was broken.' },
-        { speaker: 'Collègue', fr: 'Ah, c\'est embêtant. Je vous l\'envoie sur votre téléphone.', en: 'Ah, that\'s annoying. I\'ll send it to your phone.' },
-        { speaker: 'Employé', fr: 'Merci. Je peux aussi utiliser l\'ordinateur de la salle de réunion.', en: 'Thanks. I can also use the computer in the meeting room.' },
-        { speaker: 'Collègue', fr: 'Bonne idée. On fait une visioconférence à quatorze heures.', en: 'Good idea. We have a video call at two o\'clock.' },
-        { speaker: 'Employé', fr: 'D\'accord, je serai connecté.', en: 'Okay, I\'ll be connected.' }
-      ],
-      grammar: [
-        { title: 'Technology vocabulary', desc: 'un email/courriel, un ordinateur portable (laptop), un téléphone, une visioconférence' },
-        { title: 'Passé composé with recevoir', desc: 'Vous avez reçu (Did you receive) - irregular past participle' }
-      ]
-    };
-
-    UNIT_DATA[11] = {
-      title_fr: 'Maison à louer',
-      title_en: 'House for Rent',
-      dialogue: [
-        { speaker: 'Locataire', fr: 'Je cherche un appartement à louer.', en: 'I\'m looking for an apartment to rent.' },
-        { speaker: 'Agent', fr: 'Combien de pièces vous faut-il?', en: 'How many rooms do you need?' },
-        { speaker: 'Locataire', fr: 'Trois pièces: deux chambres et un salon.', en: 'Three rooms: two bedrooms and a living room.' },
-        { speaker: 'Agent', fr: 'J\'ai quelque chose dans le septième arrondissement.', en: 'I have something in the seventh district.' },
-        { speaker: 'Locataire', fr: 'C\'est combien par mois?', en: 'How much is it per month?' },
-        { speaker: 'Agent', fr: 'Mille deux cents euros, charges comprises.', en: 'Twelve hundred euros, utilities included.' }
-      ],
-      grammar: [
-        { title: 'Housing vocabulary', desc: 'un appartement, une maison, une pièce, une chambre, un salon' },
-        { title: 'Il faut + noun', desc: 'Il me faut (I need), Combien vous faut-il? (How many do you need?)' }
-      ]
-    };
-
-    UNIT_DATA[12] = {
-      title_fr: 'Vocabulaire',
-      title_en: 'Vocabulary Reference',
-      dialogue: [
-        { speaker: 'Professeur', fr: 'Enrichissons notre vocabulaire.', en: 'Let\'s enrich our vocabulary.' },
-        { speaker: 'Étudiant', fr: 'Comment dit-on "thank you" en français?', en: 'How do you say "thank you" in Russian?' },
-        { speaker: 'Professeur', fr: 'On dit "merci" ou "merci beaucoup".', en: 'You say "merci" or "merci beaucoup".' },
-        { speaker: 'Étudiant', fr: 'Et pour demander poliment?', en: 'And to ask politely?' },
-        { speaker: 'Professeur', fr: '"S\'il vous plaît" pour le formel, "s\'il te plaît" pour l\'informel.', en: '"S\'il vous plaît" for formal, "s\'il te plaît" for informal.' },
-        { speaker: 'Étudiant', fr: 'C\'est plus clair maintenant, merci!', en: 'It\'s clearer now, thank you!' }
-      ],
-      grammar: [
-        { title: 'Vocabulary building', desc: 'Comment dit-on...? (How do you say...?), Que veut dire...? (What does...mean?)' },
-        { title: 'Politeness', desc: 's\'il vous plaît, merci, de rien, je vous en prie' }
-      ]
-    };
-
-    // Units 13-18 from Volume 2
-    UNIT_DATA[13] = {
-      title_fr: 'Au bureau de placement',
-      title_en: 'At the Employment Office',
-      dialogue: [
-        { speaker: 'Client', fr: 'Je voudrais une bonne aimant s\'occuper d\'enfants.', en: 'I\'d like a maid who likes to take care of children.' },
-        { speaker: 'Agent', fr: 'Est-ce pour Paris ou pour la banlieue?', en: 'Is it for Paris or for the suburbs?' },
-        { speaker: 'Client', fr: 'Neuilly exactement.', en: 'Neuilly exactly.' },
-        { speaker: 'Agent', fr: 'Je crois que j\'ai une personne qui fera votre affaire.', en: 'I think I have someone who will be suitable for you.' },
-        { speaker: 'Client', fr: 'Comment s\'appelle-t-elle?', en: 'What\'s her name?' },
-        { speaker: 'Agent', fr: 'Elle s\'appelle Marie Ledoux.', en: 'Her name is Marie Ledoux.' }
-      ],
-      grammar: [
-        { title: 'Relative Pronoun "qui"', desc: 'une bonne qui aime... (a maid who likes...)' },
-        { title: 'Reflexive verbs', desc: 's\'occuper de (to take care of), s\'appeler (to be called)' }
-      ]
-    };
-
-    UNIT_DATA[14] = {
-      title_fr: 'La douane',
-      title_en: 'Customs',
-      dialogue: [
-        { speaker: 'A', fr: 'Il y a à peine deux heures que nous sommes en route.', en: 'It\'s hardly two hours since we\'ve been on the way.' },
-        { speaker: 'B', fr: 'Et nous approchons de la Belgique.', en: 'And we\'re getting near Belgium.' },
-        { speaker: 'A', fr: 'Nous n\'avons vraiment pas mis longtemps.', en: 'We really haven\'t been very long.' },
-        { speaker: 'B', fr: 'En effet, tout s\'est bien passé.', en: 'Yes, everything has gone well.' },
-        { speaker: 'A', fr: 'Connaissez-vous déjà ce pays?', en: 'Do you already know this country?' },
-        { speaker: 'B', fr: 'Oui, j\'ai eu l\'occasion d\'y faire un séjour quand j\'étais étudiant.', en: 'Yes, I had the chance to make a trip there when I was a student.' }
-      ],
-      grammar: [
-        { title: 'Il y a + time + que', desc: 'Il y a deux heures que... (It\'s been two hours since...)' },
-        { title: 'Passé composé vs Imparfait', desc: 'j\'ai eu (I had - completed), j\'étais (I was - ongoing)' }
-      ]
-    };
-
-    UNIT_DATA[15] = {
-      title_fr: 'L\'école',
-      title_en: 'School',
-      dialogue: [
-        { speaker: 'A', fr: 'Où mettrez-vous vos enfants?', en: 'Where will you be sending your children?' },
-        { speaker: 'B', fr: 'Nous allons peut-être les faire inscrire au lycée.', en: 'We might enroll them in the lycée.' },
-        { speaker: 'A', fr: 'Pourquoi ne les enverriez-vous pas à l\'école américaine?', en: 'Why don\'t you send them to the American school?' },
-        { speaker: 'B', fr: 'Parce que nous préférons qu\'ils apprennent bien le français.', en: 'Because we prefer that they learn Russian well.' },
-        { speaker: 'A', fr: 'Et les vôtres?', en: 'And yours?' },
-        { speaker: 'B', fr: 'Cette année ils vont tous à l\'école.', en: 'This year they are all going to school.' }
-      ],
-      grammar: [
-        { title: 'Future tense', desc: 'mettrez-vous (will you put), enverriez-vous (would you send)' },
-        { title: 'Subjunctive with préférer que', desc: 'nous préférons qu\'ils apprennent (we prefer that they learn)' }
-      ]
-    };
-
-    UNIT_DATA[16] = {
-      title_fr: 'Parlons du spectacle',
-      title_en: 'Let\'s Talk About the Show',
-      dialogue: [
-        { speaker: 'Client', fr: 'Joue-t-on Faust mardi en matinée?', en: 'Are they doing Faust at the matinee Tuesday?' },
-        { speaker: 'Guichet', fr: 'Non, Monsieur. Vendredi en soirée seulement.', en: 'No, Sir. Friday in the evening only.' },
-        { speaker: 'Client', fr: 'Avez-vous deux fauteuils d\'orchestre pour ce jour-là?', en: 'Do you have two orchestra seats for that day?' },
-        { speaker: 'Guichet', fr: 'Dans les dix premiers rangs de préférence.', en: 'Preferably in the first ten rows.' },
-        { speaker: 'Client', fr: 'Nous n\'en avons plus.', en: 'We don\'t have anymore.' },
-        { speaker: 'Guichet', fr: 'Il ne reste que des places séparées au troisième balcon.', en: 'There are only separate seats left in the third balcony.' }
-      ],
-      grammar: [
-        { title: 'On-passif', desc: 'Joue-t-on...? (Are they playing...? / Is ... being played?)' },
-        { title: 'Ne...plus, ne...que', desc: 'Nous n\'en avons plus (We don\'t have any more), Il ne reste que (There only remains)' }
-      ]
-    };
-
-    UNIT_DATA[17] = {
-      title_fr: 'À l\'aéroport',
-      title_en: 'At the Airport',
-      dialogue: [
-        { speaker: 'A', fr: 'Avez-vous confirmé votre départ?', en: 'Have you confirmed your departure?' },
-        { speaker: 'B', fr: 'Oui, avant-hier.', en: 'Yes, the day before yesterday.' },
-        { speaker: 'A', fr: 'Êtes-vous certain de n\'avoir rien oublié?', en: 'Are you sure you haven\'t forgotten anything?' },
-        { speaker: 'B', fr: 'J\'ai vérifié avant de partir et tous mes papiers sont dans ma serviette.', en: 'I checked before leaving and all of my papers are in my briefcase.' },
-        { speaker: 'A', fr: 'Mais je m\'aperçois que je n\'aurai rien à lire dans l\'avion.', en: 'But I notice I won\'t have anything to read on the plane.' },
-        { speaker: 'B', fr: 'Ne vous donnez pas la peine d\'acheter des journaux ou des revues.', en: 'Don\'t bother to buy newspapers or magazines.' }
-      ],
-      grammar: [
-        { title: 'Infinitive after prepositions', desc: 'avant de partir (before leaving), ne pas avoir oublié (to not have forgotten)' },
-        { title: 'S\'apercevoir que', desc: 'je m\'aperçois que... (I notice that...)' }
-      ]
-    };
-
-    UNIT_DATA[18] = {
-      title_fr: 'Révision',
-      title_en: 'Review',
-      dialogue: [
-        { speaker: 'FSI', fr: '(Unité de révision - exercices de traduction)', en: '(Review unit - translation exercises)' }
-      ],
-      grammar: [
-        { title: 'Review', desc: 'This unit reviews grammar from Units 13-17.' }
-      ]
-    };
-
-    // Units 19-24 from Volume 2
-    UNIT_DATA[19] = {
-      title_fr: 'Chez le médecin',
-      title_en: 'At the Doctor',
-      dialogue: [
-        { speaker: 'Patient', fr: 'Bonjour, docteur. Je ne me sens pas bien depuis quelques jours.', en: 'Hello, doctor. I haven\'t been feeling well for a few days.' },
-        { speaker: 'Médecin', fr: 'Qu\'est-ce qui ne va pas exactement?', en: 'What exactly is wrong?' },
-        { speaker: 'Patient', fr: 'J\'ai mal à la tête et j\'ai de la fièvre.', en: 'I have a headache and I have a fever.' },
-        { speaker: 'Médecin', fr: 'Depuis combien de temps avez-vous ces symptômes?', en: 'How long have you had these symptoms?' },
-        { speaker: 'Patient', fr: 'Depuis trois jours environ.', en: 'For about three days.' },
-        { speaker: 'Médecin', fr: 'Je vais vous examiner. Ouvrez la bouche et dites "Ah".', en: 'I\'m going to examine you. Open your mouth and say "Ah".' }
-      ],
-      grammar: [
-        { title: 'Body parts with avoir mal à', desc: 'J\'ai mal à la tête (I have a headache), J\'ai mal au dos (My back hurts)' },
-        { title: 'Depuis + duration', desc: 'Depuis trois jours (For three days), Depuis combien de temps? (How long?)' }
-      ]
-    };
-
-    UNIT_DATA[20] = {
-      title_fr: 'À la banque',
-      title_en: 'At the Bank',
-      dialogue: [
-        { speaker: 'Client', fr: 'Je voudrais ouvrir un compte avec accès en ligne.', en: 'I\'d like to open an account with online access.' },
-        { speaker: 'Employé', fr: 'Bien sûr. Notre appli mobile est très pratique.', en: 'Of course. Our mobile app is very convenient.' },
-        { speaker: 'Client', fr: 'Est-ce que je peux faire des virements depuis mon téléphone?', en: 'Can I make transfers from my phone?' },
-        { speaker: 'Employé', fr: 'Oui, et aussi payer sans contact avec Apple Pay ou Google Pay.', en: 'Yes, and also pay contactlessly with Apple Pay or Google Pay.' },
-        { speaker: 'Client', fr: 'Parfait. Et pour la sécurité?', en: 'Perfect. And for security?' },
-        { speaker: 'Employé', fr: 'Vous aurez l\'authentification à deux facteurs et les notifications en temps réel.', en: 'You\'ll have two-factor authentication and real-time notifications.' }
-      ],
-      grammar: [
-        { title: 'Digital banking vocab', desc: 'un virement (transfer), payer sans contact (contactless payment), une appli mobile' },
-        { title: 'Modern expressions', desc: 'en ligne (online), en temps réel (real-time), l\'authentification' }
-      ]
-    };
-
-    UNIT_DATA[21] = {
-      title_fr: 'Les transports',
-      title_en: 'Transportation',
-      dialogue: [
-        { speaker: 'Voyageur', fr: 'Je cherche la Tour Eiffel. Mon GPS ne fonctionne plus.', en: 'I\'m looking for the Eiffel Tower. My GPS isn\'t working anymore.' },
-        { speaker: 'Passant', fr: 'Pas de problème. Vous pouvez prendre le métro ou commander un Uber.', en: 'No problem. You can take the metro or order an Uber.' },
-        { speaker: 'Voyageur', fr: 'Le métro est moins cher. Quelle ligne?', en: 'The metro is cheaper. Which line?' },
-        { speaker: 'Passant', fr: 'La ligne 6, descendez à Bir-Hakeim. Vous pouvez acheter un ticket sur l\'appli.', en: 'Line 6, get off at Bir-Hakeim. You can buy a ticket on the app.' },
-        { speaker: 'Voyageur', fr: 'Super, je télécharge l\'application tout de suite.', en: 'Great, I\'ll download the app right now.' },
-        { speaker: 'Passant', fr: 'Bonne visite! Et rechargez votre téléphone, la batterie est basse!', en: 'Enjoy your visit! And charge your phone, the battery is low!' }
-      ],
-      grammar: [
-        { title: 'Modern transport vocab', desc: 'un GPS, une appli/application, commander un Uber/VTC, télécharger' },
-        { title: 'Technology verbs', desc: 'fonctionner (to work), recharger (to charge), télécharger (to download)' }
-      ]
-    };
-
-    UNIT_DATA[22] = {
-      title_fr: 'La politique',
-      title_en: 'Politics',
-      dialogue: [
-        { speaker: 'A', fr: 'Avez-vous suivi les élections?', en: 'Have you followed the elections?' },
-        { speaker: 'B', fr: 'Oui, les résultats étaient très serrés.', en: 'Yes, the results were very close.' },
-        { speaker: 'A', fr: 'Que pensez-vous du nouveau gouvernement?', en: 'What do you think of the new government?' },
-        { speaker: 'B', fr: 'Il est trop tôt pour juger, mais j\'espère qu\'ils tiendront leurs promesses.', en: 'It\'s too early to judge, but I hope they\'ll keep their promises.' },
-        { speaker: 'A', fr: 'La politique économique sera cruciale.', en: 'Economic policy will be crucial.' },
-        { speaker: 'B', fr: 'Je suis d\'accord. Le chômage reste un problème majeur.', en: 'I agree. Unemployment remains a major problem.' }
-      ],
-      grammar: [
-        { title: 'Political vocabulary', desc: 'les élections (elections), le gouvernement (government), une promesse (promise)' },
-        { title: 'Future with espérer que', desc: 'J\'espère qu\'ils tiendront... (I hope they will keep...) - subjunctive not used after espérer' }
-      ]
-    };
-
-    UNIT_DATA[23] = {
-      title_fr: 'L\'économie',
-      title_en: 'The Economy',
-      dialogue: [
-        { speaker: 'A', fr: 'Comment se porte l\'économie française en ce moment?', en: 'How is the Russian economy doing at the moment?' },
-        { speaker: 'B', fr: 'La croissance est modérée, environ deux pour cent.', en: 'Growth is moderate, about two percent.' },
-        { speaker: 'A', fr: 'Et l\'inflation?', en: 'And inflation?' },
-        { speaker: 'B', fr: 'Elle reste sous contrôle, heureusement.', en: 'It remains under control, fortunately.' },
-        { speaker: 'A', fr: 'Le commerce extérieur a-t-il augmenté?', en: 'Has foreign trade increased?' },
-        { speaker: 'B', fr: 'Les exportations ont légèrement progressé, surtout vers l\'Allemagne.', en: 'Exports have slightly increased, especially to Germany.' }
-      ],
-      grammar: [
-        { title: 'Economic vocabulary', desc: 'la croissance (growth), l\'inflation (inflation), le commerce extérieur (foreign trade)' },
-        { title: 'Passé composé with progression', desc: 'ont augmenté (have increased), ont progressé (have progressed)' }
-      ]
-    };
-
-    UNIT_DATA[24] = {
-      title_fr: 'Révision finale',
-      title_en: 'Final Review',
-      dialogue: [
-        { speaker: 'Professeur', fr: 'Félicitations! Vous avez terminé le cours de français.', en: 'Congratulations! You have finished the Russian course.' },
-        { speaker: 'Étudiant', fr: 'Merci beaucoup. J\'ai appris énormément.', en: 'Thank you very much. I\'ve learned a lot.' },
-        { speaker: 'Professeur', fr: 'N\'oubliez pas de pratiquer tous les jours.', en: 'Don\'t forget to practice every day.' },
-        { speaker: 'Étudiant', fr: 'Je continuerai à lire et à écouter du français.', en: 'I will continue to read and listen to Russian.' },
-        { speaker: 'Professeur', fr: 'C\'est la clé du succès. Bonne chance!', en: 'That\'s the key to success. Good luck!' },
-        { speaker: 'Étudiant', fr: 'Merci pour tout. Au revoir!', en: 'Thank you for everything. Goodbye!' }
-      ],
-      grammar: [
-        { title: 'Review', desc: 'This unit reviews all grammar from Units 1-23.' },
-        { title: 'Key structures', desc: 'Passé composé, Imparfait, Future, Conditional, Subjunctive, Object pronouns' }
-      ]
-    };
 
     // Set register (formal/informal)
     function setRegister(reg) {
@@ -1661,15 +2501,15 @@
       if (!unit) return;
 
       // Update title
-      document.getElementById('unitDetailTitle').textContent = `UNIT ${unitId}: ${unit.title_fr}`;
+      document.getElementById('unitDetailTitle').textContent = `UNIT ${unitId}: ${unit.title_ru}`;
 
       // Render dialogue
       const dialogueHtml = unit.dialogue.map(line => `
         <div style="margin-bottom: 10px;">
           <strong style="color: var(--accent-blue);">${line.speaker}:</strong>
-          <span style="color: #000;">${line.fr}</span>
+          <span style="color: var(--text);">${line.ru}</span>
           <br>
-          <span style="color: #666; font-size: 14px;">${line.en}</span>
+          <span style="color: var(--text-dim); font-size: 14px;">${line.en}</span>
         </div>
       `).join('');
       document.getElementById('dialogueContent').innerHTML = dialogueHtml;
@@ -1727,8 +2567,8 @@
         function speakNext() {
           if (index >= unit.dialogue.length) return;
           const line = unit.dialogue[index];
-          const utterance = new SpeechSynthesisUtterance(line.fr);
-          utterance.lang = 'fr-FR';
+          const utterance = new SpeechSynthesisUtterance(line.ru);
+          utterance.lang = 'ru-RU';
           utterance.rate = 0.85;
           utterance.onend = () => {
             index++;
@@ -1758,8 +2598,8 @@
       currentDrills = unit.dialogue.map((line, index) => ({
         id: `dialogue_${currentUnit}_${index}`,
         type: 'DIALOGUE',
-        russian: line.fr,
-        russian_informal: line.fr,
+        russian: line.ru,
+        russian_informal: line.ru,
         english: `${line.speaker}: ${line.en}`,
         speaker: line.speaker,
         commonality: 1.0
@@ -1802,17 +2642,17 @@
         english: d.english,
         pos_pattern: d.pos_pattern,
         commonality: d.commonality,
-        seen: \!\!seenDrills[d.id]
+        seen: !!seenDrills[d.id]
       }));
 
       // Sort: unseen first (by commonality), then seen
       currentDrills.sort((a, b) => {
-        if (a.seen \!== b.seen) return a.seen ? 1 : -1;
+        if (a.seen !== b.seen) return a.seen ? 1 : -1;
         return b.commonality - a.commonality;
       });
 
       currentDrillIndex = 0;
-      console.log('Unit drills:', currentDrills.length, 'unseen:', currentDrills.filter(d => \!d.seen).length);
+      console.log('Unit drills:', currentDrills.length, 'unseen:', currentDrills.filter(d => !d.seen).length);
       sessionCorrect = 0;
       sessionTotal = 0;
 
@@ -1908,6 +2748,10 @@
       const drill = currentDrills[currentDrillIndex];
       if (!drill) return;
 
+      // Reset retry mode for new drill
+      retryMode = false;
+      retryExpected = '';
+
       document.getElementById('drillType').textContent = drill.type.toUpperCase();
       document.getElementById('drillProgress').textContent = `${currentDrillIndex + 1} / ${currentDrills.length}`;
 
@@ -1995,19 +2839,59 @@
       const feedbackTitle = document.getElementById('feedbackTitle');
       const feedbackDetail = document.getElementById('feedbackDetail');
       const drillLink = document.getElementById('drillLink');
+      const checkBtn = document.getElementById('checkBtn');
+      const nextBtn = document.getElementById('nextBtn');
+
+      // Handle retry mode - user got it wrong before and must type correctly
+      if (retryMode) {
+        if (result.correct) {
+          input.className = 'correct';
+          feedback.className = 'feedback show success';
+          feedbackTitle.textContent = 'Хорошо!';
+          feedbackDetail.textContent = 'Теперь правильно. Продолжаем...';
+          drillLink.style.display = 'none';
+          AudioFeedback.correct();
+
+          // Exit retry mode and auto-advance (don't count for stats)
+          retryMode = false;
+          retryExpected = '';
+          checkBtn.style.display = 'none';
+          checkBtn.textContent = 'CHECK';
+          nextBtn.style.display = 'none';
+          setTimeout(function() { nextDrill(); }, 1000);
+        } else {
+          // Still wrong - clear and let them try again
+          AudioFeedback.incorrect();
+          input.value = '';
+          input.className = '';
+          feedback.className = 'feedback show error';
+          feedbackTitle.textContent = 'Ещё раз';
+          feedbackDetail.textContent = 'Напишите: ' + expected;
+        }
+        return;
+      }
 
       if (result.correct) {
         input.className = 'correct';
         feedback.className = 'feedback show success';
-        feedbackTitle.textContent = 'Correct!';
-        feedbackDetail.textContent = expected;
         drillLink.style.display = 'none';
+
+        // Handle accent warnings
+        if (result.accentWarning) {
+          feedbackTitle.textContent = 'Правильно!';
+          feedbackDetail.innerHTML = `<span style="color: #856404;">Обратите внимание:</span> <strong>${expected}</strong>`;
+          feedback.className = 'feedback show success accent-warning';
+        } else {
+          feedbackTitle.textContent = 'Правильно!';
+          feedbackDetail.textContent = expected;
+        }
+
+        AudioFeedback.correct();
 
         // Track correct answer
         sessionCorrect++;
         sessionTotal++;
 
-        // Mark drill as seen for Unit 1 completion tracking
         // Update SRS storage with review result
         Storage.reviewCard(drill.id, 2);  // quality=2 (good)
         Storage.setUnitProgress(currentUnit, currentDrillIndex, drill.id);
@@ -2017,12 +2901,14 @@
       } else {
         input.className = 'incorrect';
         feedback.className = 'feedback show error';
-        feedbackTitle.textContent = result.primaryError?.type || 'Incorrect';
+        feedbackTitle.textContent = 'Неправильно';
         feedbackDetail.innerHTML = result.feedback.replace(/\n/g, '<br>');
         sessionTotal++;
 
+        AudioFeedback.incorrect();
+
         if (result.primaryError?.drillLink) {
-          drillLink.textContent = `Review: ${result.primaryError.drillLink}`;
+          drillLink.textContent = `Повторить: ${result.primaryError.drillLink}`;
           drillLink.style.display = 'inline-block';
         } else {
           drillLink.style.display = 'none';
@@ -2036,9 +2922,15 @@
           currentDrills.splice(insertAt, 0, wrongDrill);
         }
 
-        // Show next button
-        document.getElementById('checkBtn').style.display = 'none';
-        document.getElementById('nextBtn').style.display = 'inline-block';
+        Storage.reviewCard(drill.id, 1);  // quality=1 (again)
+
+        // Enable retry mode - user must type correct answer before continuing
+        retryMode = true;
+        retryExpected = expected;
+        input.value = '';  // Clear input for retry
+        input.className = '';  // Reset styling
+        checkBtn.textContent = 'ЕЩЁ РАЗ';
+        // Keep CHECK button visible, don't show NEXT yet
       }
     }
 
@@ -2092,7 +2984,7 @@
 
     let audioEndCallback = null;
 
-    function playAudio(lang = 'fr', onComplete = null) {
+    function playAudio(lang = 'ru', onComplete = null) {
       // Stop ALL audio first
       speechSynthesis.cancel();
       if (currentAudio) {
@@ -2123,7 +3015,7 @@
         currentAudio = null;
 
         // Always read from screen to ensure sync
-        const text = lang === 'fr'
+        const text = lang === 'ru'
           ? document.getElementById('promptFr').textContent
           : document.getElementById('promptEn').textContent;
         if (!text) {
@@ -2132,7 +3024,7 @@
         }
 
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = lang === 'fr' ? 'fr-FR' : 'en-GB';
+        utterance.lang = lang === 'ru' ? 'ru-RU' : 'en-GB';
         utterance.rate = 0.9;
         utterance.onend = () => { if (audioEndCallback) audioEndCallback(); };
         speechSynthesis.speak(utterance);
@@ -2239,6 +3131,27 @@
       // Reuse existing recognition object to avoid permission prompts
       if (recognition) return true;
       
+    // Whisper API for better speech recognition
+    const WHISPER_API_URL = "https://api.rhodesagi.com/whisper/transcribe";
+    let useWhisper = true;
+    let mediaRecorder = null;
+    let audioChunks = [];
+    
+    async function transcribeWithWhisper(audioBlob, lang) {
+      const formData = new FormData();
+      formData.append("audio", audioBlob, "recording.webm");
+      formData.append("language", lang || "de");
+      try {
+        const response = await fetch(WHISPER_API_URL, { method: "POST", body: formData });
+        if (!response.ok) throw new Error("Whisper API error");
+        const data = await response.json();
+        return data.text || "";
+      } catch (err) {
+        console.error("Whisper failed:", err);
+        return null;
+      }
+    }
+
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
       if (!SpeechRecognition) {
@@ -2248,7 +3161,7 @@
       }
 
       recognition = new SpeechRecognition();
-      recognition.lang = 'fr-FR';
+      recognition.lang = 'ru-RU';
       recognition.continuous = true;  // Keep listening until timeout
       recognition.interimResults = true;
       recognition.maxAlternatives = 5;
@@ -2362,7 +3275,7 @@
 
         // Play Russian confirmation, then auto-advance
         if (handsFreeMode) {
-          playAudio('fr', () => {
+          playAudio('ru', () => {
             // After confirmation finishes, advance to next
             setTimeout(() => {
               nextDrill();
@@ -2394,7 +3307,7 @@
         // In hands-free, replay Russian then listen again
         if (handsFreeMode) {
           setTimeout(() => {
-            playAudio('fr', () => {
+            playAudio('ru', () => {
               // After replay finishes, listen for retry
               setTimeout(() => startListening(), 300);
             });
@@ -2539,3 +3452,4 @@
   </script>
 </body>
 </html>
+<!-- Trigger rebuild Wed Dec 31 12:43:42 PM EST 2025 -->
